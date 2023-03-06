@@ -1,0 +1,44 @@
+import config from './config.js'
+
+export const apiResquest = (prams) => {
+	let headerData = {
+		'content-type': 'application/json'
+	}
+	return new Promise((resolve, reject) => {
+		let url = config.BaseUrl + prams.url; //请求的网络地址和局地的api地址组合
+		uni.showLoading({
+			title: '加载中',
+			mask: true
+		})
+		return uni.request({
+			url: url,
+			data: prams.data,
+			timeout: config.Timeout,
+			method: prams.method,
+			header: headerData,
+			success: (res) => {
+				uni.hideLoading()
+				//这里是成功的返回码，大家根据自己的实际情况调整
+				if (res.data.code !== '00000') {
+					uni.showToast({
+						title: '获取数据失败:' + res.data.msg,
+						duration: 1000,
+						icon: "none"
+					})
+					return;
+				}
+				resolve(res.data);
+				console.log(res.data)
+			},
+			fail: (err) => {
+				reject(err);
+				console.log(err)
+				uni.hideLoading()
+			},
+			complete: () => {
+				console.log('请求完成')
+				uni.hideLoading()
+			}
+		});
+	})
+}

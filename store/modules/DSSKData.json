@@ -1,0 +1,226 @@
+{
+  "Business": {
+    "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+    "BusinessName": "大圣烧烤",
+    "CompanyName": "大圣烧烤",
+    "Tell": null,
+    "Province": "湖北省",
+    "City": "武汉市",
+    "Area": null,
+    "Address": null,
+    "Email": null,
+    "LogoUrl": "http://open.dsskvip.com/FileRoot/BusinessPic/2020/12/c9d2241a-f279-4fc8-b741-f1a0aa576199.jpg",
+    "AppID": "wxca5a290aee8bcb3b",
+    "Appsecret": "6da4c43fe3c3094a0014f4fa5582d115",
+    "WxToken": "yuebu",
+    "AESKey": "uU2anJQ2BmfkoKefbEfPM4CIjzzs4Jx14mUzMjGcpXd",
+    "WeChatID": "gh_65bb39a0329e",
+    "AccountCode": null,
+    "SubscribePicture": "http://open.dsskvip.com/FileRoot/dssk.jpg",
+    "Remark": "杨玉生",
+    "CreateTime": "2020-12-23T19:28:51",
+    "State": 1,
+    "DomainName": "www.dsskvip.com",
+    "SortNumber": 1,
+    "IsActivation": 1,
+    "IsDel": 0
+  },
+  "BusinessConfig": {
+    "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+    "BusinessName": "大圣烧烤",
+    "StoredSwitch": 1,
+    "StoredGiveLockHours": 0,
+    "MemberNumberPrefix": null,
+    "NextMemberNumber": 766121,
+    "DefaultMemberRank": "be676812363b41bfa17df11b51ec3bb3",
+    "PayService": "收呗",
+    "PayNumberCheck": null,
+    "PayFacilityNumberCheck": null,
+    "PayServiceRateCheck": 0.006,
+    "PayNumberStored": "852012300026",
+    "PayFacilityNumberStored": null,
+    "PayServiceRateStored": 0.006,
+    "PayServiceRateGoods": 0,
+    "PayNumberGoods": null,
+    "PayFacilityNumberGoods": null,
+    "StoredGiftDelayHours": 0,
+    "CardLimitUseNumberOnDay": 0,
+    "IntegralPaySwitch": 0,
+    "IntegralExchange": 20,
+    "IntegralExchangeUpperLimitMode": "Fixed",
+    "IntegralExchangeUpperLimitFixed": 10,
+    "IntegralExchangeUpperLimitRatio": 0.1,
+    "MpMenuConfigJson": "[{\"Name\":\"积分商城\",\"MenuButtons\":null,\"Type\":\"view\",\"Url\":\"member/Integral/GoodsShop\",\"Key\":null,\"NeedAuthorize\":1,\"NeedAuthorizeValue\":true},{\"Name\":\"会员中心\",\"MenuButtons\":null,\"Type\":\"view\",\"Url\":\"member\",\"Key\":null,\"NeedAuthorize\":1,\"NeedAuthorizeValue\":true},{\"Name\":\"门店导航\",\"MenuButtons\":null,\"Type\":\"view\",\"Url\":\"stores\",\"Key\":null,\"NeedAuthorize\":1,\"NeedAuthorizeValue\":true}]",
+    "MpMenuConfig": [
+      {
+        "Name": "积分商城",
+        "MenuButtons": null,
+        "Type": "view",
+        "Url": "member/Integral/GoodsShop",
+        "Key": null,
+        "NeedAuthorize": 1,
+        "NeedAuthorizeValue": true
+      },
+      {
+        "Name": "会员中心",
+        "MenuButtons": null,
+        "Type": "view",
+        "Url": "member",
+        "Key": null,
+        "NeedAuthorize": 1,
+        "NeedAuthorizeValue": true
+      },
+      {
+        "Name": "门店导航",
+        "MenuButtons": null,
+        "Type": "view",
+        "Url": "stores",
+        "Key": null,
+        "NeedAuthorize": 1,
+        "NeedAuthorizeValue": true
+      }
+    ],
+    "TemplateMsgConfigJson": "{\"BusinessCode\":null,\"OnOrderTemplateID\":\"eZOL7SMT879v4L2neEDEOOQXcVghXvPU7BHQoJv2Hm0\",\"OnCheckTemplateID\":\"47G9n0OFV__50rAOKvpLkeSoH8RewR_Is8D3hoxFl-4\",\"OnStoredTemplateID\":\"HgKU6fw3g0UqySDZdvZ81M4sDaQDwNnLhApCVTloEwU\",\"OnCommentBadTemplateID\":\"yE5OAG5fCHUFYmpag3Nz7vNWLi1DN2jhg9fDmTjl97k\",\"OnSendCardTemplateID\":\"B8rMNfn2ndAzzW0mKrTdQTBtGws7JvtIN5EgbLK5hdg\"}",
+    "OrderConfigJson": "{\"OrderMode\":\"堂食\",\"HiddenOrderAmount\":1,\"RemarkCanMultiple\":0,\"RemarkItems\":[],\"DishTags\":[],\"StoredWithCard\":0,\"CardLimitUseNumberOnDay\":0,\"CardLimitUseHours\":4,\"CardLimitUseNumber\":1,\"StoredGiftDelayHours\":0,\"OrderOnManyPeople\":0}",
+    "AdsenseConfigJson": "{\"BusinessCode\":null,\"BusinessName\":null,\"MemberCardPicture\":null,\"StoresHeadBanners\":[\"http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/1d6e4163-c7b6-4546-bf8a-c95be55e43dc.jpg\",\"http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/df3b1ca2-021b-44c9-91c9-3c167ff1c3d2.jpg\",\"http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/30623145-47ef-4a01-8667-dae62022ba9c.jpg\",\"http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/91a6c08d-fc19-45cf-873e-f296d94dc8b7.jpg\"],\"DishMenuAleatPicture\":[],\"DishMenuHeadBanners\":[],\"DishMenuMiniBanners\":[],\"MemberCenterBanners\":[],\"ServiceInfo\":\"18827260545\",\"CopyInfo\":\"3.0 tR:/   https://v.douyin.com/ePBNUfW/ 复制佌链接，打开Dou搜索，直接觀kan视频！\"}",
+    "AdsenseConfig": {
+      "BusinessCode": null,
+      "BusinessName": null,
+      "MemberCardPicture": null,
+      "StoresHeadBanners": [
+        "http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/1d6e4163-c7b6-4546-bf8a-c95be55e43dc.jpg",
+        "http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/df3b1ca2-021b-44c9-91c9-3c167ff1c3d2.jpg",
+        "http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/30623145-47ef-4a01-8667-dae62022ba9c.jpg",
+        "http://open.dsskvip.com/FileRoot/AdsensePic/2021/5/91a6c08d-fc19-45cf-873e-f296d94dc8b7.jpg"
+      ],
+      "DishMenuAleatPicture": [],
+      "DishMenuHeadBanners": [],
+      "DishMenuMiniBanners": [],
+      "MemberCenterBanners": [],
+      "ServiceInfo": "18827260545",
+      "CopyInfo": "3.0 tR:/   https://v.douyin.com/ePBNUfW/ 复制佌链接，打开Dou搜索，直接觀kan视频！"
+    },
+    "MemberConfigJson": "{\"MemberCardPicture\":\"http://open.dsskvip.com/FileRoot/MemberCardPic/2022/10/d338b1fc-da00-40ef-a2c9-b99cd157d537.jpg\",\"MemberCardFontColor\":\"#333\",\"MemberNumberPrefix\":null,\"DefaultMemberRank\":\"be676812363b41bfa17df11b51ec3bb3\"}",
+    "MemberConfig": {
+      "MemberCardPicture": "http://open.dsskvip.com/FileRoot/MemberCardPic/2022/10/d338b1fc-da00-40ef-a2c9-b99cd157d537.jpg",
+      "MemberCardFontColor": "#333",
+      "MemberNumberPrefix": null,
+      "DefaultMemberRank": "be676812363b41bfa17df11b51ec3bb3"
+    },
+    "DaySplit": "08:00",
+    "StoredMustPhoneSwitch": 0,
+    "EntryConfigJson": "{\"StoredRechargeEntrySwitch\":0,\"StoredRetrieveEntrySwitch\":0,\"GoodsShopEntrySwitch\":1}",
+    "NoticeConfigJson": "{\"BusinessCode\":\"c5e6baa9861e452dbd420bc16721e474\",\"BusinessName\":null,\"DailyNoticeConfig\":{\"ByRole\":0,\"ByEmployee\":1,\"SendTime\":\"22:00\",\"SendRoles\":[],\"SendEmployees\":[\"4e343236153745afb86e152103e54d5d\",\"c1a6643b6aad43f1998769bf2f814943\",\"3b761bae3ee641c8bfd6a13a0186ce79\",\"205951425db14f828b11fa09eea584a8\",\"29061e64d8bb43589e88261807fd1081\",\"1437c350d6404ce0ac63b34b4edd5f79\",\"493a9257a27346b3bb6f50ee124b4a5a\",\"f67667b682a44ff4862d01b7225bc11d\",\"2c7e7f4c511940cb91012126d55b99e2\",\"bf333ce0e35a46509b5b3373cb560998\",\"c75f1dc38dc8436c872e78a9be438eed\",\"477147792ce947ccb549cea7b906e011\",\"5a7b96f3cb684cd5ac81bcbb00094901\",\"ba212c0586bb4ad29abfb6785315568c\",\"4a4b78c2280649c38bd6a8fa77eccebc\",\"c6624e7170a5488cad476604da8cbe58\",\"de621edc3c65409fa9fc761001bfe256\",\"259c4f7517a444b4ae0767e72eaa6c20\",\"28c7c5934a414a759a46af7bd955f8e6\",\"499fc52a8cb845708cc25f01cb457072\",\"3822074255584cfab23b9cf1221b4625\",\"bea89b1add184455aa89dbcd81ec0437\",\"9ec1d086ed944cf987a8349cecd59f90\",\"46c018f43c8e4fea8a81fcb4b5276aba\",\"12c63e3e79c44948ab8f34ee4304a371\",\"19e828c5c48346a8b13a70c8b04d4476\",\"ee9c0426610843aaae528a8453819d2c\",\"fef85245e2014da1bc4543c2480ec4b5\",\"a2f90c07ee2246e2a145726def67ae13\",\"1136d7773dc7488fb64184a1a41de64a\",\"a8bad865292d40f0a363ebefbbc0085a\",\"85ec3c2d482948a9b42447032e2754a1\",\"ba5d2794214b4518b549a4b1bc2d5038\",\"99b106b43fdf4bab97c7322e5cd94eb2\",\"2bc0261b0e9645e0af1350328eecc94b\",\"b44261a7e1a34a1f85be0535ba13c1ca\",\"f7c320752c8a44578a3bc1d045a75a29\",\"dd1e93b064fe4054ae2a85eb5c48bef7\",\"751cee42062b4fbd85d83bf31f5f8bf4\",\"4d48c741de2542f981099b5f5b3b6494\",\"ea423feac8ec4eb3a82397a7e73ce856\",\"c90663d0513f445592990f868b6cb33d\",\"5eb65b57ab5a4783ab3305a69da552c5\",\"2c2efccc12d14045bd6fc269cb36a1d3\",\"6ec035428e164f3c9fb674eae76635d2\",\"a5799184f5b64c21a4b2983185576741\",\"e2e031cb42754fa3956178a677b7567d\",\"7f19b3c4fdd44d7a9072cafdd09c2f3c\",\"ec3d334fec074ed9b50c4925fa6934be\",\"d307896bb1ab485cbf97f60ced126f95\",\"f17bedee4e5c432f9f61afde18a60fdb\",\"dd8a9d4243864376abcfd77d5e961228\",\"96bd3c9ad3e845328adc6956004773b0\",\"d099cee9f8c84bb29bceb91f61a1b027\",\"9c33be7880324519bc279714824261a3\",\"da2131a4d466495ba5eae5c6394c294b\",\"9b7b30ebd7ce470e84d92f7056d3b309\",\"a1c48684283a4f11807a3d17c590ffd8\"]}}",
+    "NoticeConfig": null,
+    "EntryConfig": {
+      "StoredRechargeEntrySwitch": 0,
+      "StoredRetrieveEntrySwitch": 0,
+      "GoodsShopEntrySwitch": 1
+    },
+    "OrderConfig": {
+      "OrderMode": "堂食",
+      "HiddenOrderAmount": 1,
+      "RemarkCanMultiple": 0,
+      "RemarkItems": [],
+      "DishTags": [],
+      "StoredWithCard": 0,
+      "CardLimitUseNumberOnDay": 0,
+      "CardLimitUseHours": 4,
+      "CardLimitUseNumber": 1,
+      "StoredGiftDelayHours": 0,
+      "OrderOnManyPeople": 0
+    }
+  },
+  "ActiveStoredRules": [
+    {
+      "RowNumber": "1",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "ee1746ad6e7541a2a44de070bc879dcd",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 20.00,
+      "GiveAmount": 10.00
+    },
+    {
+      "RowNumber": "2",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "aeaf8c4f9c9b469da5b960afaa8ae6bf",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 200.00,
+      "GiveAmount": 100.00
+    },
+    {
+      "RowNumber": "3",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "4d27c6d59e4b4f839ad969e2bfbab2f6",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 300.00,
+      "GiveAmount": 150.00
+    },
+    {
+      "RowNumber": "4",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "ebaf0ba4ff4840cc85739410825b6050",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 400.00,
+      "GiveAmount": 200.00
+    },
+    {
+      "RowNumber": "5",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "c0c24510ef0e4f678a05887833c4d3bc",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 500.00,
+      "GiveAmount": 250.00
+    },
+    {
+      "RowNumber": "6",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "acb09c0fee41498ca18414303e5e24e5",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 600.00,
+      "GiveAmount": 300.00
+    },
+    {
+      "RowNumber": "7",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "61ea83a8e505414b92e1c97d226782b3",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 800.00,
+      "GiveAmount": 400.00
+    },
+    {
+      "RowNumber": "8",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "2cf0e66bfc9040db8565b505a40b920f",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 1000.00,
+      "GiveAmount": 500.00
+    },
+    {
+      "RowNumber": "9",
+      "GiveIntegral": 0.0,
+      "GiveCards": [],
+      "StoredGradientCode": "6ef223ef662b414195c79a0c391f658e",
+      "BusinessCode": "c5e6baa9861e452dbd420bc16721e474",
+      "StoreCode": null,
+      "Amount": 2000.00,
+      "GiveAmount": 1000.00
+    }
+  ]
+}
