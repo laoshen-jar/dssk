@@ -5,10 +5,22 @@ import {
 } from './utils/request.js'
 
 // #ifndef VUE3
+import VueStorage from 'vue-ls'
+import defaultSetting from './utils/defaultSetting.js'
+
 import Vue from 'vue'
+
+import iconfont from './components/zgwit-iconfont/iconfont.vue'
 Vue.config.productionTip = false
 Vue.prototype.$api = apiResquest
 App.mpType = 'app'
+
+Vue.component('iconfont', iconfont);
+Vue.use(VueStorage, defaultSetting.storageOptions)
+
+import './components/zgwit-iconfont/iconfont.css'
+import './static/css/reset.css';
+import './static/css/global.css';
 
 try {
 	function isPromise(obj) {

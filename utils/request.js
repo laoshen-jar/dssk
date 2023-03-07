@@ -27,13 +27,16 @@ export const apiResquest = (prams) => {
 				// 	})
 				// 	return;
 				// }
-				resolve(res);
-				console.log(res)
+				if (res.data.state === 200) {
+					resolve(res.data)
+				} else {
+					// 错误返回
+					resolve()
+				}
 			},
 			fail: (err) => {
 				reject(err);
 				console.log(err)
-				uni.hideLoading()
 			},
 			complete: () => {
 				console.log('请求完成')

@@ -1,8 +1,6 @@
 const config = {
-	BaseUrl: '/api',
+	BaseUrl: 'http://open.dsskvip.com',
 	Timeout: 60 * 1000
 }
 
-export default {
-	config
-}
+export default config
