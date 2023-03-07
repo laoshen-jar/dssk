@@ -1,9 +1,13 @@
 import App from './App'
 import store from './store/index.js'
+import {
+	apiResquest
+} from './utils/request.js'
 
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
+Vue.prototype.$api = apiResquest
 App.mpType = 'app'
 
 try {

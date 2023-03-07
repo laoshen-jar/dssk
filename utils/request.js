@@ -6,7 +6,7 @@ export const apiResquest = (prams) => {
 	}
 	return new Promise((resolve, reject) => {
 		let url = config.BaseUrl + prams.url; //请求的网络地址和局地的api地址组合
-		uni.showLoading({
+		prams.loading && uni.showLoading({
 			title: '加载中',
 			mask: true
 		})
@@ -17,18 +17,18 @@ export const apiResquest = (prams) => {
 			method: prams.method,
 			header: headerData,
 			success: (res) => {
-				uni.hideLoading()
+				prams.loading && uni.hideLoading()
 				//这里是成功的返回码，大家根据自己的实际情况调整
-				if (res.data.code !== '00000') {
-					uni.showToast({
-						title: '获取数据失败:' + res.data.msg,
-						duration: 1000,
-						icon: "none"
-					})
-					return;
-				}
-				resolve(res.data);
-				console.log(res.data)
+				// if (res.data.code !== '00000') {
+				// 	uni.showToast({
+				// 		title: '获取数据失败:' + res.data.msg,
+				// 		duration: 1000,
+				// 		icon: "none"
+				// 	})
+				// 	return;
+				// }
+				resolve(res);
+				console.log(res)
 			},
 			fail: (err) => {
 				reject(err);
@@ -37,7 +37,7 @@ export const apiResquest = (prams) => {
 			},
 			complete: () => {
 				console.log('请求完成')
-				uni.hideLoading()
+				prams.loading && uni.hideLoading()
 			}
 		});
 	})

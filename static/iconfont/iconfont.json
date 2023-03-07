@@ -1,0 +1,177 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "657981",
+      "name": "餐厅",
+      "font_class": "canting",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "924690",
+      "name": "红包",
+      "font_class": "hongbao",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "5736350",
+      "name": "酒店餐厅-8",
+      "font_class": "jiudiancanting-",
+      "unicode": "e94c",
+      "unicode_decimal": 59724
+    },
+    {
+      "icon_id": "5736353",
+      "name": "酒店餐厅-10",
+      "font_class": "jiudiancanting-1",
+      "unicode": "e94d",
+      "unicode_decimal": 59725
+    },
+    {
+      "icon_id": "5736360",
+      "name": "酒店餐厅-17",
+      "font_class": "jiudiancanting-2",
+      "unicode": "e950",
+      "unicode_decimal": 59728
+    },
+    {
+      "icon_id": "5736367",
+      "name": "酒店餐厅-23",
+      "font_class": "jiudiancanting-3",
+      "unicode": "e953",
+      "unicode_decimal": 59731
+    },
+    {
+      "icon_id": "5736369",
+      "name": "酒店餐厅-26",
+      "font_class": "jiudiancanting-4",
+      "unicode": "e954",
+      "unicode_decimal": 59732
+    },
+    {
+      "icon_id": "5736370",
+      "name": "酒店餐厅-27",
+      "font_class": "jiudiancanting-5",
+      "unicode": "e955",
+      "unicode_decimal": 59733
+    },
+    {
+      "icon_id": "5736384",
+      "name": "酒店餐厅-40",
+      "font_class": "jiudiancanting-6",
+      "unicode": "e95c",
+      "unicode_decimal": 59740
+    },
+    {
+      "icon_id": "5736385",
+      "name": "酒店餐厅-42",
+      "font_class": "jiudiancanting-7",
+      "unicode": "e95d",
+      "unicode_decimal": 59741
+    },
+    {
+      "icon_id": "5736394",
+      "name": "酒店餐厅-51",
+      "font_class": "jiudiancanting-8",
+      "unicode": "e962",
+      "unicode_decimal": 59746
+    },
+    {
+      "icon_id": "5736401",
+      "name": "酒店餐厅-57",
+      "font_class": "jiudiancanting-9",
+      "unicode": "e965",
+      "unicode_decimal": 59749
+    },
+    {
+      "icon_id": "5736407",
+      "name": "酒店餐厅-64",
+      "font_class": "jiudiancanting-10",
+      "unicode": "e968",
+      "unicode_decimal": 59752
+    },
+    {
+      "icon_id": "5736408",
+      "name": "酒店餐厅-65",
+      "font_class": "jiudiancanting-11",
+      "unicode": "e969",
+      "unicode_decimal": 59753
+    },
+    {
+      "icon_id": "5736409",
+      "name": "酒店餐厅-66",
+      "font_class": "jiudiancanting-12",
+      "unicode": "e96a",
+      "unicode_decimal": 59754
+    },
+    {
+      "icon_id": "5736417",
+      "name": "酒店餐厅-74",
+      "font_class": "jiudiancanting-13",
+      "unicode": "e96e",
+      "unicode_decimal": 59758
+    },
+    {
+      "icon_id": "5736421",
+      "name": "酒店餐厅-78",
+      "font_class": "jiudiancanting-14",
+      "unicode": "e970",
+      "unicode_decimal": 59760
+    },
+    {
+      "icon_id": "5736435",
+      "name": "酒店餐厅-92",
+      "font_class": "jiudiancanting-15",
+      "unicode": "e977",
+      "unicode_decimal": 59767
+    },
+    {
+      "icon_id": "5736437",
+      "name": "酒店餐厅-91",
+      "font_class": "jiudiancanting-16",
+      "unicode": "e978",
+      "unicode_decimal": 59768
+    },
+    {
+      "icon_id": "5736458",
+      "name": "酒店餐厅-112",
+      "font_class": "jiudiancanting-17",
+      "unicode": "e980",
+      "unicode_decimal": 59776
+    },
+    {
+      "icon_id": "5736467",
+      "name": "酒店餐厅-124",
+      "font_class": "jiudiancanting-18",
+      "unicode": "e986",
+      "unicode_decimal": 59782
+    },
+    {
+      "icon_id": "6863705",
+      "name": "餐厅",
+      "font_class": "canting1",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "10313912",
+      "name": "餐厅",
+      "font_class": "canting2",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "12437194",
+      "name": "红包",
+      "font_class": "hongbao1",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    }
+  ]
+}
