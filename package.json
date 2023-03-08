@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-scroll": "^2.5.0",
     "moment": "^2.29.4",
     "vue-ls": "^4.2.0"
   }

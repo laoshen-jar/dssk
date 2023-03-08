@@ -11,8 +11,5 @@ export default new Vuex.Store({
 	modules: {
 		active,
 	},
-	state: {},
-	mutations: {},
-	actions: {},
 	getters,
 })

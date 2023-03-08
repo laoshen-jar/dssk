@@ -3,16 +3,32 @@ import store from './store/index.js'
 import {
 	apiResquest
 } from './utils/request.js'
+import {
+	getUrlQuery,
+	showLoading,
+	hideLoading
+} from './utils/utils.js'
+import {
+	setStorage,
+	getStorage,
+	removeStorage
+} from './store/mp-storage';
 
 // #ifndef VUE3
 import VueStorage from 'vue-ls'
-import defaultSetting from './utils/defaultSetting.js'
+import defaultSetting from './config/defaultSetting.js'
 
 import Vue from 'vue'
 
 import iconfont from './components/zgwit-iconfont/iconfont.vue'
 Vue.config.productionTip = false
 Vue.prototype.$api = apiResquest
+Vue.prototype.$getUrlQuery = getUrlQuery
+Vue.prototype.$setStorage = setStorage
+Vue.prototype.$getStorage = getStorage
+Vue.prototype.$removeStorage = removeStorage
+Vue.prototype.$showLoading = showLoading
+Vue.prototype.$hideLoading = hideLoading
 App.mpType = 'app'
 
 Vue.component('iconfont', iconfont);

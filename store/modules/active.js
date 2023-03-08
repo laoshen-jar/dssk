@@ -12,6 +12,10 @@ import {
 import {
 	GetDesk
 } from './../../api/baseinfo'
+import {
+	setStorage,
+	getStorage
+} from '../mp-storage';
 import DSSKData from './DSSKData.json'
 import store from '@/store'
 
@@ -69,19 +73,23 @@ const active = {
 			commit
 		}, me) {
 			return new Promise((resolve, reject) => {
-				if (!store.getters.Member || store.getters.Member.MemberCode != store.getters.MemberCode) {
-					if (!store.getters.MemberCode) {
+				// if (!store.getters.Member || store.getters.Member.MemberCode != store.getters.MemberCode) {
+				if (true) {
+					// if (!store.getters.MemberCode) {
+					if (!true) {
 						reject({
 							state: 505,
 							msg: "页面访问超时，请退出重新进入"
 						});
 					} else {
+						console.log("getMember");
 						GetMember({
 								MemberCodeOrOpenID: store.getters.MemberCode
 							})
 							.then(res => {
+								console.log(res)
 								if (res.state == 200) {
-									Vue.ls.set('BusinessCode', res.data.BusinessCode, 60 * 60 * 1000);
+									setStorage('BusinessCode', res.data.BusinessCode);
 									commit('set_Member', res.data);
 									resolve(res);
 								} else {
@@ -117,7 +125,7 @@ const active = {
 						})
 						.then(res => {
 							if (res.state == 200) {
-								Vue.ls.set('BusinessCode', res.data.BusinessCode, 60 * 60 * 1000);
+								setStorage('BusinessCode', res.data.BusinessCode);
 								commit('set_Member', res.data);
 								resolve(res);
 							} else {
@@ -215,7 +223,7 @@ const active = {
 			commit
 		}, me) {
 			return new Promise((resolve, reject) => {
-				var StoreCode = Vue.ls.get("StoreCode");
+				var StoreCode = getStorage("StoreCode");
 				console.log('NeedStore', store.getters.Store, store.getters.StoreCode, StoreCode);
 				if (!store.getters.Store || store.getters.Store.StoreCode != StoreCode) {
 					GetStore({

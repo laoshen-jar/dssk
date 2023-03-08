@@ -111,12 +111,11 @@
 										</view>
 									</navigator>
 									<view class="btn-box">
-										<navigator
-											:url="'https://apis.map.qq.com/uri/v1/geocoder?coord='+store.Latitude+','+store.Longitude+';referer=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77'"
-											class="navigation">
+										<view @click="openLocaiton(store.Latitude, store.Longitude)"
+											class="navigation tel">
 											<iconfont class="iconfont" icon="iconjuli" size="12px"></iconfont>
 											<view class="text">导航</view>
-										</navigator>
+										</view>
 										<view @click="phoneCall(store.Tell)" class="tel">
 											<iconfont class="iconfont" icon="icondianhua1" size="12px"></iconfont>
 											<view class="text">电话</view>
@@ -125,7 +124,7 @@
 											<i class="iconfont iconzhongjiefangx"></i>
 											<view class="text">菜单</view>
 										</navigator> -->
-										<view @click="JumpDishMenu(store)" class="tel">
+										<view @click="jumpDishMenu(store)" class="tel">
 											<iconfont class="iconfont" icon="iconzhongjiefangx" size="12px"></iconfont>
 											<view class="text">菜单</view>
 										</view>
@@ -139,14 +138,19 @@
 			</view>
 		</load-refresh>
 		<!-- <view class="support">本服务由越步科技提供技术支持</view> -->
+		<web-veiw></web-veiw>
 	</view>
 </template>
 
 <script>
 	import loadRefresh from '@/components/load-refresh/load-refresh.vue'
 	import {
+		initInfo
+	} from '../../utils/initBaseInfo.js'
+	import {
 		mapActions,
-		mapGetters
+		mapGetters,
+		mapMutations
 	} from 'vuex'
 	import {
 		GetStoreList,
@@ -196,17 +200,27 @@
 				ActiveArea: null,
 			}
 		},
+
+		watch: {
+			Member: {
+				handler(n) {
+					if (n?.BusinessCode)
+						this.loadData();
+				},
+				deep: true,
+				immediate: true
+			}
+		},
+
 		created() {
-			this.NeedMember(this).then(res => {
-				console.log('NeedMember.res', res);
-				this.loadData();
-			})
+			initInfo(this)
 		},
 		mounted() {
 
 		},
 		methods: {
-			...mapActions(['InitMember', 'NeedMember', 'NeedBusinessConfig']),
+
+			...mapActions(['InitMember', 'NeedMember', 'NeedBusinessConfig', 'NeedBusiness', 'NeedStore']),
 			// 重新定位
 			repeatLocal() {
 				this.location = '北京';
@@ -225,6 +239,7 @@
 
 			// 触底加载
 			loadData() {
+				this.$showLoading();
 				GetStoreList({
 					// BusinessCode: this.Member.BusinessCode,
 					BusinessCode: 'c5e6baa9861e452dbd420bc16721e474',
@@ -265,9 +280,18 @@
 						this.ActiveArea = this.Areas[0];
 					}
 					this.$refs.loadRefresh.completed()
+					this.$hideLoading();
 				}).catch(res => {
 					this.$refs.loadRefresh.completed()
+					this.$hideLoading();
 					console.error('GetStoreList.catch', res);
+				})
+			},
+
+			// 跳转菜单页
+			jumpDishMenu(store) {
+				uni.navigateTo({
+					url: '/pages/dishMenu/index?&StoreCode=3c673cd25e8f4c2f8e76cb5fa09899a6'
 				})
 			},
 
@@ -276,6 +300,23 @@
 				uni.makePhoneCall({
 					phoneNumber: tel
 				});
+			},
+
+			// 导航
+			openLocaiton(lat, long) {
+				uni.openLocation({
+					latitude: Number(lat),
+					longitude: Number(long),
+					scale: 15,
+					fail(res) {
+						console.log('导航错误', res)
+						uni.showToast({
+							title: '请稍后再试',
+							duration: 3000,
+							icon: 'error'
+						})
+					}
+				})
 			}
 		}
 	}

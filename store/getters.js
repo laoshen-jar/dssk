@@ -1,21 +1,24 @@
 import Vue from 'vue';
 import moment from 'moment';
+import {
+	getStorage
+} from './mp-storage.js'
 
 const getters = {
 	MemberCode: state => {
-		return Vue.ls.get('MemberCode');
+		return getStorage('MemberCode');
 	},
 	BusinessCode: state => {
-		return Vue.ls.get('BusinessCode');
+		return getStorage('BusinessCode');
 	},
 	StoreCode: state => {
-		return Vue.ls.get('StoreCode');
+		return getStorage('StoreCode');
 	},
 	DeskID: state => {
-		return Vue.ls.get('DeskID');
+		return getStorage('DeskID');
 	},
 	Person: state => {
-		return Vue.ls.get('Person');
+		return getStorage('Person');
 	},
 	Member: state => {
 		return state.active.member == null ? {} : state.active.member
