@@ -10,8 +10,7 @@
 					:key="index">
 					<view class="bg">
 						<view class="dish">
-							<view class="dishpic" v-lazy:background-image="dish.Picture" v-if="dish.Picture">
-							</view>
+							<image class="dishpic" :src="dish.Picture" v-if="dish.Picture"></image>
 							<view class="dishinfo">
 								<view class="dishname" v-if="!dish.Picture">
 									<image class="dishtag" v-for="(tag,indext) in dish.DishTags" :key="indext"
@@ -21,8 +20,7 @@
 								<view class="dishname" v-else>{{ dish.DishName }}</view>
 								<view class="priceline">
 									<view class="memberprice" v-if="dish.MemberPrice != dish.Price">
-										￥{{ dish.MemberPrice }}
-										/ {{ dish.Unit }}
+										￥{{ dish.MemberPrice }} / {{ dish.Unit }}
 									</view>
 									<view class="price del" v-if="dish.MemberPrice != dish.Price">￥{{ dish.Price }} /
 										{{ dish.Unit }}
@@ -45,27 +43,28 @@
 						<!-- Start 加减 -->
 						<view class="oreration"
 							v-if="dish.SellOut == 0 && ((!dish.DishFlavors||dish.DishFlavors.length==0) && (!dish.DishMakeMethods||dish.DishMakeMethods.length==0))">
-							<transition name="move">
-								<view class="cart-decrease" v-show="dish.Number > 0"
-									@click.stop.prevent="TakeCart(null,5,dish, false)">
-									<view class="inner icon-remove_circle_outline jian">
-										<iconfont class="iconfont" icon="iconjianhao" />
-									</view>
+							<view class="cart-decrease move" :class="[dish.Number > 0 ? 'move-enter' : 'move-leave-to']"
+								@click.stop.prevent="TakeCart(null,5,dish, false)">
+								<view class="inner icon-remove_circle_outline jian" :class="[Vshow(dish.Number > 0)]">
+									<iconfont class="iconfont" icon="iconjianhao" size="12px" />
 								</view>
-							</transition>
-							<view class="number" v-show="dish.Number > 0">{{dish.Number == null ? 0 : dish.Number}}
 							</view>
-							<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true)"><i
-									class="iconfont iconjiajianzujianjiahao"></i></view>
+							<view class="number" :class="[Vshow(dish.Number > 0)]">
+								{{dish.Number == null ? 0 : dish.Number}}
+							</view>
+							<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true, index)">
+								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
+							</view>
 						</view>
 						<!-- End 加减 -->
 						<!-- Start 多规格 -->
 						<view class="oreration"
 							v-if="dish.SellOut == 0 && ((dish.DishFlavors&&dish.DishFlavors.length>0) || (dish.DishMakeMethods&&dish.DishMakeMethods.length>0))">
-							<view class="doflavor" @click="DoFlavor(dish)"><i
-									class="iconfont iconjiajianzujianjiahao"></i> 选规格
+							<view class="doflavor" @click="DoFlavor(dish)">
+								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" /> 选规格
 								<!-- <span class="number" size="small" >{{dish.Number}}</span> -->
-								<text class="number" size="small" v-show="dish.Number > 0">{{dish.Number}}</text>
+								<text class="number" size="small"
+									:class="[Vshow(dish.Number > 0)]">{{dish.Number}}</text>
 							</view>
 
 						</view>
@@ -81,148 +80,159 @@
       </div> -->
 		</view>
 
-		<view class="dishtype-tab menu" ref="menu">
+		<view class="dishtype-tab menu">
 			<view>
-				<view v-for="(item, index) in DishMenu" :key="index" :class="{ active: currenti === index }"
-					@click="SelectMenu(index)" v-show="item.Dishs.length > 0">
-					<view class="text">{{ item.DishTypeName }}</view>
-					<view class="number" size="small" v-show="item.Number > 0">{{item.Number}}</view>
-				</view>
+				<scroll-view class="scroll-view" :scroll-y="true" :scroll-with-animation="true"
+					:scroll-into-view="clickToId" :style="{'height':windowHeight - 120 + 'px'}">
+					<view class="dishtype-tab-item" v-for="(item, index) in DishMenu" :key="index"
+						:class="[currentNum === index ? 'active' : '', Vshow(item.Dishs.length > 0)]" :id="'to'+index"
+						@click="SelectMenu(index)">
+						<view class="text">{{ item.DishTypeName }}</view>
+						<view class="number" size="small" :class="[Vshow(item.Number > 0)]">{{item.Number}}
+						</view>
+					</view>
+				</scroll-view>
 			</view>
 		</view>
 		<view class="storedeskinfo">
-			<iconfont class="iconfont  " icon="icon-jiudiancanting-13" />
+			<iconfont customIcon="i-iconfont" icon="jiudiancanting-13" size="20px"
+				style="color: #ea454c; font-weight: 700;" />
 			{{Store.StoreName}}<br>{{Desk?Desk.DeskName:''}}
 		</view>
 		<view class="typename typenamefixed" v-if="DishMenu.length>0">
-			{{ DishMenu[currenti].DishTypeName }}
+			{{ DishMenu[currentNum].DishTypeName }}
 		</view>
 		<view class="dish-tab" ref="dishs">
 			<view>
-				<view v-for="(type, index_t) in DishMenu" :key="index_t" class="dish-type-item"
-					v-show="type.Dishs.length > 0">
-					<view class="typename">{{ type.DishTypeName }}</view>
-					<view class="dishul">
-						<view class="dishli" :class="dish.Picture ? 'showpic' : 'nopic'"
-							v-for="(dish, index_d) in type.Dishs" :key="index_d">
-							<view class="bg">
-								<view class="dish">
-									<view class="dishpic" v-lazy:background-image="dish.Picture" v-if="dish.Picture"
-										@click="DoFlavor(dish)">
-									</view>
-									<view class="dishinfo">
-										<view class="dishname" v-if="!dish.Picture">
+				<scroll-view :scroll-into-view="clickId" @scroll="scroll" :scroll-with-animation="true" :scroll-y="true"
+					:style="{'height':windowHeight - 120 + 'px'}">
+					<view v-for="(type, index_t) in DishMenu" :key="index_t" class="dish-type-item"
+						:class="[Vshow(type.Dishs.length > 0)]" :id="'po'+index_t">
+						<view class="typename">{{ type.DishTypeName }}</view>
+						<view class="dishul">
+							<view class="dishli" :class="dish.Picture ? 'showpic' : 'nopic'"
+								v-for="(dish, index_d) in type.Dishs" :key="index_d">
+								<view class="bg">
+									<view class="dish">
+										<!-- <view class="dishpic" v-lazy:background-image="dish.Picture" v-if="dish.Picture"
+											@click="DoFlavor(dish)">
+										</view> -->
+										<image class="dishpic" :src="dish.Picture" v-if="dish.Picture"
+											@click="DoFlavor(dish)"></image>
+										<view class="dishinfo">
+											<view class="dishname" v-if="!dish.Picture">
+												<image class="dishtag" v-for="(tag,indext) in dish.DishTags"
+													:key="indext" :src="tag.TagImg" />{{ dish.DishName }}
+											</view>
+											<view class="dishname" v-else>{{ dish.DishName }}</view>
+											<view class="priceline">
+												<view class="memberprice" v-if="dish.MemberPrice != dish.Price">
+													￥{{ dish.MemberPrice }} / {{ dish.Unit }}
+												</view>
+												<text class="price del" v-if="dish.MemberPrice != dish.Price">
+													￥{{ dish.Price }} / {{ dish.Unit }}
+												</text>
+												<text class="price" v-if="dish.MemberPrice == dish.Price">
+													￥{{ dish.Price }} / {{ dish.Unit }} </text>
+											</view>
 											<image class="dishtag" v-for="(tag,indext) in dish.DishTags" :key="indext"
-												:src="tag.TagImg" />{{ dish.DishName }}
+												:src="tag.TagImg" />
 										</view>
-										<view class="dishname" v-else>{{ dish.DishName }}</view>
-										<view class="priceline">
-											<view class="memberprice" v-if="dish.MemberPrice != dish.Price">
-												￥{{ dish.MemberPrice }} / {{ dish.Unit }}
-											</view>
-											<view class="price del" v-if="dish.MemberPrice != dish.Price">
-												￥{{ dish.Price }}
-												/ {{ dish.Unit }}
-											</view>
-											<text class="price" v-if="dish.MemberPrice == dish.Price">￥{{ dish.Price }}
-												/ {{ dish.Unit }}</text>
-										</view>
-										<image class="dishtag" v-for="(tag,indext) in dish.DishTags" :key="indext"
-											:src="tag.TagImg" />
 									</view>
-								</view>
-								<view style="clear:both"></view>
-								<view class="remark"
-									v-if="dish.BaseNumber != 1 || dish.Describe||dish.IsWeigh==1||dish.ShowSalesVolume==1">
-									<text class="weighdish" v-if="dish.IsWeigh==1">[ 称重菜品 ]</text>
-									<text v-if="dish.BaseNumber!=1">[{{ dish.BaseNumber}}{{ dish.Unit}}起点]</text>
-									<text v-if="dish.ShowSalesVolume==1">[销量：{{dish.BaseSalesVolume}}]</text>
-									<view>{{ dish.Describe }}</view>
-								</view>
-								<!-- Start 加减 -->
-								<view class="oreration"
-									v-if="dish.SellOut == 0 && ((!dish.DishFlavors||dish.DishFlavors.length==0) && (!dish.DishMakeMethods||dish.DishMakeMethods.length==0))">
-									<transition name="move">
-										<view class="cart-decrease" v-show="dish.Number > 0"
+									<view style="clear:both"></view>
+									<view class="remark"
+										v-if="dish.BaseNumber != 1 || dish.Describe||dish.IsWeigh==1||dish.ShowSalesVolume==1">
+										<text class="weighdish" v-if="dish.IsWeigh==1">[ 称重菜品 ]</text>
+										<text v-if="dish.BaseNumber!=1">[{{ dish.BaseNumber}}{{ dish.Unit}}起点]</text>
+										<text v-if="dish.ShowSalesVolume==1">[销量：{{dish.BaseSalesVolume}}]</text>
+										<view v-if="dish.Describe">{{ dish.Describe }}</view>
+									</view>
+									<!-- Start 加减 -->
+									<view class="oreration"
+										v-if="dish.SellOut == 0 && ((!dish.DishFlavors||dish.DishFlavors.length==0) && (!dish.DishMakeMethods||dish.DishMakeMethods.length==0))">
+										<view class="cart-decrease move"
+											:class="[dish.Number > 0 ? 'move-enter' : 'move-leave-to']"
 											@click.stop.prevent="TakeCart(null,5,dish, false)">
-											<view class="inner icon-remove_circle_outline jian">
-												<iconfont class="iconfont" icon="iconjianhao" />
+											<view class="inner icon-remove_circle_outline jian"
+												:class="[Vshow(dish.Number > 0)]">
+												<iconfont class="iconfont" icon="iconjianhao" size="12px" />
 											</view>
 										</view>
-									</transition>
-									<view class="number" v-show="dish.Number > 0">
-										{{dish.Number == null ? 0 : dish.Number}}
+										<view class="number" :class="[Vshow(dish.Number > 0)]">
+											{{dish.Number == null ? 0 : dish.Number}}
+										</view>
+										<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true, index_t)">
+											<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
+										</view>
 									</view>
-									<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true)">
-										<iconfont class="iconfont " icon="iconjiajianzujianjiahao" />
-									</view>
-								</view>
-								<!-- End 加减 -->
-								<!-- Start 多规格 -->
-								<view class="oreration"
-									v-if="dish.SellOut == 0 && ((dish.DishFlavors&&dish.DishFlavors.length>0) || (dish.DishMakeMethods&&dish.DishMakeMethods.length>0))">
-									<view class="doflavor" @click="DoFlavor(dish)">
-										<iconfont class="iconfont " icon="iconjiajianzujianjiahao" /> 选规格
-										<!-- <span class="number" size="small" >{{dish.Number}}</span> -->
-										<text class="number" size="small"
-											v-show="dish.Number > 0">{{dish.Number}}</text>
-									</view>
+									<!-- End 加减 -->
+									<!-- Start 多规格 -->
+									<view class="oreration"
+										v-if="dish.SellOut == 0 && ((dish.DishFlavors&&dish.DishFlavors.length>0) || (dish.DishMakeMethods&&dish.DishMakeMethods.length>0))">
+										<view class="doflavor" @click="DoFlavor(dish)">
+											<iconfont class="iconfont " icon="iconjiajianzujianjiahao" size="12px" />
+											选规格
+											<!-- <span class="number" size="small" >{{dish.Number}}</span> -->
+											<text class="number" size="small"
+												:class="[Vshow(dish.Number > 0)]">{{dish.Number}}</text>
+										</view>
 
-								</view>
-								<!-- End 多规格 -->
-								<view class="oreration" v-if="dish.SellOut == 1 || dish.SellOutOnLine == 1">
-									售罄
+									</view>
+									<!-- End 多规格 -->
+									<view class="oreration" v-if="dish.SellOut == 1 || dish.SellOutOnLine == 1">
+										售罄
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
+				</scroll-view>
 				<view style="height:100px;"></view>
-
 			</view>
 		</view>
-		<view class="shop-cart " :class="{ active: OpenCart,disabled:OrderDishCount==0 }">
-			<transition name="fadeInUp">
-				<view class="shop-cart-list" v-show="OpenCart">
+		<view class="shop-cart" :class="{ active: OpenCart,disabled:OrderDishCount==0 }">
+			<uni-transition :show="OpenCart" custom-class="uni-transition">
+				<view class="shop-cart-list" :class="[Vshow(OpenCart)]">
 					<view class="title-box">
 						<view class="title">购物车</view>
 						<view class="clear">
 							<view class="text" @click="clearpopup = true">清除全部</p>
 							</view>
 						</view>
-						<view class="list" v-if="EditingOrder">
-							<view v-for="(dish, index) in EditingOrder.Items" :key="index">
-								<view class="dishpic" v-lazy:background-image="dish.Picture" v-if="dish.Picture"></view>
-								<view class="dishinfo">
-									<view class="title">{{ dish.DishName }}</view>
-									<view class="flavorinfo">{{DishFlavorStr(dish)}}</view>
-									<text class="memberprice"
-										v-if="dish.MemberPrice!=dish.DishPrice">￥{{ dish.MemberPrice }}/{{ dish.Unit }}</text>
-									<text class="price del"
-										v-if="dish.MemberPrice!=dish.DishPrice">￥{{ dish.DishPrice }}/{{ dish.Unit }}</text>
-									<text class="price"
-										v-if="dish.MemberPrice==dish.DishPrice">￥{{ dish.MemberPrice }}/{{ dish.Unit }}</text>
+
+					</view>
+					<view class="list" v-if="EditingOrder">
+						<view class="list-item" v-for="(dish, index) in EditingOrder.Items" :key="index">
+							<image class="dishpic" :src="dish.Picture" v-if="dish.Picture"></image>
+							<view class="dishinfo">
+								<view class="title">{{ dish.DishName }}</view>
+								<view class="flavorinfo">{{DishFlavorStr(dish)}}</view>
+								<text class="memberprice"
+									v-if="dish.MemberPrice!=dish.DishPrice">￥{{ dish.MemberPrice }}/{{ dish.Unit }}</text>
+								<text class="price del"
+									v-if="dish.MemberPrice!=dish.DishPrice">￥{{ dish.DishPrice }}/{{ dish.Unit }}</text>
+								<text class="price"
+									v-if="dish.MemberPrice==dish.DishPrice">￥{{ dish.MemberPrice }}/{{ dish.Unit }}</text>
+							</view>
+							<view class="cartcontrol">
+								<view class="cart-decrease" @click.stop.prevent="TakeCart(null,7,dish, false)">
+									<iconfont class="iconfont " icon="iconjianhao" size="12px" />
 								</view>
-								<view class="cartcontrol">
-									<view class="cart-decrease" @click.stop.prevent="TakeCart(null,7,dish, false)">
-										<i class="iconfont " icon="iconjianhao" />
-									</view>
-									<view class="cart-count">{{ dish.Number }}</view>
-									<view class="cart-add icon-add_circle"
-										@click.stop.prevent="TakeCart(null,8,dish, true)">
-										<iconfont class="iconfont " icon="iconjiajianzujianjiahao" />
-									</view>
+								<view class="cart-count">{{ dish.Number }}</view>
+								<view class="cart-add icon-add_circle"
+									@click.stop.prevent="TakeCart(null,8,dish, true)">
+									<iconfont class="iconfont " icon="iconjiajianzujianjiahao" size="12px" />
 								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-			</transition>
+			</uni-transition>
 			<view class="opera">
 				<view class="cart" @click="OpenCart=!OpenCart">
 					<text class="iconfont"></text>
 					<text class="number" size="small"
-						v-show="OrderDishCount > 0 && !HiddenOrderAmount">{{OrderDishCount}}</text>
+						:class="[Vshow(OrderDishCount > 0 && !HiddenOrderAmount)]">{{OrderDishCount}}</text>
 				</view>
 				<view class="total" v-if="OrderDishCount==0">请选择菜品</view>
 				<view class="total" v-else-if="HiddenOrderAmount&&FCClickTimes<10" @click="ClickOnFC">
@@ -230,9 +240,9 @@
 				</view>
 				<view class="total" v-else>{{ OrderDishCount }} 份，￥{{ OrderAmount }}</view>
 				<view class="goput" @click="OpenFlavorPopup">去下单</view>
-				<transition name="fadeInUp">
-					<view class="shop-cart-bg" v-show="OpenCart" @click="OpenCart=false"></view>
-				</transition>
+				<uni-transition :show="OpenCart" custom-class="uni-transition">
+					<view class="shop-cart-bg" :class="[Vshow(OpenCart)]" @click="OpenCart=false"></view>
+				</uni-transition>
 			</view>
 		</view>
 		<!-- 弹窗广告 -->
@@ -247,7 +257,7 @@
 		</transition> -->
 		<!-- 选择人数 -->
 		<uni-transition mode-class="fade" :show="ShowPerson&&!aleatPictureShow">
-			<view class="diner-num" v-show="ShowPerson&&!aleatPictureShow">
+			<view class="diner-num" ref="diner" :class="[Vshow(ShowPerson&&!aleatPictureShow)]">
 				<view class="diner-num-cot">
 					<view class="title">请选择就餐人数</view>
 					<view class="clearfix">
@@ -281,8 +291,8 @@
 		</uni-transition>
 
 		<!-- 选择口味 -->
-		<transition name="fade">
-			<view class="flavorpopup" v-show="flavorpopup">
+		<uni-transition :show="flavorpopup" custom-class="uni-transition">
+			<view class="flavorpopup" :class="[Vshow(flavorpopup)]">
 				<view class="popup-cot">
 					<view class="title">请选择口味<text
 							v-if="BusinessConfig&&BusinessConfig.OrderConfig&&BusinessConfig.OrderConfig.RemarkCanMultiple==1">
@@ -308,11 +318,11 @@
 				</view>
 				<view class="bg"></view>
 			</view>
-		</transition>
+		</uni-transition>
 
 		<!-- 清空购物车 -->
-		<transition name="fade">
-			<view class="clearpopup" v-show="clearpopup">
+		<uni-transition :show="clearpopup" custom-class="uni-transition">
+			<view class="clearpopup" :class="[Vshow(clearpopup)]">
 				<view class="popup-cot">
 					<view class="title">提示<view>
 							<view class="text">确认要清空购物车吗？</view>
@@ -331,16 +341,16 @@
 					</view>
 				</view>
 			</view>
-		</transition>
+		</uni-transition>
 
 		<!-- 锁定提醒 -->
-		<transition name="fade">
-			<view class="lockpopup" v-show="lockVisible">
+		<uni-transition :show="lockVisible" custom-class="uni-transition">
+			<view class="lockpopup" :class="[Vshow(lockVisible)]">
 				<view class="popup-cot">
 					<view class="title">提示</view>
 					<view class="text">
 						<image :src="EditingOrder != null ? EditingOrder.SubMemberPicture : ''"
-							v-show="EditingOrder != null" class="headimg" />
+							:class="[Vshow(EditingOrder != null)]" class="headimg" />
 						“{{ EditingOrder != null ? EditingOrder.SubMemberName : "" }}”
 						刚刚锁定了订单！
 						<text>\n</text>
@@ -359,15 +369,14 @@
 					</view>
 				</view>
 			</view>
-		</transition>
+		</uni-transition>
 
 		<!-- 规格做法 -->
-		<transition name="fade">
-			<view class="doflavorpopup doflavorbox" v-show="editingDish.DishFlavors||editingDish.DishMakeMethods"
-				v-if="editingDish">
-				<view class="popup-cot" :style="'margin-top:'+DoflavorPopupMarginTop+'%'">
-					<view class="picture" v-lazy:background-image="editingDish.Picture" v-if="editingDish.Picture">
-					</view>
+		<uni-transition :show="editingDish.DishFlavors||editingDish.DishMakeMethods" custom-class="uni-transition">
+			<view class="doflavorpopup doflavorbox"
+				:class="[Vshow(editingDish.DishFlavors||editingDish.DishMakeMethods)]" v-if="editingDish">
+				<view class="popup-cot">
+					<image class="picture" :src="editingDish.Picture" v-if="editingDish.Picture"></image>
 					<view class="content">
 						<view class="title">{{editingDish.DishName}}</view>
 						<view class="contentbox"
@@ -398,69 +407,72 @@
 							v-if="editingDish.DishMakeMethods&&editingDish.DishMakeMethods.length>0||editingDish.DishFlavors&&editingDish.DishFlavors.length>0">
 							已选规格：<strong>{{DishFlavorStr(editingDish)}}</strong>
 						</view>
-						<view class="totalbox">售价<view class="totalprice">
-								&nbsp;<i>¥</i>{{editingDish.MemberPrice}} /
-								{{ editingDish.Unit }}
+						<view class="totalbox">
+							售价&nbsp;
+							<view class="totalprice">
+								<text>¥{{editingDish.MemberPrice}} / {{ editingDish.Unit }}</text>
 							</view>
 							<view class="sellout" v-if="editingDish.SellOut==1">售罄</view>
 							<view class="pushbtn" v-else-if="editingDish.Number==0"
 								@click.stop.prevent="TakeCart($event,3,editingDish, true)">
-								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" /> 加入购物车
+								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" /> 加入购物车
 							</view>
 							<view class="editnumberbox" v-else>
 								<view class="jian" @click.stop.prevent="TakeCart(null,1,editingDish, false)">
-									<iconfont class="iconfont" icon="iconjianhao" />
+									<iconfont class="iconfont" icon="iconjianhao" size="12px" />
 								</view>
 								<view class="number">{{editingDish.Number}}</view>
 								<view class="jia" @click.stop.prevent="TakeCart($event,2,editingDish, true)">
-									<iconfont class="iconfont" icon="iconjiajianzujianjiahao" />
+									<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 								</view>
 							</view>
 						</view>
-						<view class="closebtn iconfont iconchahao" @click="editingDish=null"></view>
+						<iconfont class="closebtn iconfont" size="38px" icon="iconchahao" @click="editingDish=null" />
 					</view>
 				</view>
 				<view class="bg"></view>
 			</view>
-		</transition>
+		</uni-transition>
 
 		<!-- 菜品大图 -->
-		<transition>
+		<uni-transition custom-class="uni-transition" :show="ShowDish">
 			<view class="showdialogbox" v-if="ShowDish">
 				<view class="box">
 					<view class="picture" v-lazy:background-image="ShowDish.Picture" v-if="ShowDish.Picture">
 						<view>
 							<view class="content">
 								<view class="title">{{ShowDish.DishName}}</view>
-								<view class="totalbox">售价 <view class="totalprice">
-										<text¥< /text>{{ShowDish.MemberPrice}} /
-											{{ ShowDish.Unit }}
+								<view class="totalbox">
+									售价&nbsp;
+									<view class="totalprice">
+										<text>¥{{ShowDish.MemberPrice}} / {{ ShowDish.Unit }}</text>
 									</view>
 									<view class="pushbtn" v-if="ShowDish.SellOut==1">售罄</view>
 									<view class="pushbtn" v-else-if="ShowDish.Number==0"
 										@click.stop.prevent="TakeCart($event,3,ShowDish, true)">
-										<iconfont class="iconfont" icon="iconjiajianzujianjiahao" /> 加入购物车
+										<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" /> 加入购物车
 									</view>
 									<view class="editnumberbox" v-else>
 										<view class="jian" @click.stop.prevent="TakeCart(null,1,ShowDish, false)">
-											<iconfont class="iconfont" icon="iconjianhao" />
+											<iconfont class="iconfont" icon="iconjianhao" size="12px" />
 										</view>
 										<view class="number">{{ShowDish.Number}}</view>
 										<view class="jia" @click.stop.prevent="TakeCart($event,2,ShowDish, true)">
-											<iconfont class="iconfont" icon="iconjiajianzujianjiahao" />
+											<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 										</view>
 									</view>
 								</view>
-								<iconfont class="closebtn iconfont" icon="iconchahao" @click="ShowDish=null" />
+								<iconfont class="closebtn iconfont" icon="iconchahao" size="38px"
+									@click="ShowDish=null" />
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-		</transition>
+		</uni-transition>
 
 		<view class="barragesBox">
-			<view class="barrageitemline" v-for="(bitem) in marqueeMsgs" :key="bitem.id" v-show="bitem.show">
+			<view class="barrageitemline" v-for="(bitem) in marqueeMsgs" :key="bitem.id" :class="[Vshow(bitem.show)]">
 				<view class="barrageitem">
 					<image class="head" :src="bitem.avatar" />
 					<view class="info">{{bitem.msg}}</view>
@@ -468,34 +480,34 @@
 			</view>
 		</view>
 
+		<view class="ani-dot" :animation="animation" :class="[Vshow(showAnmimation)]"></view>
 
-		<view class="ball-container">
-			<!--小球-->
+		<!--小球-->
+		<!-- <view class="ball-container">
 			<view v-for="(ball, index) in balls" :key="index">
-				<transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
-					<view class="ball" v-show="ball.show">
+				<uni-transition custom-class="uni-transition" :show="ball.show" name="drop" @before-enter="beforeDrop"
+					@enter="dropping" @after-enter="afterDrop">
+					<view class="ball" :class="[Vshow(ball.show)]">
 						<view class="inneryq inner-hook"></view>
 					</view>
-				</transition>
-				<view>
-				</view>
+				</uni-transition>
 			</view>
-		</view>
+		</view> -->
 		<!--购物车小球-->
-		<view>
+		<!-- <view>
 			<button @click="additem" class="shop">按钮</button>
 			<view class="cart">{{ rednum }}</view>
 			<view class="ball-container">
-				<!--小球-->
 				<view v-for="(ball, index) in balls" :key="index">
-					<transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
-						<view class="ball" v-show="ball.show">
+					<uni-transition name="drop" :show="ball.show" custom-class="uni-transition"
+						@before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
+						<view class="ball" :class="[Vshow(ball.show)]">
 							<view class="inner inner-hook"></view>
 						</view>
-					</transition>
+					</uni-transition>
 				</view>
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
 <style scoped>
@@ -607,7 +619,9 @@
 		mapActions,
 		mapGetters
 	} from "vuex";
-	import BScroll from "better-scroll"; // 导入滚动类库
+	import {
+		commonMixin
+	} from '../../mixins/index.js';
 	import {
 		LoadDishMenu,
 		GetEditingOrder,
@@ -622,9 +636,10 @@
 		ChangeDesk
 	} from "@/api/tsorder";
 
-	// Vue.use(vueBaberrage);
+
 	export default {
 		name: "DishMenu",
+		mixins: [commonMixin],
 		data() {
 			return {
 				DeskID: '',
@@ -665,7 +680,6 @@
 				puted: false, //订单锁定状态
 				loadTidingOverTime: null, //拼单侦听结束时间，避免无休止侦听
 				doflavorVisible: false, // 选择规格弹窗
-
 				marqueeMsgs: [],
 
 				ListeningObj: null,
@@ -691,22 +705,22 @@
 				],
 				dropBalls: [], // 用dropBalls来存放掉落的小球
 				queryDom: null, // 存放小程序获取某个dom节点对象
+				windowHeight: 0,
+				clickId: '',
+				clickToId: '',
+				currentNum: 0,
+				topList: [],
+				isLeftClick: false,
+				animation1: null,
+				animation2: null,
+				showAnmimation: false,
+				animation: null,
+				ballTimer: null,
 			};
 		},
 		computed: {
 			...mapGetters(["Member", "MemberCode", "Store", "BusinessConfig", "Desk"]),
-			// 滚动左侧选中
-			currenti() {
-				var index = 0;
-				for (let i = 0; i < this.listHeight.length; i++) {
-					if (this.scrollY + 34 >= this.listHeight[i]) {
-						index = i;
-					} else {
-						return index;
-					}
-				}
-				return index;
-			},
+
 			HiddenOrderAmount() {
 				if (this.BusinessConfig && this.BusinessConfig.OrderConfig && this.BusinessConfig.OrderConfig
 					.HiddenOrderAmount) {
@@ -760,12 +774,39 @@
 				return this.DeskID && !this.Desk;
 			},
 		},
-		mounted() {
+
+		onLoad() {
+			let _that = this;
+			uni.getSystemInfo({
+				success: function(res) {
+					_that.windowHeight = res.windowHeight;
+				}
+			});
+		},
+
+		onReady() {
+			//第一个动画，控制图标飘入购物车
+			this.animation1 = uni.createAnimation({
+				duration: 0,
+				timingFunction: 'linear',
+				transformOrigin: 'left top 0',
+				success: function(res) {}
+			})
+			//第二个动画，飘入购物车后，图标还原到原来的位置
+			this.animation2 = uni.createAnimation({
+				duration: 300,
+				timingFunction: 'linear',
+				transformOrigin: 'left top 0',
+				success: function(res) {}
+			})
+		},
+
+		onShow() {
 			this.LoadingNumber++;
 			this.StoreCode = this.$store.getters.StoreCode;
-			// this.AddDish = this.$route.query.AddDish;
-			// this.Person = this.$route.query.Person;
-			this.DeskID = this.$getStorage("DeskID")?.value;
+			this.AddDish = this.$getUrlQuery().options.AddDish || false;
+			this.Person = this.$getUrlQuery().options.Person;
+			this.DeskID = this.$getStorage("DeskID");
 			console.log("DeskID", this.DeskID, this.$getStorage("DeskID"));
 			if (this.$getUrlQuery().options.StoreCode && this.$getUrlQuery().options.StoreCode != this.StoreCode) {
 				this.StoreCode = this.$getUrlQuery().options.StoreCode;
@@ -780,26 +821,24 @@
 			this.LoadingNumber++;
 			this.NeedMember(this).then(res => {
 					console.log('this.StoreCode', this.StoreCode);
-					// if (!this.StoreCode) {
-					// 	uni.navigateTo({
-					// 		url: '/pages/index/index'
-					// 	})
-					// 	return;
-					// }
+					if (!this.StoreCode) {
+						uni.navigateTo({
+							url: '/pages/index/index'
+						})
+						return;
+					}
 					this.LoadingNumber++;
 					this.NeedStore(this).then(res => {
-							console.log('--------------------------------');
-							console.log(res)
 							const Store = res.data;
-							console.log(Store.BusinessCode, this.Member.BusinessCode);
-							// if (Store.BusinessCode != this.Member.BusinessCode) {
-							// 	this.$removeStorage("StoreCode");
-							// 	uni.navigateTo({
-							// 		url: '/pages/index/index'
-							// 	})
-							// 	return;
-							// }
+							if (Store.BusinessCode != this.Member.BusinessCode) {
+								this.$removeStorage("StoreCode");
+								uni.navigateTo({
+									url: '/pages/index/index'
+								})
+								return;
+							}
 							this.LoadingNumber++;
+							console.log(this.DeskID);
 							GetEditingOrder({
 									MemberCode: this.MemberCode,
 									StoreCode: this.StoreCode,
@@ -807,11 +846,7 @@
 								}).then(res => {
 									console.log(res)
 									if (res.state != 200) {
-										uni.showToast({
-											title: "网络错误，请稍后再试",
-											icon: 'none',
-											duration: 3000
-										});
+										this.$showToast("网络错误，请稍后再试");
 										return;
 									}
 									this.EditingOrder = res.data;
@@ -832,24 +867,14 @@
 												DeskID: this.DeskID
 											}).then(res => {
 												if (res.state != 200) {
-													uni.showToast({
-														title: "网络错误，请稍后再试",
-														icon: 'none',
-														duration: 3000
-													});
+													this.$showToast("网络错误，请稍后再试");
 													return;
 												}
 												this.EditingBill = res.data;
 												if (this.EditingBill != null) {
-													this.$router.push({
-														name: "OrderInfo",
-														params: {
-															EditingBill: this.EditingBill
-														},
-														query: {
-															Ver: moment().format("MMDDHHmmSS")
-														}
-													});
+													uni.navigateTo({
+														url: `/pages/orderInfo/index?ver=${moment().format("MMDDHHmmSS")}&EditingBill=${JSON.stringify(this.EditingBill)}`,
+													})
 												} else {
 													console.info("初次点餐，创建订单");
 													this.OrderStart();
@@ -858,11 +883,7 @@
 											.catch(res => {
 												res.state = 497;
 												console.error("GetBill.catch", res);
-												uni.showToast({
-													title: "网络错误，请稍后再试",
-													icon: 'none',
-													duration: 3000
-												});
+												this.$showToast("网络错误，请稍后再试");
 												return;
 											})
 											.finally(res => {
@@ -873,11 +894,7 @@
 								.catch(res => {
 									res.state = 498;
 									console.log("GetEditingOrder.catch", res);
-									uni.showToast({
-										title: "网络错误，请稍后再试",
-										icon: 'none',
-										duration: 3000
-									});
+									this.$showToast("网络错误，请稍后再试");
 									return;
 								})
 								.finally(res => {
@@ -907,6 +924,45 @@
 		// },
 		methods: {
 			...mapActions(["NeedStore", "NeedMember", "NeedDesk"]),
+			moveDot(index) {
+				if (this.ballTimer) return;
+				const query = uni.createSelectorQuery().in(this);
+				query.select('.cart').boundingClientRect()
+				query.selectAll('.jia').boundingClientRect()
+				query.exec(res => {
+					console.log(index);
+					const addBtnposition = res[1][index];
+					const shopCarPosition = res[0];
+					const ballR = 13;
+					const addBtnCenterX = (addBtnposition.left + addBtnposition.right) / 2;
+					const addBtnCenterY = (addBtnposition.top + addBtnposition.bottom) / 2;
+					this.animation1.left(addBtnCenterX - ballR).top(addBtnCenterY - ballR).step();
+					this.animation = this.animation1.export();
+					this.showAnmimation = true;
+					const shopCarCenterX = (shopCarPosition.left + shopCarPosition.right) / 2;
+					const shopCarCenterY = (shopCarPosition.top + shopCarPosition.bottom) / 2;
+					//计算增加按钮 是在 相对于购物车的 左边还是右边（用于控制后面的移动方向）
+					const relativePosition = addBtnCenterX > shopCarCenterX ? -1 : 1;
+
+					// 获取两个dom之间的距离
+					const xDistance = Math.abs(addBtnCenterX - shopCarCenterX);
+					const yDistance = Math.abs(addBtnCenterY - shopCarCenterY);
+					console.log(addBtnposition, shopCarPosition);
+					// 小球移动到点击按钮位置
+					this.ballTimer = setTimeout(() => {
+						//通过Animation的left和top这两个API，将飞行点移动到购物车坐标处
+						this.animation2.left(shopCarCenterX - ballR).top(shopCarCenterY - ballR).step();
+						this.animation = this.animation2.export();
+						// 隐藏小球的结束时间要大于动画时间
+						setTimeout(() => {
+							this.showAnmimation = false;
+							this.animation = null;
+							this.ballTimer = null;
+						}, 405);
+					}, 5)
+				})
+				console.log('动画结束');
+			},
 			OrderStart() {
 				if (!this.EditingOrder) {
 					this.OrderCreate();
@@ -953,20 +1009,12 @@
 								}
 								this.InitView();
 							} else {
-								uni.showToast({
-									title: "网络错误，请稍后再试",
-									icon: 'none',
-									duration: 3000
-								});
+								this.$showToast("网络错误，请稍后再试");
 								return;
 							}
 						})
 						.catch(res => {
-							uni.showToast({
-								title: "网络错误，请稍后再试",
-								icon: 'none',
-								duration: 3000
-							});
+							this.$showToast("网络错误，请稍后再试");
 							return;
 						})
 						.finally(res => {
@@ -983,21 +1031,22 @@
 			},
 			// 初始化滚动
 			InitScroll() {
-				this.queryDom = uni.createSelectorQuery().in(this)
-				console.log(this.queryDom.select('.menu.dishtype-tab'))
-				this.queryDom.select('.menu.dishtype-tab').context(res => {
-					console.log(res);
-				}).exec()
-				this.menuScroll = new BScroll(this.queryDom.select('.menu.dishtype-tab'), {
-					click: true // 一开始的点击事件被bscroll阻止了，设置这个才能点击
-				});
-				this.dishsScroll = new BScroll(this.queryDom.select('.dishs'), {
-					click: true, // 一开始的点击事件被bscroll阻止了，设置这个才能点击
-					probeType: 3 // 获取实时滚动的位置，详见bscroll API
-				});
-				this.dishsScroll.on("scroll", pos => {
-					this.scrollY = Math.abs(Math.round(pos.y)); // 四舍五入得到的y值
-				});
+				// this.queryDom = uni.createSelectorQuery().in(this)
+				// console.log(this.queryDom.select('.menu.dishtype-tab'))
+				// this.queryDom.select('.menu.dishtype-tab').node().exec(res => {
+				// 	console.log(res);
+				// })
+				// this.menuScroll = new BScroll(this.queryDom.select('.menu.dishtype-tab'), {
+				// 	click: true // 一开始的点击事件被bscroll阻止了，设置这个才能点击
+				// });
+				// this.dishsScroll = new BScroll(this.queryDom.select('.dishs'), {
+				// 	click: true, // 一开始的点击事件被bscroll阻止了，设置这个才能点击
+				// 	probeType: 3 // 获取实时滚动的位置，详见bscroll API
+				// });
+				// this.dishsScroll.on("scroll", pos => {
+				// 	this.scrollY = Math.abs(Math.round(pos.y)); // 四舍五入得到的y值
+				// });
+				this.getNodesInfo();
 			},
 			// 计算高度
 			CalculateHeight() {
@@ -1074,7 +1123,7 @@
 									// 初始化滚动
 									this.InitScroll();
 									// 计算高度，用于识别页面滚动状态识别选择菜类
-									this.CalculateHeight();
+									// this.CalculateHeight();
 									// 初始化购物车
 									this.InitDishTypeTakeCount();
 								});
@@ -1120,10 +1169,42 @@
 			},
 			// 点击选择分类
 			SelectMenu(index) {
-				let foodList = this.queryDom.select(".dish-type-item");
-				let el = foodList[index]; // 滚动到响应的元素
-				this.dishsScroll.scrollToElement(el, 300);
+				// let foodList = this.queryDom.select(".dish-type-item");
+				// let el = foodList[index]; // 滚动到响应的元素
+				// this.dishsScroll.scrollToElement(el, 300);
+				this.clickId = "po" + index;
+				this.isLeftClick = true;
+				this.currentNum = index;
 			},
+
+			scroll(e) {
+				if (this.isLeftClick) {
+					this.isLeftClick = false;
+					return;
+				}
+				let scrollTop = e.target.scrollTop;
+				for (let i = 0; i < this.topList.length; i++) {
+					let h1 = this.topList[i];
+					let h2 = this.topList[i + 1];
+					if (scrollTop >= h1 && scrollTop < h2) {
+						this.currentNum = i;
+						this.clickToId = 'to' + i
+					}
+				}
+			},
+			getNodesInfo() {
+				const query = uni.createSelectorQuery().in(this);
+				query.selectAll('.dish-type-item').boundingClientRect().exec((res) => {
+					console.log(res)
+					let nodes = res[0];
+					let rel = [];
+					nodes.map(item => {
+						rel.push(item.top);
+					})
+					this.topList = rel;
+				});
+			},
+
 			// 选择规格
 			DoFlavor(dish) {
 				if (dish.DishMakeMethods.length > 0 || dish.DishFlavors.length > 0) {
@@ -1201,7 +1282,7 @@
 			TakeCart(dom, tag, dish, IsAdd, number = 0, commit = true) {
 				console.log('TakeCart', dom, tag, dish, IsAdd, number, commit);
 				if (dom) {
-					this.additem(dom.target);
+					this.additem(dom.target, number);
 				}
 				// 已有选择菜品项
 				var DItem = null;
@@ -1356,11 +1437,7 @@
 			// 确认用餐人数
 			SavePeopleNumber() {
 				if (!this.Person || this.Person == 0) {
-					uni.showToast({
-						title: "您还没有选择人数呦！😀",
-						icon: 'none',
-						duration: 3000
-					});
+					this.$showToast("您还没有选择人数呦！😀");
 					return;
 				}
 				ChangePeopleNumber({
@@ -1370,7 +1447,7 @@
 					.then(res => {
 						if (res.state == 200) {
 							this.EditingOrder.Person = Number(this.Person) ? this.Person : 0;
-							Vue.ls.set('Person', Number(this.Person) ? this.Person : 0, 60 * 60 * 1000);
+							this.$setStorage('Person', Number(this.Person) ? this.Person : 0);
 						} else {
 							console.error("ChangePeopleNumber.error", res);
 						}
@@ -1383,11 +1460,7 @@
 			// 选择口味
 			OpenFlavorPopup() {
 				if (this.EditingOrder.Items.length == 0) {
-					uni.showToast({
-						title: "您还没有选择菜品，不可以下单呦！😀",
-						icon: 'none',
-						duration: 3000
-					});
+					this.$showToast("您还没有选择菜品，不可以下单呦！😀");
 					return;
 				} else {
 					// 没有口味选项时跳过
@@ -1419,19 +1492,14 @@
 			},
 			// 跳转到购物车
 			pushShoppingCart() {
+				console.log(this.EditingOrder)
 				this.EditingOrder.DishCount = this.OrderDishCount;
 				this.EditingOrder.Amount = this.OrderAmount;
-				Vue.ls.set("EditingOrder", this.EditingOrder, 10 * 1000); //10秒
+				this.$setStorage("EditingOrder", this.EditingOrder);
 				console.log('this.EditingOrder', this.EditingOrder, this.shopcart)
-				this.$router.push({
-					name: "ShoppingCart",
-					query: {
-						AddDish: this.AddDish
-					},
-					params: {
-						EditingOrder: this.EditingOrder
-					}
-				});
+				uni.navigateTo({
+					url: `/pages/ShoppingCart/index?AddDish=${this.AddDish}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
+				})
 			},
 			// 选择口味
 			selectFlavor(index) {
@@ -1461,11 +1529,7 @@
 				}
 				console.log(remark);
 				if (selected == 0) {
-					uni.showToast({
-						title: "请选择口味偏好！",
-						icon: 'none',
-						duration: 3000
-					});
+					this.$showToast("请选择口味偏好！");
 				} else {
 					// 提交订单数据
 					var parameter = {};
@@ -1504,15 +1568,9 @@
 									if (item.DishID == "Clear") {
 										this.ClearShopcart(); // 清空购物车
 									} else if (item.DishID == "Put") {
-										this.$router.push({
-											name: "PutOK",
-											query: {
-												OrderCode: this.EditingOrder.OrderCode
-											},
-											params: {
-												EditingOrder: this.EditingOrder
-											}
-										});
+										uni.reLaunch({
+											url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
+										})
 									} else {
 										var dishs = this.AllDishs.filter(a => a.DishID == item.DishID);
 										if (dishs.length > 0) {
@@ -1545,14 +1603,9 @@
 				// }
 			},
 			PushErrorPage(res) {
-				this.$router.push({
-					name: "invalid",
-					query: {
-						Msg: res.state + "-" + res.msg,
-						From: window.location.href
-					},
-					params: res
-				});
+				uni.navigateTo({
+					url: '/pages/error/index?Msg=' + res.state + "-" + res.msg
+				})
 			},
 			ClickOnFC() {
 				this.FCClickTimes++;
@@ -1574,10 +1627,12 @@
 				}
 			},
 
-			additem(target) {
+			additem(target, number) {
 				this.drop(target);
+				this.moveDot(number);
 				this.rednum++;
 			},
+
 			drop(el) {
 				//抛物
 				for (let i = 0; i < this.balls.length; i++) {
@@ -1632,7 +1687,7 @@
 			LoadingNumber(newValue, oldValue) {
 				if (newValue == 1 && oldValue == 0) {
 					uni.showLoading({
-						title: '加载中',
+						title: '加载中…',
 						mask: true
 					})
 				}
@@ -1704,6 +1759,7 @@
 		color: #ea454c;
 		font-size: 18px;
 		display: inline-block;
+		margin-left: 14px;
 	}
 
 	.doflavorpopup .totalbox .totalprice i {
@@ -1743,7 +1799,7 @@
 		position: relative;
 	}
 
-	.doflavorpopup .totalbox .editnumberbox .jian i {
+	.doflavorpopup .totalbox .editnumberbox .jian .iconfont {
 		color: #777;
 		top: -1px;
 		right: -1px;
@@ -1888,7 +1944,7 @@
 		position: relative;
 	}
 
-	.showdialogbox .content .totalbox .editnumberbox .jian i {
+	.showdialogbox .content .totalbox .editnumberbox .jian .iconfont {
 		color: #777;
 		top: -1px;
 		right: -1px;
@@ -1986,12 +2042,7 @@
 		background-color: white;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
-	}
-
-	.storedeskinfo .iconfont {
-		font-size: 20px;
-		color: #ea454c;
-		font-weight: bold;
+		box-sizing: border-box;
 	}
 
 	.dishtype-tab {
@@ -2008,11 +2059,11 @@
 	}
 
 	.dishtype-tab>view {
-		width: 80px;
+		width: 100%;
 		padding-top: 20px;
 	}
 
-	.dishtype-tab>view>view {
+	.dishtype-tab .dishtype-tab-item {
 		width: 100%;
 		// line-height: 45px;
 		// height: 45px;
@@ -2023,45 +2074,49 @@
 		position: relative;
 		color: #626262;
 		padding: 15px 10px 15px 12px;
-
-		.number {
-			text-indent: 0;
-			height: 16px;
-			line-height: 14px;
-			position: absolute;
-			right: 5px;
-			top: 3px;
-			background: #ff423e;
-			vertical-align: middle;
-			font-size: 10px;
-			padding: 1px 5px;
-			border-radius: 8px;
-			color: #fff;
-			text-align: center;
-			display: inline-block;
-		}
+		box-sizing: border-box;
 	}
 
-	.dishtype-tab>view>view.active {
+	.dishtype-tab .dishtype-tab-item .number {
+		text-indent: 0;
+		height: 16px;
+		line-height: 14px;
+		position: absolute;
+		right: 5px;
+		top: 3px;
+		background: #ff423e;
+		vertical-align: middle;
+		font-size: 10px;
+		padding: 1px 5px;
+		border-radius: 8px;
+		color: #fff;
+		text-align: center;
+		display: inline-block;
+	}
+
+	.dishtype-tab .dishtype-tab-item.active {
 		color: #333;
 		background-color: $box;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
-
 		font-weight: bold;
-
-		&:before {
-			content: "";
-			width: 3px;
-			height: 20px;
-			position: absolute;
-			top: 50%;
-			left: 0;
-			margin-top: -10px;
-			background: $main;
-			border-radius: 2px;
-		}
 	}
+
+	.dishtype-tab .dishtype-tab-item.active:before {
+		content: "";
+		width: 3px;
+		height: 20px;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		margin-top: -10px;
+		background: $main;
+		border-radius: 2px;
+	}
+
+	// .dishtype-tab>view>view.active {
+
+	// }
 
 	.shop-cart {
 		position: fixed;
@@ -2112,7 +2167,7 @@
 		font-size: 20px;
 	}
 
-	.shop-cart .cart i::before {
+	.shop-cart .cart .iconfont::before {
 		content: "\e61f";
 	}
 
@@ -2225,7 +2280,7 @@
 					height: 14px;
 					float: left;
 
-					img {
+					image {
 						height: 100%;
 					}
 				}
@@ -2244,7 +2299,7 @@
 			overflow: auto;
 			padding: 0 10px;
 
-			li {
+			.list-item {
 				// height: 60px;
 				padding: 10px 0;
 				border-bottom: 1px solid $border;
@@ -2306,11 +2361,11 @@
 					border: 1px solid $grey;
 					font-weight: 700;
 					float: left;
+					display: flex;
+					justify-content: center;
+					align-items: center;
 
-					i {
-						position: absolute;
-						top: -1px;
-						left: -1px;
+					.iconfont {
 						width: 26px;
 						height: 26px;
 						color: $grey;
@@ -2344,7 +2399,7 @@
 					font-weight: 700;
 					float: left;
 
-					i {
+					.iconfont {
 						font-size: 12px;
 						display: block;
 						line-height: 26px;
@@ -2457,7 +2512,7 @@
 	//   background: #ea454c;
 	//   border-radius: 2px;
 	// }
-	.dishli img {
+	.dishli image {
 		width: 80px;
 		height: 60px;
 		border-radius: 5px;
@@ -2565,10 +2620,10 @@
 
 	.dishli .oreration {
 		position: absolute;
-		height: 24px;
+		height: 26px;
 		bottom: 10px;
 		right: 5px;
-		line-height: 20px;
+		line-height: 26px;
 	}
 
 	.doflavor {
@@ -2608,7 +2663,9 @@
 		color: #333;
 		border-radius: 50%;
 		float: left;
-
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.jian {
@@ -2625,21 +2682,21 @@
 		color: #777;
 		background: none;
 		border: 1px solid #777;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	.jia i,
-	.jian i {
+	.jia .iconfont,
+	.jian .iconfont {
 		font-size: 12px;
 		line-height: 26px;
 		// line-height: 25px;
 		font-weight: 300;
-		position: absolute;
 		width: 26px;
 		height: 26px;
 		// width: 24px;
 		// height: 24px;
-		right: 0;
-		top: 0;
 	}
 
 	.dishli .number {
@@ -2650,6 +2707,36 @@
 		font-size: 14px;
 		line-height: 26px;
 		// line-height: 24px;
+	}
+
+	@keyframes move-in {
+		100% {
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes move-out {
+		0% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+
+		100% {
+			transform: translateX(-16px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes move-in-rotate {
+		100% {
+			transform: rotate(180deg);
+		}
+	}
+
+	@keyframes move-out-rotate {
+		100% {
+			transform: rotate(0deg);
+		}
 	}
 
 	.cart-decrease {
@@ -2663,6 +2750,10 @@
 		transition: all 0.2s linear;
 		transform: translate(0, 0);
 
+		&.move {
+			transform: translateX(16px);
+		}
+
 		.inner {
 			width: 100%;
 			height: 100%;
@@ -2674,30 +2765,75 @@
 			transition: all 0.4s linear;
 			transform: rotate(0);
 
-			i {
+			.iconfont {
 				font-size: 12px;
 				// line-height: 25px;
 				line-height: 26px;
 				font-weight: 300;
-				position: absolute;
 				// width: 24px;
 				// height: 24px;
 				width: 26px;
 				height: 26px;
-				left: -1px;
-				top: -1px;
 				color: $grey;
 			}
 		}
 
-		&.move-enter,
-		&.move-leave-to {
-			opacity: 0;
-			transform: translate(20px, 0);
+		&.move-enter {
+			animation: move-in .3s linear;
+			animation-fill-mode: forwards;
 
 			.inner {
-				transform: rotate(180deg);
+				animation: move-in-rotate .3s linear;
+				animation-fill-mode: forwards;
 			}
+		}
+
+		&.move-leave-to {
+			animation: move-out .3s linear;
+			animation-fill-mode: forwards;
+
+			.inner {
+				animation: move-out-rotate .3s linear;
+				animation-fill-mode: forwards;
+			}
+		}
+
+		// &.move-enter,
+		// &.move-leave-to {
+		// 	opacity: 0;
+		// 	transform: translate(20px, 0);
+
+		// 	.inner {
+		// 		transform: rotate(180deg);
+		// 	}
+		// }
+	}
+
+	@keyframes jianhao-move-in {
+		0% {
+			transform: rotate(0deg);
+			opacity: 0;
+			right: 0;
+		}
+
+		100% {
+			transform: rotate(180deg);
+			right: 20px;
+			opacity: 1
+		}
+	}
+
+	@keyframes jianhao-move-out {
+		0% {
+			transform: rotate(180deg);
+			right: 20px;
+			opacity: 1
+		}
+
+		100% {
+			transform: rotate(0deg);
+			opacity: 0;
+			right: 0;
 		}
 	}
 
@@ -2750,11 +2886,10 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			margin-left: -150px;
 			background: #fff;
 			@include border-radius(10px);
-			margin-top: -60%;
 			padding: 20px 15px;
+			transform: translate(-50%, -80%);
 
 			.title {
 				font-size: 14px;
@@ -3079,5 +3214,24 @@
 		height: 50px;
 		z-index: 200;
 		;
+	}
+
+	.uni-transition {
+		width: 100%;
+		height: 100%;
+	}
+
+	.ani-dot {
+		width: 26px;
+		height: 26px;
+		position: fixed;
+		background: #ea454c;
+		position: fixed;
+		/* bottom: 250rpx; */
+		/* left: 48%; */
+		z-index: 99;
+		left: 0;
+		top: 0;
+		border-radius: 50%;
 	}
 </style>

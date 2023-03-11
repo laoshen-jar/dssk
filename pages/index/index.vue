@@ -88,7 +88,7 @@
 					<view class="city-list-box" v-if="ActiveArea">
 						<view class="city-list">
 							<view v-for="store in ActiveArea.Stores" :key="store.StoreCode"
-								v-show="store.IsDel==0||store.State==1">
+								:class="[Vshow(store.IsDel==0||store.State==1)]">
 								<view class="item">
 									<navigator :to="{name:'DishMenu',query:{StoreCode:store.StoreCode}}">
 										<image class="img" v-if="store.ImageUrl" :src="store.ImageUrl">
@@ -143,7 +143,10 @@
 </template>
 
 <script>
-	import loadRefresh from '@/components/load-refresh/load-refresh.vue'
+	import loadRefresh from '@/components/load-refresh/load-refresh.vue';
+	import {
+		commonMixin
+	} from '../../mixins/index.js';
 	import {
 		initInfo
 	} from '../../utils/initBaseInfo.js'
@@ -162,6 +165,7 @@
 		components: {
 			loadRefresh
 		},
+		mixins: [commonMixin],
 		computed: {
 			...mapGetters(['Member', 'StoreCode', 'DeskID', "BusinessConfig", 'MediaService']),
 		},
@@ -212,15 +216,15 @@
 			}
 		},
 
-		created() {
-			initInfo(this)
+		onShow() {
+			initInfo(this);
 		},
 		mounted() {
 
 		},
 		methods: {
 
-			...mapActions(['InitMember', 'NeedMember', 'NeedBusinessConfig', 'NeedBusiness', 'NeedStore']),
+			...mapActions(['InitMember', 'NeedMember', 'NeedBusinessConfig', 'NeedBusiness', 'NeedStore', 'NeedDesk']),
 			// 重新定位
 			repeatLocal() {
 				this.location = '北京';
@@ -279,11 +283,11 @@
 					if (this.Areas.length > 0) {
 						this.ActiveArea = this.Areas[0];
 					}
-					this.$refs.loadRefresh.completed()
 					this.$hideLoading();
+					this.$refs.loadRefresh.completed()
 				}).catch(res => {
-					this.$refs.loadRefresh.completed()
 					this.$hideLoading();
+					this.$refs.loadRefresh.completed()
 					console.error('GetStoreList.catch', res);
 				})
 			},
@@ -611,11 +615,9 @@
 			}
 		}
 
-		/*.city-list-box {
-			height: 332px;
-			margin-top: 5px;
-			overflow: scroll;
-		}*/
+		.city-list-box {
+			margin-top: 8px;
+		}
 	}
 
 	/* city end */

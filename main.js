@@ -6,7 +6,8 @@ import {
 import {
 	getUrlQuery,
 	showLoading,
-	hideLoading
+	hideLoading,
+	showToast,
 } from './utils/utils.js'
 import {
 	setStorage,
@@ -15,7 +16,6 @@ import {
 } from './store/mp-storage';
 
 // #ifndef VUE3
-import VueStorage from 'vue-ls'
 import defaultSetting from './config/defaultSetting.js'
 
 import Vue from 'vue'
@@ -29,10 +29,11 @@ Vue.prototype.$getStorage = getStorage
 Vue.prototype.$removeStorage = removeStorage
 Vue.prototype.$showLoading = showLoading
 Vue.prototype.$hideLoading = hideLoading
+Vue.prototype.$showToast = showToast
+
 App.mpType = 'app'
 
 Vue.component('iconfont', iconfont);
-Vue.use(VueStorage, defaultSetting.storageOptions)
 
 import './components/zgwit-iconfont/iconfont.css'
 import './static/css/reset.css';

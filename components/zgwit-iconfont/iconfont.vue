@@ -1,5 +1,5 @@
 <template>
-	<text class="iconfont" :class="'icon-' + icon" @click="onClick" :style="{fontSize: size}"></text>
+	<text :class="['icon-' + icon, customIcon]" @click="onClick" :style="{fontSize: size}"></text>
 </template>
 
 <script>
@@ -21,6 +21,10 @@
 			size: {
 				type: String,
 				default: '16px'
+			},
+			customIcon: {
+				type: String,
+				default: 'iconfont'
 			}
 		},
 		data() {

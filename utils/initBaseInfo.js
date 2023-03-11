@@ -4,7 +4,8 @@ export const initInfo = (vue) => {
 		vue.$setStorage("StoreCode", StoreCode);
 	}
 
-	var DeskID = vue.$getUrlQuery().options?.DeskID;
+	// var DeskID = vue.$getUrlQuery().options?.DeskID;
+	var DeskID = 'e77bf9ca5cdb4f78b3e20280fb1c3a66';
 	if (DeskID)
 		vue.$setStorage('DeskID', DeskID);
 	var DeskCode = vue.$getUrlQuery().options?.DeskCode;
@@ -15,7 +16,7 @@ export const initInfo = (vue) => {
 		vue.$setStorage('MemberCode', MemberCode);
 	}
 	uni.showLoading({
-		title: '加載中',
+		title: '加载中…',
 		mask: true
 	})
 	try {

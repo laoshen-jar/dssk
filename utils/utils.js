@@ -9,11 +9,25 @@ export const getUrlQuery = () => {
 // 关闭loading  uni.hideLoading()
 export const showLoading = (title, mask = true) => {
 	uni.showLoading({
-		title: title || '加载中',
+		title: title || '加载中…',
 		mask
 	})
 }
 
 export const hideLoading = () => {
 	uni.hideLoading()
+}
+
+// 小程序不支持position, 只能居中显示
+export const showToast = (title = '', icon = 'none', duration = 2000) => {
+	uni.showToast({
+		title,
+		icon,
+		duration
+	})
+}
+
+// 小程序不支持v-show
+export const nodeShow = (condition) => {
+	return !condition ? 'v-show-hidden' : ''
 }

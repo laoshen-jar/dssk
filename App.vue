@@ -17,6 +17,9 @@
 				}
 			})
 		},
+		globalData: {
+
+		},
 		onShow: function() {
 			console.log('App Show')
 			console.log(this.$getUrlQuery())
