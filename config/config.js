@@ -1,5 +1,7 @@
+const BaseUrl = 'http://open.dsskvip.com';
 const config = {
-	BaseUrl: 'http://open.dsskvip.com',
+	BaseUrl,
+	StaticUrl: BaseUrl + "/MobileStatic",
 	Timeout: 60 * 1000
 }
 

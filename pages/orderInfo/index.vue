@@ -180,6 +180,7 @@
 			// 优惠金额
 			DiscountAmount() {
 				let amount = 0;
+				if (!this.editingBill) return 0;
 				this.editingBill.Items.forEach(dish => {
 					if (dish.SellingPrice == dish.DishPrice) {
 						amount += (dish.DishPrice - dish.MemberPrice) * dish.Number;
@@ -346,13 +347,14 @@
 							this.initData();
 						} else {
 							uni.navigateTo({
-								url: '/pages/Check/index?editingBill=' + JSON.parse(this.editingBill)
+								url: '/pages/Check/index?editingBill=' + JSON.stringify(this.editingBill)
 							})
 						}
 					} else {
 						this.$showToast("网络开小差啦，请稍后重试！");
 					}
 				}).catch(err => {
+					console.log(err);
 					this.$hideLoading();
 					this.$showToast("网络开小差啦，请稍后重试！");
 				})

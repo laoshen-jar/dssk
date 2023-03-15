@@ -160,6 +160,9 @@
 		GetStore,
 		GetAreaList
 	} from '@/api/store.js'
+	import {
+		loginToGetMember
+	} from '../../utils/login.js'
 	export default {
 		name: 'Home',
 		components: {
@@ -217,6 +220,7 @@
 		},
 
 		onShow() {
+			loginToGetMember();
 			initInfo(this);
 		},
 		mounted() {

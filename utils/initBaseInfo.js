@@ -1,5 +1,6 @@
 export const initInfo = (vue) => {
-	var StoreCode = vue.$getUrlQuery().options?.StoreCode;
+	// var StoreCode = vue.$getUrlQuery().options?.StoreCode;
+	var StoreCode = 'e3f4d329e18f4e28bf59516cd3be14d0';
 	if (StoreCode) {
 		vue.$setStorage("StoreCode", StoreCode);
 	}

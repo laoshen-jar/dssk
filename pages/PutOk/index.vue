@@ -5,7 +5,7 @@
 			<div class="describe">~ 美味即将上桌，请稍等片刻 ~</div>
 			<div class="pic"></div>
 			<navigator class="closebtn" url="" target="miniProgram" open-type="exit">关闭</navigator>
-			<navigator url="../orderInfo/index.vue" class="tomore">更多消费信息 >></navigator>
+			<navigator url="/pages/orderInfo/index" class="tomore">更多消费信息 >></navigator>
 			<div class="order-list-box" v-if="EditingOrder">
 				<div class="title-box">本次点菜清单【待上菜】</div>
 				<ul class="product-list">
@@ -48,8 +48,11 @@
 		},
 		onShow() {
 			this.OrderCode = this.$getUrlQuery().options.OrderCode;
-			this.EditingOrder = this.$getUrlQuery().options.editingOrder;
-			console.log('this.$route', this.$route);
+			try {
+				this.EditingOrder = JSON.parse(this.$getUrlQuery().options?.EditingOrder);
+			} catch (e) {
+				this.EditingOrder = null;
+			}
 		},
 		methods: {
 			ExitPage() {

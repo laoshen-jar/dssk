@@ -166,7 +166,7 @@
 			</ul>
 		</div>
 		<div class="bg" :class="[Vshow(cardvisibale)]" @click="cardvisibale=false"></div>
-		<GetPhone :ShowGetPhone="ShowGetPhone" @CallBack="GetPhoneCallBack"></GetPhone>
+		<!-- <GetPhone :ShowGetPhone="ShowGetPhone" @CallBack="GetPhoneCallBack"></GetPhone> -->
 	</div>
 	</div>
 </template>
@@ -754,14 +754,8 @@
 							var GetOpenIDUrl = res.data.GetOpenIDUrl;
 							console.log('PayOrderCode', PayOrder.PayOrderCode);
 							console.log('GetOpenIDUrl', GetOpenIDUrl);
-
-
-
 							// this.$router.push({name:'CheckPay',query:{Code:this.editingBill.BillID+"_"+PayOrder.PayOrderCode,openid:"123"}});//跳过支付
-
 							window.location.href = GetOpenIDUrl;
-
-
 							// https://open.51shoubei.com/openpay/jsapi/getauth2?redirect_uri=https%3A%2F%2Fwww.baidu.com%3Faa%3D123&inst_no=900001&mch_no=851902270018&sign=b4e64d988059c1cf6b824a03b4a18b80
 							// https://open.51shoubei.com/openpay/jsapi/getauth2?inst_no=900120&mch_no=852002260003&redirect_uri=192.168.124.6:8080/check-pay?PayOrderCode=a4501e59e3804a23b57a3fe6f8ba5368&sign=93b9a3a09ea000771deffe8a44d42069
 							// https://open.51shoubei.com/openpay/jsapi/getauth2?inst_no=900120&mch_no=852002260003&redirect_uri=192.168.124.6:8080/check-pay?PayOrderCode=a4501e59e3804a23b57a3fe6f8ba5368&sign=93b9a3a09ea000771deffe8a44d42069

@@ -379,6 +379,7 @@
 		},
 		onShow() {
 			try {
+				this.$route.query, this.$route.params
 				this.EditingOrder = JSON.parse(this.$getUrlQuery().options?.EditingOrder);
 			} catch (e) {
 				//TODO handle the exception
@@ -635,7 +636,7 @@
 									if (item.DishID == "Put") {
 										console.log("Sub", item);
 										uni.navigateTo({
-											url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${this.EditingOrder}`
+											url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
 										})
 									} else {
 										var dishs = this.EditingOrder.Items.filter(a => a.DishID == item
@@ -730,7 +731,7 @@
 						this.$hideLoading();
 						if (res.state == 200) {
 							uni.reLaunch({
-								url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${this.EditingOrder}`
+								url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
 							})
 						} else {
 							console.error("PutOrder.error----------", res);

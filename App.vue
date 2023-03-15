@@ -1,23 +1,11 @@
 <script>
 	export default {
-		onLaunch: function() {
-			uni.login({
-				"provider": "weixin",
-				"onlyAuthorize": true, // 微信登录仅请求授权认证
-				success: function(event) {
-					const {
-						code
-					} = event
-					//客户端成功获取授权临时票据（code）,向业务服务器发起登录请求。
-				},
-				fail: function(err) {
-					console.log(err)
-					// 登录授权失败  
-					// err.code是错误码
-				}
-			})
-		},
 		globalData: {
+			AppId: 'wx0d3bf44f8e588998',
+			AppSecret: 'a46188369431b104214c8a325db0f00e'
+		},
+		onLaunch: function() {
+
 
 		},
 		onShow: function() {

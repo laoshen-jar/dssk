@@ -16,7 +16,6 @@ import {
 } from './store/mp-storage';
 
 // #ifndef VUE3
-import defaultSetting from './config/defaultSetting.js'
 
 import Vue from 'vue'
 

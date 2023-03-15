@@ -13,36 +13,40 @@
 </template>
 
 <script>
+	import {
+		commonMixin
+	} from '../../../mixins/index.js'
 	export default {
 		name: 'pay_result',
+		mixins: [commonMixin],
 		data() {
 			return {
 				num: 5,
-				id:this.$route.params.id,
-				countdown:null,
+				id: this.$route.params.id,
+				countdown: null,
 			}
 		},
 		created() {
 			let _this = this;
-			_this.countdown = setInterval(function(){
+			_this.countdown = setInterval(function() {
 				_this.num--;
-				if(_this.num == 0){
+				if (_this.num == 0) {
 					_this.lookorder();
 				}
-			},1000)
+			}, 1000)
 		},
-		methods:{
-			lookorder(){
+		methods: {
+			lookorder() {
 				console.log(this.id)
 				this.$router.push({
-					name:'CardList'
+					name: 'CardList'
 				});
 				clearInterval(this.countdown);
 			}
 		},
-		beforeDestroy(){
-	        clearInterval(this.countdown)
-	    }
+		beforeDestroy() {
+			clearInterval(this.countdown)
+		}
 	}
 </script>
 
@@ -51,18 +55,21 @@
 	$red: #ff423e;
 	$border: #e6e6ea;
 	$grey: #777;
+
 	@mixin border-radius($size) {
 		-webkit-border-radius: $size;
 		-moz-border-radius: $size;
 		border-radius: $size;
 	}
-	@mixin transition($time){
+
+	@mixin transition($time) {
 		-webkit-transition: all $time;
 		-moz-transition: all $time;
 		-ms-transition: all $time;
 		-o-transition: all $time;
 		transition: all $time;
 	}
+
 	/* pay-result */
 	.pay-result {
 		.pay-result-cot {
@@ -72,13 +79,16 @@
 			left: 0;
 			margin-top: -150px;
 			padding: 0 20px;
+
 			.img {
 				width: 160px;
 				margin: 0 auto;
+
 				img {
 					width: 100;
 				}
 			}
+
 			.title {
 				font-size: 16px;
 				line-height: 1;
@@ -86,16 +96,19 @@
 				margin-top: 25px;
 				color: #09bb07;
 			}
+
 			.text {
 				font-size: 12px;
 				color: $grey;
 				text-align: center;
 				margin-top: 10px;
+
 				.link {
 					color: $red;
 				}
 			}
 		}
 	}
+
 	/* pay-result end */
 </style>

@@ -804,6 +804,7 @@
 		onShow() {
 			this.LoadingNumber++;
 			this.StoreCode = this.$store.getters.StoreCode;
+			// query的获取方式
 			this.AddDish = this.$getUrlQuery().options.AddDish || false;
 			this.Person = this.$getUrlQuery().options.Person;
 			this.DeskID = this.$getStorage("DeskID");

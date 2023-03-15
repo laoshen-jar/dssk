@@ -53,6 +53,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/webview/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
