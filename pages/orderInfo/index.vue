@@ -10,8 +10,8 @@
 		<!-- order-msg end -->
 		<!-- add -->
 		<div class="add">
-			<div class="img" @click="ToDishMenu">加菜
-			</div>
+			<image class="img" :src="staticUrl + 'images/add.png'" @click="ToDishMenu">加菜
+			</image>
 		</div>
 		<!-- add end -->
 		<!-- order-list-box -->
@@ -415,8 +415,6 @@
 			margin-left: -30px;
 
 			animation: addbtn 1.25s infinite;
-			background: url("../../static/images/add.png") center no-repeat;
-			background-size: 100%;
 			color: white;
 			text-align: center;
 			padding-top: 20px;

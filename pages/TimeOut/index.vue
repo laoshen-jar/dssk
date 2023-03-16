@@ -1,7 +1,7 @@
 <template>
 	<div class="bodybox">
 		<div class="title">{{MemberName}}，欢迎光临！</div>
-		<div class="pic"></div>
+		<image class="pic" :src="staticUrl + 'images/timeout.png'"></image>
 		<div class="msg">台位信息已失效</div>
 		<div class="describe">您需要重新扫码台位二维码</div>
 		<navigator class="closebtn" url="" target="miniProgram" open-type="exit">关闭</navigator>
@@ -12,6 +12,9 @@
 <script>
 	import Vue from 'vue'
 	import {
+		commonMixin
+	} from '../../mixins/index.js'
+	import {
 		mapActions,
 		mapGetters
 	} from "vuex";
@@ -21,6 +24,7 @@
 				StoreCode: ''
 			}
 		},
+		mixins: [commonMixin],
 		computed: {
 			...mapGetters(["Member"]),
 			MemberName() {
@@ -70,7 +74,6 @@
 	}
 
 	.pic {
-		background: url('../../static/images/timeout.png') no-repeat center;
 		width: 350px;
 		height: 150px;
 		background-size: 50%;

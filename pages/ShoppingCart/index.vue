@@ -40,8 +40,7 @@
 		<!-- order-list -->
 		<div class="order-list-box Box">
 			<div class="add">
-				<a class="img" @click="continueMenu" style="">加菜
-				</a>
+				<image class="img" :src="staticUrl + 'images/add.png'" @click="continueMenu" style="">加菜</image>
 			</div>
 			<div class="order-list" ref="dishs">
 				<ul class="list">
@@ -878,8 +877,6 @@
 				left: 50%;
 				margin-left: -30px;
 				animation: addbtn 1.25s infinite;
-				background: url("../../static/images/add.png") center no-repeat;
-				background-size: 100%;
 				color: white;
 				text-align: center;
 				padding-top: 12px;

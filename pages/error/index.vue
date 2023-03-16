@@ -2,7 +2,7 @@
 	<view class="pay-result pay-warn">
 		<view class="pay-result-cot">
 			<view class="img">
-				<image src="../../static/images/pay-result-3.png" alt="支付状态" />
+				<image :src="staticUrl + 'images/pay-result-3.png'" alt="支付状态" />
 			</view>
 			<view class="title">请重新扫描二维码或咨询服务员！</view>
 			<view class="text">{{errorText}}</view>
@@ -11,8 +11,12 @@
 </template>
 
 <script>
+	import {
+		commonMixin
+	} from '../../mixins/index.js'
 	export default {
 		name: 'invalid',
+		mixins: [commonMixin],
 		data() {
 			return {
 				errorText: '404', // 错误提示

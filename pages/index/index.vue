@@ -160,9 +160,6 @@
 		GetStore,
 		GetAreaList
 	} from '@/api/store.js'
-	import {
-		loginToGetMember
-	} from '../../utils/login.js'
 	export default {
 		name: 'Home',
 		components: {
@@ -171,20 +168,26 @@
 		mixins: [commonMixin],
 		computed: {
 			...mapGetters(['Member', 'StoreCode', 'DeskID', "BusinessConfig", 'MediaService']),
+			bannerList() {
+				console.log('-------------');
+				console.log(this.staticUrl);
+				const src = this.staticUrl + 'images/hp-banner.jpg';
+				return [{
+					"id": 0,
+					"src": src,
+					"alt": "banner"
+				}, {
+					"id": 1,
+					"src": src,
+					"alt": "banner"
+				}]
+			}
 		},
 		data() {
 			return {
 				location: '定位中...', // 定位信息
 				Stores: [],
-				bannerList: [{
-					"id": 0,
-					"src": "../../static/images/hp-banner.jpg",
-					"alt": "banner"
-				}, {
-					"id": 1,
-					"src": "../../static/images/hp-banner.jpg",
-					"alt": "banner"
-				}], // banner
+				// bannerList: [], // banner
 				storeList: [], // 附近门店
 				citytabList: [], // 城市列表
 				citystoreList: [], // 城市门店列表
@@ -220,7 +223,6 @@
 		},
 
 		onShow() {
-			loginToGetMember();
 			initInfo(this);
 		},
 		mounted() {
@@ -416,6 +418,7 @@
 
 			image {
 				width: 100%;
+				height: 100%;
 				display: block;
 			}
 		}

@@ -67,7 +67,7 @@
 						<div class="item" @click="selectStoredRecord(null)">
 							<h6 style="line-height: 34px;">不充值</h6>
 							<div class="select">
-								<img src="../../static/images/xuanzhong.png" alt="选中" />
+								<img :src="staticUrl + 'images/xuanzhong.png'" alt="选中" />
 							</div>
 						</div>
 					</li>
@@ -77,7 +77,7 @@
 						<h6 class="title">{{item.Amount}}</h6>
 						<p class="text">送<span class="num">{{item.GiveAmount}}</span>元</p>
 						<div class="select">
-							<img src="../../static/images/xuanzhong.png" alt="选中" />
+							<img :src="staticUrl + 'images/xuanzhong.png'" alt="选中" />
 						</div>
 			</div>
 			</li>
@@ -99,7 +99,7 @@
 							<div class="msg">
 								<div class="img">
 									<!-- <img :src="item.Picture" alt="优惠券" /> -->
-									<img src="../../static/images/coupon.jpg" alt="优惠券" />
+									<img :src="staticUrl + 'images/coupon.jpg'" alt="优惠券" />
 								</div>
 								<div class="text-box">
 									<h6 class="title">{{item.CardName}}</h6>
@@ -171,7 +171,7 @@
 	</div>
 </template>
 <script>
-	import GetPhone from '@/components/member/modules/GetPhone';
+	// import GetPhone from '@/components/member/modules/GetPhone';
 	import {
 		commonMixin
 	} from '../../mixins/index.js'
@@ -202,9 +202,9 @@
 
 	export default {
 		name: 'pay',
-		components: {
-			GetPhone,
-		},
+		// components: {
+		// 	GetPhone,
+		// },
 		mixins: [commonMixin],
 		data() {
 			return {

@@ -1,12 +1,13 @@
 <script>
+	import {
+		getMemberCode
+	} from './utils/login.js'
 	export default {
 		globalData: {
-			AppId: 'wx0d3bf44f8e588998',
-			AppSecret: 'a46188369431b104214c8a325db0f00e'
+
 		},
-		onLaunch: function() {
-
-
+		onLaunch: async function() {
+			getMemberCode(this);
 		},
 		onShow: function() {
 			console.log('App Show')

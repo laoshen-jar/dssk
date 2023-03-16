@@ -1,16 +1,14 @@
 import {
 	nodeShow
 } from '../utils/utils.js'
-import {
-	StaticUrl
-} from '../config/config.js'
+import config from '../config/config.js'
 export const commonMixin = {
 	computed: {
 
 	},
 	data() {
 		return {
-			staticUrl: StaticUrl
+			staticUrl: config.StaticUrl
 		}
 	},
 	methods: {

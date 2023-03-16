@@ -3,7 +3,7 @@
 		<div class="bodybox">
 			<div class="title">先吃饭，后结账</div>
 			<div class="describe">~ 美味即将上桌，请稍等片刻 ~</div>
-			<div class="pic"></div>
+			<image class="pic" :src="staticUrl + 'images/wmwbtc.png'"></image>
 			<navigator class="closebtn" url="" target="miniProgram" open-type="exit">关闭</navigator>
 			<navigator url="/pages/orderInfo/index" class="tomore">更多消费信息 >></navigator>
 			<div class="order-list-box" v-if="EditingOrder">
@@ -31,11 +31,11 @@
 		mapActions,
 		mapGetters
 	} from "vuex";
-	import SubscribeContrel from '@/components/SubscribeContrel.vue';
+	// import SubscribeContrel from '@/components/SubscribeContrel.vue';
 	export default {
-		components: {
-			SubscribeContrel,
-		},
+		// components: {
+		// 	SubscribeContrel,
+		// },
 		mixins: [commonMixin],
 		computed: {
 			...mapGetters(["Business", "Member"]),
@@ -87,7 +87,6 @@
 	}
 
 	.pic {
-		background: url('../../static/images/wmwbtc.png') no-repeat center;
 		width: 350px;
 		height: 150px;
 		background-size: 80%;

@@ -12,9 +12,17 @@
 			}
 		},
 		onLoad(option) {
-			if (option.url) {
-				this.webviewUrl = decodeURIComponent(option.url);
+			const app = getApp();
+			app.globalData.getInfo = (res) => {
+				console.log('获取信息');
+				console.log(res)
+				if (res) {
+					this.webviewUrl = decodeURIComponent(res);
+				}
 			}
+		},
+		onShow() {
+
 		},
 		methods: {
 			getMessage(e) {
@@ -25,6 +33,6 @@
 	}
 </script>
 
-<style>
+<style scoped>
 
 </style>
