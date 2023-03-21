@@ -44,7 +44,7 @@
 		},
 		methods: {
 			getMessage(e) {
-				console.log(e);
+				console.log(e.detail);
 				this.$setStorage('testmemberCode', e.detail);
 			}
 		}
