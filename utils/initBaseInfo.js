@@ -7,8 +7,9 @@ export const initInfo = (vue) => {
 
 	// var DeskID = vue.$getUrlQuery().options?.DeskID;
 	var DeskID = 'e77bf9ca5cdb4f78b3e20280fb1c3a66';
-	if (DeskID)
+	if (DeskID) {
 		vue.$setStorage('DeskID', DeskID);
+	}
 	var DeskCode = vue.$getUrlQuery().options?.DeskCode;
 
 	// var MemberCode = vue.$getUrlQuery().options?.MemberCode;
@@ -24,16 +25,19 @@ export const initInfo = (vue) => {
 		vue.NeedMember(vue).then(res => {
 			vue.NeedBusiness(vue).then(res => {
 				vue.NeedBusinessConfig(vue).then(res => {
+					console.log('123879127389127389122')
 					if (vue.$getStorage('StoreCode')) {
 						vue.NeedStore({
 							StoreCode: vue.$getStorage('StoreCode')
 						})
 					}
-					if (vue.DeskID || (vue.StoreCode && DeskCode)) {
+					console.log('--------------')
+					console.log(DeskID);
+					if (DeskID || (vue.StoreCode && DeskCode)) {
 						vue.NeedDesk({
-							DeskID: vue.DeskID || '',
+							DeskID: DeskID || '',
 							StoreCode: vue.StoreCode || '',
-							DeskCode: DeskCode
+							DeskCode: DeskCode || ''
 						})
 					}
 				})

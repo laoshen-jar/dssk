@@ -7,11 +7,10 @@
 
 		},
 		onLaunch: async function() {
-			getMemberCode(this);
+			// getMemberCode(this);
 		},
 		onShow: function() {
 			console.log('App Show')
-			console.log(this.$getUrlQuery())
 		},
 		onHide: function() {
 			console.log('App Hide')

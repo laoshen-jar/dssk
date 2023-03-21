@@ -10,8 +10,9 @@
 		<!-- order-msg end -->
 		<!-- add -->
 		<div class="add">
-			<image class="img" :src="staticUrl + 'images/add.png'" @click="ToDishMenu">加菜
+			<image class="img" :src="staticUrl + 'images/add.png'" @click="ToDishMenu">
 			</image>
+			<text class="add-text">加菜</text>
 		</div>
 		<!-- add end -->
 		<!-- order-list-box -->
@@ -405,6 +406,14 @@
 		height: 45px;
 		position: relative;
 		margin-bottom: -43px;
+		
+		.add-text {
+			position: absolute;
+			bottom: 35px;
+			left: 47%;
+			color: white;
+			font-size: 12px;
+		}
 
 		.img {
 			width: 60px;
@@ -412,7 +421,7 @@
 			position: absolute;
 			bottom: 5px;
 			left: 50%;
-			margin-left: -30px;
+			margin-left: -29px;
 
 			animation: addbtn 1.25s infinite;
 			color: white;

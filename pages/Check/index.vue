@@ -30,7 +30,7 @@
 				<div class="pay-msg-item coupon clearfix">
 					<div @click="ChangeCard(null)">
 						<div class="select" :class="{'active':CardUseLimitState&&UseCard}">
-							<iconfont class="iconfont" icon="iconduihao" size="12px" />
+							<iconfont class="iconfont" icon="iconduihao" size="12px" style="color: white" />
 						</div>
 						<span class="title">优惠券</span>
 					</div>
@@ -47,7 +47,7 @@
 						<span class="num" style="min-width:50px;text-align:right">￥{{StoredAmount}}</span>
 						<div @click="ChangeStored(!UseStored)">
 							<div class="select" :class="{'active':UseStored}">
-								<iconfont class="iconfont" icon="iconduihao" size="12px" />
+								<iconfont class="iconfont" icon="iconduihao" size="12px" style="color: white" />
 							</div>
 							<div class="text">储值：剩余￥{{Member.StoredBalance}}
 								<div class="locktext" v-if="AccoutInfo&&AccoutInfo.LockAmount>0"><span>含赠送
@@ -72,16 +72,17 @@
 						</div>
 					</li>
 					<li v-for="(item,index) in StoredRecords" :key="index"
-						:class="[UsedRecord!=null&&UsedRecord.RowNumber == item.RowNumber ? 'active' : '', Vshow(item.Amount>NeedRuleAmount-AccoutInfo.Balance+LockStoredAmount)]"
+						:class="[UsedRecord!=null&&UsedRecord.RowNumber == item.RowNumber ? 'active' : '', 
+						Vshow(item.Amount>NeedRuleAmount-AccoutInfo.Balance+LockStoredAmount)]">
 						<div class="item" @click="selectStoredRecord(item)">
-						<h6 class="title">{{item.Amount}}</h6>
-						<p class="text">送<span class="num">{{item.GiveAmount}}</span>元</p>
-						<div class="select">
-							<img :src="staticUrl + 'images/xuanzhong.png'" alt="选中" />
+							<h6 class="title">{{item.Amount}}</h6>
+							<p class="text">送<span class="num">{{item.GiveAmount}}</span>元</p>
+							<div class="select">
+								<img :src="staticUrl + 'images/xuanzhong.png'" alt="选中" />
+							</div>
 						</div>
-			</div>
-			</li>
-			</ul>
+					</li>
+				</ul>
 			<p class="data">当前储值余额{{Member.StoredBalance}}元</p>
 			<p class="score" v-if="UsedRecord!=null">
 				充值{{UsedRecord.Amount}}元送{{UsedRecord.GiveAmount}}元，充值后储值结余{{parseInt((Member.StoredBalance*100+UsedRecord.Amount*100+UsedRecord.GiveAmount*100))/100}}元
@@ -814,6 +815,7 @@
 					paramer.BusinessCode = this.Member.BusinessCode;
 					paramer.StoreCode = this.StoreCode;
 					GetStoredRuleActive(paramer).then(res => {
+						console.log('StoredRecords', res.data);
 						if (res.state == 200) {
 							if (res.StoredSwitch == 1) {
 								this.StoredRecords = res.data;
@@ -1273,7 +1275,7 @@
 
 			.item {
 				width: 100%;
-				height: 65px;
+				height: 46px;
 				border: 1px solid #dadada;
 				position: relative;
 				padding-top: 15px;
@@ -1308,7 +1310,8 @@
 					@include transition(.3s);
 
 					img {
-						width: 100%;
+						width: 27px;
+						height: 27px;
 						display: block;
 					}
 				}

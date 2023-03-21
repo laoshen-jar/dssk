@@ -16,8 +16,26 @@
 			app.globalData.getInfo = (res) => {
 				console.log('获取信息');
 				console.log(res)
-				if (res) {
-					this.webviewUrl = res;
+				if (res.state === 200 && res.data.JumpUrl) {
+					this.webviewUrl = res.data.JumpUrl;
+				}
+				if(res.state === 200 && res.data.MemberCode) {
+					if(option.url) {
+						this.$setStorage('MemberCode', res.data.MemberCode);
+						// uni.redirectTo({
+						// 	url: option.url
+						// })
+						uni.redirectTo({
+							url: '/pages/index/index'
+						})
+					}
+					// this.$setStorage('MemberCode', res.data.MemberCode);
+					// // uni.redirectTo({
+					// // 	url: option.url
+					// // })
+					// uni.redirectTo({
+					// 	url: '/pages/index/index'
+					// })
 				}
 			}
 		},

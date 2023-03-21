@@ -965,10 +965,12 @@
 				console.log('动画结束');
 			},
 			OrderStart() {
+				console.log(this.EditingOrder);
 				if (!this.EditingOrder) {
 					this.OrderCreate();
 				} else {
 					// 更新台码，人数
+					console.log(this.Desk);
 					if (this.DeskID != this.EditingOrder.DeskID) {
 						this.LoadingNumber++;
 						ChangeDesk({
@@ -1701,6 +1703,10 @@
 					this.SearchKey = "";
 				}
 			},
+			
+			Desk(value) {
+				console.log(value);
+			}
 
 		},
 	};

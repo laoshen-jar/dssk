@@ -40,7 +40,8 @@
 		<!-- order-list -->
 		<div class="order-list-box Box">
 			<div class="add">
-				<image class="img" :src="staticUrl + 'images/add.png'" @click="continueMenu" style="">加菜</image>
+				<image class="img" :src="staticUrl + 'images/add.png'" @click="continueMenu" style=""></image>
+				<text class="add-text">加菜</text>
 			</div>
 			<div class="order-list" ref="dishs">
 				<ul class="list">
@@ -378,7 +379,6 @@
 		},
 		onShow() {
 			try {
-				this.$route.query, this.$route.params
 				this.EditingOrder = JSON.parse(this.$getUrlQuery().options?.EditingOrder);
 			} catch (e) {
 				//TODO handle the exception
@@ -868,6 +868,14 @@
 			height: 15px;
 			position: relative;
 			margin-bottom: -10px;
+			
+			.add-text {
+				position: absolute;
+				bottom: 35px;
+				left: 47%;
+				color: white;
+				font-size: 12px;
+			}
 
 			.img {
 				width: 60px;
@@ -875,7 +883,7 @@
 				position: absolute;
 				bottom: 5px;
 				left: 50%;
-				margin-left: -30px;
+				margin-left: -29px;
 				animation: addbtn 1.25s infinite;
 				color: white;
 				text-align: center;

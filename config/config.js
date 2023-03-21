@@ -1,4 +1,5 @@
 const BaseUrl = 'http://open.dsskvip.com';
+// const BaseUrl = 'http://dsyw.open.dsskvip.com';
 const BaseUrl1 = 'https://open.dsskvip.com';
 const config = {
 	BaseUrl,

@@ -167,7 +167,7 @@
 		},
 		mixins: [commonMixin],
 		computed: {
-			...mapGetters(['Member', 'StoreCode', 'DeskID', "BusinessConfig", 'MediaService']),
+			...mapGetters(['Member', 'StoreCode', 'DeskID', "BusinessConfig", 'MediaService', 'Desk']),
 			bannerList() {
 				console.log('-------------');
 				console.log(this.staticUrl);
@@ -219,14 +219,22 @@
 				},
 				deep: true,
 				immediate: true
+			},
+			Desk: {
+				handler(n) {
+					console.log('DESK')
+					console.log(n)
+				},
+				deep: true
 			}
+		},
+		
+		onLoad() {
+			initInfo(this);
 		},
 
 		onShow() {
-			initInfo(this);
-		},
-		mounted() {
-
+			
 		},
 		methods: {
 
@@ -251,8 +259,8 @@
 			loadData() {
 				this.$showLoading();
 				GetStoreList({
-					// BusinessCode: this.Member.BusinessCode,
-					BusinessCode: 'c5e6baa9861e452dbd420bc16721e474',
+					BusinessCode: this.Member.BusinessCode,
+					// BusinessCode: 'c5e6baa9861e452dbd420bc16721e474',
 					pageSize: 9999,
 					pageNo: 1
 				}).then(res => {
@@ -301,7 +309,7 @@
 			// 跳转菜单页
 			jumpDishMenu(store) {
 				uni.navigateTo({
-					url: '/pages/dishMenu/index?&StoreCode=3c673cd25e8f4c2f8e76cb5fa09899a6'
+					url: '/pages/dishMenu/index?&StoreCode=' + store.StoreCode
 				})
 			},
 

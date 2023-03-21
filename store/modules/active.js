@@ -260,6 +260,7 @@ const active = {
 					}).then(res => {
 						if (res.state == 200) {
 							if (res.data && res.data.State == 1) {
+								console.log('getDesk', res.data);
 								commit('set_Desk', res.data);
 							}
 							resolve(res);
