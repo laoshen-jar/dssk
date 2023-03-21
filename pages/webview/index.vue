@@ -17,7 +17,7 @@
 				console.log('获取信息');
 				console.log(res)
 				if (res) {
-					this.webviewUrl = decodeURIComponent(res);
+					this.webviewUrl = res;
 				}
 			}
 		},
