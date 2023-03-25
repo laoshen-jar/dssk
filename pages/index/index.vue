@@ -229,10 +229,6 @@
 			}
 		},
 		
-		onLoad() {
-			initInfo(this);
-		},
-
 		onShow() {
 			
 		},
@@ -309,7 +305,11 @@
 			// 跳转菜单页
 			jumpDishMenu(store) {
 				uni.navigateTo({
-					url: '/pages/dishMenu/index?&StoreCode=' + store.StoreCode
+					url: '/pages/dishMenu/index?&StoreCode=' + store.StoreCode,
+					success: function(res) {
+					    // 通过eventChannel向被打开页面传送数据
+					    res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'data from starter page' })
+					  }
 				})
 			},
 

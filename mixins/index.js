@@ -14,6 +14,6 @@ export const commonMixin = {
 	methods: {
 		Vshow(condition) {
 			return nodeShow(condition);
-		}
+		},
 	}
 }

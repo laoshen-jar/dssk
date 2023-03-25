@@ -742,25 +742,24 @@
 					BillID: this.editingBill.BillID,
 					CheckOrderCode: CheckOrderCode,
 					StoredRecordCode: StoredRecordCode,
-					PayCallBackOpenIDUrl: window.location.origin + '/check-pay'
+					// PayCallBackOpenIDUrl: window.location.origin + '/check-pay'
+					PayMode: 'mini'
 				}
 				console.log('PayOrder', PayOrder);
 				this.PayStepNumber++;
 				CreatePayOrder(PayOrder).then(res => {
 						if (res.state != 200) {
 							console.warn('CreatePayOrder.error', res);
+							this.$showToast('创建订单失败，请重试')
 						} else {
 							PayOrder.PayOrderCode = res.data.PayOrderCode; // 结帐单号
-							PayOrder.PayState = 0;
-							var GetOpenIDUrl = res.data.GetOpenIDUrl;
-							console.log('PayOrderCode', PayOrder.PayOrderCode);
-							console.log('GetOpenIDUrl', GetOpenIDUrl);
-							// this.$router.push({name:'CheckPay',query:{Code:this.editingBill.BillID+"_"+PayOrder.PayOrderCode,openid:"123"}});//跳过支付
-							window.location.href = GetOpenIDUrl;
-							// https://open.51shoubei.com/openpay/jsapi/getauth2?redirect_uri=https%3A%2F%2Fwww.baidu.com%3Faa%3D123&inst_no=900001&mch_no=851902270018&sign=b4e64d988059c1cf6b824a03b4a18b80
-							// https://open.51shoubei.com/openpay/jsapi/getauth2?inst_no=900120&mch_no=852002260003&redirect_uri=192.168.124.6:8080/check-pay?PayOrderCode=a4501e59e3804a23b57a3fe6f8ba5368&sign=93b9a3a09ea000771deffe8a44d42069
-							// https://open.51shoubei.com/openpay/jsapi/getauth2?inst_no=900120&mch_no=852002260003&redirect_uri=192.168.124.6:8080/check-pay?PayOrderCode=a4501e59e3804a23b57a3fe6f8ba5368&sign=93b9a3a09ea000771deffe8a44d42069
-							// this.$router.push({ name: 'CheckPay', query: { PayOrderCode:PayOrder.PayOrderCode },params:{PayOrder:PayOrder} });
+							uni.navigateTo({
+								url: '/pages/CheckPay/index',
+								success: function(res) {
+								    // 通过eventChannel向被打开页面传送数据
+								    res.eventChannel.emit('payOrder', { data: res.data.PayOrderCode })
+								}
+							})
 						}
 					}).catch(res => {
 						console.warn('CreatePayOrder.catch', res);

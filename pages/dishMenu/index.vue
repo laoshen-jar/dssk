@@ -620,6 +620,9 @@
 		mapGetters
 	} from "vuex";
 	import {
+		initInfo
+	} from '../../utils/initBaseInfo.js'
+	import {
 		commonMixin
 	} from '../../mixins/index.js';
 	import {
@@ -874,7 +877,12 @@
 												this.EditingBill = res.data;
 												if (this.EditingBill != null) {
 													uni.navigateTo({
-														url: `/pages/orderInfo/index?ver=${moment().format("MMDDHHmmSS")}&EditingBill=${JSON.stringify(this.EditingBill)}`,
+														url: `/pages/orderInfo/index?ver=${moment().format("MMDDHHmmSS")}`,
+														success(res) {
+															res.eventChannel.emit('EditingBill', {
+																data: this.EditingBill
+															})
+														}
 													})
 												} else {
 													console.info("初次点餐，创建订单");
@@ -1501,7 +1509,12 @@
 				this.$setStorage("EditingOrder", this.EditingOrder);
 				console.log('this.EditingOrder', this.EditingOrder, this.shopcart)
 				uni.navigateTo({
-					url: `/pages/ShoppingCart/index?AddDish=${this.AddDish}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
+					url: `/pages/ShoppingCart/index?AddDish=${this.AddDish}`,
+					success(res) {
+						res.eventChannel.emit('EditingOrder', {
+							data: this.EditingOrder
+						})
+					}
 				})
 			},
 			// 选择口味
@@ -1572,7 +1585,12 @@
 										this.ClearShopcart(); // 清空购物车
 									} else if (item.DishID == "Put") {
 										uni.reLaunch({
-											url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
+											url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}`,
+											success(res) {
+												res.eventChannel.emit('EditingOrder', {
+													data: this.EditingOrder
+												})
+											}
 										})
 									} else {
 										var dishs = this.AllDishs.filter(a => a.DishID == item.DishID);
@@ -1703,7 +1721,7 @@
 					this.SearchKey = "";
 				}
 			},
-			
+
 			Desk(value) {
 				console.log(value);
 			}

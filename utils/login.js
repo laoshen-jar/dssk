@@ -26,9 +26,9 @@ export const loginToGetMember = () => {
 						resolve({
 							MiniAppID: appId,
 							// MiniOpenID: "oNk4L41C7oAnKzApjUyVDjOsPbaQ",
-							MiniOpenID: "22",
+							Code: code,
 							NickName: userInfo.nickName,
-							HeadImgUrl: userInfo.avatarUrl
+							HeadImgUrl: userInfo.avatarUrl,
 						})
 					},
 					fail: function(err) {

@@ -46,13 +46,14 @@
 				EditingOrder: null,
 			}
 		},
+		onLoad() {
+			const eventChannel = this.getOpenerEventChannel();
+			eventChannel.on('payOrder', data => {
+				this.EditingOrder = data || null;
+			})
+		},
 		onShow() {
 			this.OrderCode = this.$getUrlQuery().options.OrderCode;
-			try {
-				this.EditingOrder = JSON.parse(this.$getUrlQuery().options?.EditingOrder);
-			} catch (e) {
-				this.EditingOrder = null;
-			}
 		},
 		methods: {
 			ExitPage() {

@@ -15,7 +15,6 @@
 		commonMixin
 	} from '../../mixins/index.js'
 	import {
-		mapActions,
 		mapGetters
 	} from "vuex";
 	export default {

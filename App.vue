@@ -4,7 +4,7 @@
 	} from './utils/login.js'
 	export default {
 		globalData: {
-
+			isInit: false,
 		},
 		onLaunch: async function() {
 			getMemberCode(this);

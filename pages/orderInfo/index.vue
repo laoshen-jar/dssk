@@ -192,8 +192,6 @@
 			},
 		},
 		onShow() {
-			console.log('page.created', this.MemberCode, this.StoreCode, this.DeskID, this.Member, this.Member == null ||
-				this.Member.BusinessCode == null);
 			this.initData();
 			this.$nextTick(() => {
 				// this._calcBtnState();

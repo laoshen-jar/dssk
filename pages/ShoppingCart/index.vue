@@ -7,7 +7,7 @@
 					<p class="text" v-if="EditingOrder && EditingOrder.DeskID">
 						台位：{{ EditingOrder.DeskName }}
 					</p>
-					<p class="text" v-else>台位：请扫码下单</p>
+					<p class="text" v-else @click="takeScanAndPutOrder">台位：请扫码下单</p>
 				</div>
 				<!-- <div class="btn change-table">换台</div> -->
 			</div>
@@ -377,13 +377,13 @@
 				return remark + (remark.length > 0 && this.RemarkTextarea.length > 0 ? "，" : "") + this.RemarkTextarea;
 			},
 		},
+		onLoad() {
+			const eventChannel = this.getOpenerEventChannel();
+			eventChannel.on('payOrder', data => {
+				this.EditingOrder = data || null;
+			})
+		},
 		onShow() {
-			try {
-				this.EditingOrder = JSON.parse(this.$getUrlQuery().options?.EditingOrder);
-			} catch (e) {
-				//TODO handle the exception
-				this.EditingOrder = null;
-			}
 			console.log('getEditingOrder');
 			console.log(this.EditingOrder);
 			this.AddDish = this.$getUrlQuery().options.AddDish;
@@ -710,7 +710,31 @@
 			},
 			// 扫码下单
 			takeScanAndPutOrder() {
-				this.$showToast('请退出页面，并使用微信扫描台码重新进入，以确认您的台位!');
+				uni.scanCode({
+					onlyFromCamera: true,
+					success(res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						console.log(res);
+						const params = res.split('?')[1].split('&amp;');
+						const deskIndex = params.findIndex(value => /DeskID/.test(value));
+						const deskID = params[deskIndex].split('=')[1];
+						this.$showLoading();
+						ChangeDesk({
+								OrderCode: this.editingOrder.OrderCode,
+								DeskID: deskID,
+							})
+							.then(res => {
+								console.log('切换桌号');
+								console.log(res);
+								this.editingOrder.DeskID = deskID;
+								this.editingOrder.DeskName = res.data;
+							}).finally(res => {
+								this.$hideLoading()
+							});
+
+					}
+				});
 			},
 			// 提交订单
 			takePutOrder() {
@@ -730,7 +754,10 @@
 						this.$hideLoading();
 						if (res.state == 200) {
 							uni.reLaunch({
-								url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}&EditingOrder=${JSON.stringify(this.EditingOrder)}`
+								url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}`,
+								success(res) {
+									res.eventChannel.emit('EditingOrder', { data: this.EditingOrder })
+								}
 							})
 						} else {
 							console.error("PutOrder.error----------", res);
@@ -868,7 +895,7 @@
 			height: 15px;
 			position: relative;
 			margin-bottom: -10px;
-			
+
 			.add-text {
 				position: absolute;
 				bottom: 35px;

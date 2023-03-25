@@ -60,6 +60,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/CheckPay/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {

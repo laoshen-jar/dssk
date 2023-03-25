@@ -6,6 +6,9 @@ export const apiResquest = (prams) => {
 	}
 	return new Promise((resolve, reject) => {
 		let url = config.BaseUrl + prams.url; //请求的网络地址和局地的api地址组合
+		if (prams.service == 'WeiXin') {
+			url = config.WeiXinUrl + prams.url;
+		}
 		prams.loading && uni.showLoading({
 			title: '加载中…',
 			mask: true

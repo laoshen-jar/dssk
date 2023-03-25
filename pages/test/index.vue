@@ -1,6 +1,9 @@
 <template>
 	<view>
 		<span @click="test">点我</span>
+		<p>
+			{{b}}
+		</p>
 	</view>
 </template>
 
@@ -8,14 +11,20 @@
 	export default {
 		data() {
 			return {
-				
+				a: '',
+				b: ''
 			}
 		},
 		methods: {
 			test() {
-				uni.redirectTo({
-					url: '/pages/webview/index?url=123'
-				})
+				uni.scanCode({
+					onlyFromCamera: true,
+					success (res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						console.log(res);
+					}
+				});
 			}
 		}
 	}
