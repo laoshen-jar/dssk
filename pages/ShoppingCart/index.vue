@@ -5,7 +5,7 @@
 			<div class="table order-msg-item">
 				<div class="text-box">
 					<p class="text" v-if="EditingOrder && EditingOrder.DeskID">
-						台位：{{ EditingOrder.DeskName }}
+						台位：{{ EditingOrder.DeskName || '请扫码下单' }}
 					</p>
 					<p class="text" v-else @click="takeScanAndPutOrder">台位：请扫码下单</p>
 				</div>
@@ -38,16 +38,14 @@
 		</div>
 		<!-- order-msg end -->
 		<!-- order-list -->
+		<div class="add" @click="continueMenu">
+			<image class="img" :src="staticUrl + 'images/add.png'"  style=""></image>
+			<text class="add-text">加菜</text>
+		</div>
 		<div class="order-list-box Box">
-			<div class="add">
-				<image class="img" :src="staticUrl + 'images/add.png'" @click="continueMenu" style=""></image>
-				<text class="add-text">加菜</text>
-			</div>
 			<div class="order-list" ref="dishs">
 				<ul class="list">
-					<li v-for="(dish, index) in EditingOrder != null
-              ? EditingOrder.Items
-              : []" :key="index">
+					<li v-for="(dish, index) in EditingOrderItems" :key="index">
 						<div class="dishinfo">
 							<h6 class="title">{{ dish.DishName }}</h6>
 							<span class="memberprice" v-if="dish.MemberPrice != dish.DishPrice">￥{{ dish.MemberPrice }}
@@ -58,13 +56,13 @@
 								v-if="dish.MemberPrice == dish.DishPrice">￥{{ dish.DishPrice?dish.DishPrice:dish.MemberPrice }}
 								{{ dish.Unit?'/':'' }} {{ dish.Unit }}</span>
 							<div class="cartcontrol">
-								<div class="jian" @click.stop.prevent="TakeCart(dish, false)">
+								<div class="jian" @click.prevent="TakeCart(dish, false)">
 									<iconfont class="iconfont" icon="iconjianhao" size="12px" />
 								</div>
 								<div class="cart-count number">{{ dish.Number }}</div>
-								<div class="icon-add_circle jia" @click.stop.prevent="TakeCart(dish, true)">
+								<view class="icon-add_circle jia" @click.stop.prevent="TakeCart(dish, true)">
 									<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
-								</div>
+								</view>
 							</div>
 						</div>
 						<div class="dishremark"
@@ -97,6 +95,7 @@
               border: none;
               height: 70px;
               font-size:12px;
+			  box-sizing: border-box;
               padding:10px;" placeholder="输入备注，最多20个字哦"
 						@keyup="texLength('remarktextarea', 20, 'textarea_length')"></textarea>
 					<div style="position: absolute;
@@ -219,104 +218,9 @@
 	</div>
 </template>
 
-<style scoped>
-	.barragesBox {
-		position: fixed;
-		left: 60px;
-		bottom: 70px;
-		max-height: 160px;
-		min-height: 100px;
-		background-color: #00000020;
-	}
-
-	/* .barragesBox{border: 1px solid red;} */
-	.barragesBox .barrageitemline {
-		margin-bottom: 5px;
-		animation: barragelineanimation 5s;
-		height: 26px;
-	}
-
-	.barragesBox .barrageitem {
-		border-radius: 13px;
-		background-color: #000000dd;
-		padding-right: 12px;
-		height: 26px;
-		display: inline-block;
-		vertical-align: -webkit-baseline-middle;
-		position: relative;
-		animation: barrageanimation 5s;
-	}
-
-	.barragesBox .barrageitem .info {
-		display: inline-block;
-		margin-left: 28px;
-		color: #fff;
-		font-size: 12px;
-		line-height: 26px;
-		height: 26px;
-	}
-
-	.barragesBox .barrageitem .head {
-		display: inline-block;
-		vertical-align: bottom;
-		border-radius: 50%;
-		background: url(http://thirdwx.qlogo.cn/mmopen/CLl4mibwkPX4vc4JoBbicJib0xicG95gD408FVLcL4BOzZruRyrGgk8ujHgEXUhw4aJrwoerOJCgMbWEy4YkCR2vloBsvZev1IhP/132) no-repeat center;
-		background-size: contain;
-		width: 20px;
-		height: 20px;
-		position: absolute;
-		left: 3px;
-		top: 3px;
-	}
-
-	@keyframes barragelineanimation {
-		0% {
-			opacity: 0;
-			margin-top: -31px;
-			margin-left: 0px;
-		}
-
-		5%,
-		50% {
-			opacity: 1;
-			margin-top: 0px;
-			margin-left: 0px;
-		}
-
-		60%,
-		65% {
-			opacity: 0;
-		}
-
-		75%,
-		100% {
-			opacity: 0;
-			margin-top: -31px;
-		}
-	}
-
-	@keyframes barrageanimation {
-
-		0%,
-		50% {
-			opacity: 1;
-			margin-top: 0px;
-			margin-left: 0px;
-		}
-
-		60%,
-		100% {
-			opacity: 0;
-			margin-top: 0px;
-			margin-left: -50px;
-		}
-	}
-</style>
 <script>
 	import Vue from "vue";
-	import {
-		commonMixin
-	} from '../../mixins/index.js'
+	import { commonMixin } from '../../mixins/index.js'
 	import {
 		mapActions,
 		mapGetters
@@ -361,8 +265,7 @@
 		computed: {
 			...mapGetters(["MemberCode", "StoreCode", "DeskID", "Member", "BusinessConfig"]),
 			HiddenOrderAmount() {
-				if (this.BusinessConfig && this.BusinessConfig.OrderConfig && this.BusinessConfig.OrderConfig
-					.HiddenOrderAmount) {
+				if (this.BusinessConfig && this.BusinessConfig.OrderConfig && this.BusinessConfig.OrderConfig.HiddenOrderAmount) {
 					return true;
 				}
 				return false;
@@ -376,15 +279,16 @@
 				}
 				return remark + (remark.length > 0 && this.RemarkTextarea.length > 0 ? "，" : "") + this.RemarkTextarea;
 			},
+			
+			EditingOrderItems() {
+				return this.EditingOrder != null ? this.EditingOrder.Items : []
+			}
 		},
 		onLoad() {
-			const eventChannel = this.getOpenerEventChannel();
-			eventChannel.on('payOrder', data => {
-				this.EditingOrder = data || null;
-			})
+			this.EditingOrder=this.$getStorage("EditingOrder")
 		},
 		onShow() {
-			console.log('getEditingOrder');
+			console.log('getEditingOrder',this.$getUrlQuery().options);
 			console.log(this.EditingOrder);
 			this.AddDish = this.$getUrlQuery().options.AddDish;
 			if (this.EditingOrder == null) {
@@ -398,15 +302,18 @@
 			if (this.PersonNumber > 11 || this.PersonNumber == 0) {
 				this.PersonOptionCount = 19;
 			}
-			if (this.BusinessConfig.OrderConfig.RemarkItems && (!this.flavorlist || this.flavorlist.length == 0)) {
-				this.flavorlist = [];
-				this.BusinessConfig.OrderConfig.RemarkItems.forEach((item, index) => {
-					this.flavorlist.push({
-						text: item,
-						selected: index == 0
+			console.log('BusinessConfig',this.BusinessConfig)
+			this.NeedBusinessConfig(this).then(res => {
+				if (this.BusinessConfig.OrderConfig.RemarkItems && (!this.flavorlist || this.flavorlist.length == 0)) {
+					this.flavorlist = [];
+					this.BusinessConfig.OrderConfig.RemarkItems.forEach((item, index) => {
+						this.flavorlist.push({
+							text: item,
+							selected: index == 0
+						});
 					});
-				});
-			};
+				};
+			});
 			if (this.EditingOrder && this.EditingOrder.Remark != "" && this.EditingOrder.Remark != null) {
 				let remark = this.EditingOrder.Remark + '';
 				if (remark) {
@@ -435,6 +342,10 @@
 			// clearInterval(this.ListeningObj);
 		},
 		methods: {
+			...mapActions(["NeedBusinessConfig" ]),
+			test(dish){
+				console.log(dish);
+			},
 			// 加减菜品
 			TakeCart(dish, IsAdd, number = 0, commit = true) {
 				// console.log('TakeCart',IsAdd,number,commit,dish);
@@ -463,7 +374,6 @@
 					}
 				}
 				dish.Number = dish.Number + TakeNumber;
-
 				// 购物车数据计算
 				this.total();
 
@@ -512,6 +422,7 @@
 			total() {
 				let count = 0,
 					amount = 0;
+					console.log('EditingOrder' ,this.EditingOrder);
 				this.EditingOrder.Items.forEach(item => {
 					count += item.Number * 100;
 					amount += item.Number * item.MemberPrice * 100;
@@ -641,7 +552,7 @@
 										var dishs = this.EditingOrder.Items.filter(a => a.DishID == item
 											.DishID);
 										if (dishs.length > 0) {
-											b.TakeCart(
+											this.TakeCart(
 												dishs[0],
 												item.TakeNumber > 0,
 												Math.abs(item.TakeNumber),
@@ -755,9 +666,9 @@
 						if (res.state == 200) {
 							uni.reLaunch({
 								url: `/pages/PutOk/index?OrderCode=${this.EditingOrder.OrderCode}`,
-								success(res) {
-									res.eventChannel.emit('EditingOrder', { data: this.EditingOrder })
-								}
+								// success(res) {
+								// 	res.eventChannel.emit('EditingOrder', { data: this.EditingOrder })
+								// }
 							})
 						} else {
 							console.error("PutOrder.error----------", res);
@@ -886,74 +797,75 @@
 			}
 		}
 	}
+	
+	.add {
+		width: 100%;
+		height: 45px;
+		position: relative;
+		margin-bottom: -43px;
+	
+		.add-text {
+			position: absolute;
+			bottom: 35px;
+			left: 47%;
+			color: white;
+			font-size: 12px;
+		}
+	
+		.img {
+			width: 60px;
+			height: 67.5px;
+			position: absolute;
+			bottom: 5px;
+			left: 50%;
+			margin-left: -29px;
+			animation: addbtn 1.25s infinite;
+			color: white;
+			text-align: center;
+			padding-top: 12px;
+	
+			@keyframes addbtn {
+				0% {
+					-webkit-transform: scale(0.7);
+					transform: scale(0.7)
+				}
+	
+				50% {
+					-webkit-transform: scale(1);
+					transform: scale(1)
+				}
+	
+				100% {
+					-webkit-transform: scale(0.7);
+					transform: scale(0.7)
+				}
+			}
+	
+			@-webkit-keyframes addbtn
+	
+			/*Safari and Chrome*/
+				{
+				0% {
+					-webkit-transform: scale(0.7);
+					transform: scale(0.7)
+				}
+	
+				50% {
+					-webkit-transform: scale(1);
+					transform: scale(1)
+				}
+	
+				100% {
+					-webkit-transform: scale(0.7);
+					transform: scale(0.7)
+				}
+			}
+		}
+	}
 
 	/* order-msg end */
 	/* order-list-box */
 	.order-list-box {
-		.add {
-			width: 100%;
-			height: 15px;
-			position: relative;
-			margin-bottom: -10px;
-
-			.add-text {
-				position: absolute;
-				bottom: 35px;
-				left: 47%;
-				color: white;
-				font-size: 12px;
-			}
-
-			.img {
-				width: 60px;
-				height: 67.5px;
-				position: absolute;
-				bottom: 5px;
-				left: 50%;
-				margin-left: -29px;
-				animation: addbtn 1.25s infinite;
-				color: white;
-				text-align: center;
-				padding-top: 12px;
-
-				@keyframes addbtn {
-					0% {
-						-webkit-transform: scale(0.7);
-						transform: scale(0.7)
-					}
-
-					50% {
-						-webkit-transform: scale(1);
-						transform: scale(1)
-					}
-
-					100% {
-						-webkit-transform: scale(0.7);
-						transform: scale(0.7)
-					}
-				}
-
-				@-webkit-keyframes addbtn
-
-				/*Safari and Chrome*/
-					{
-					0% {
-						-webkit-transform: scale(0.7);
-						transform: scale(0.7)
-					}
-
-					50% {
-						-webkit-transform: scale(1);
-						transform: scale(1)
-					}
-
-					100% {
-						-webkit-transform: scale(0.7);
-						transform: scale(0.7)
-					}
-				}
-			}
-		}
 
 		.order-list {
 			.list {
@@ -1034,7 +946,6 @@
 
 	.flvaor {
 		width: 100%;
-		padding: 0 10px;
 		position: relative;
 
 		.flvaor-cot {
@@ -1296,7 +1207,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			margin-left: -150px;
+			transform: translateX(-50%);
 			background: #fff;
 			@include border-radius(10px);
 			margin-top: -65px;
@@ -1532,4 +1443,98 @@
 	//   right: 0px;
 	//   overflow: scroll;
 	// }
+</style>
+
+<style scoped>
+	.barragesBox {
+		position: fixed;
+		left: 60px;
+		bottom: 70px;
+		max-height: 160px;
+		min-height: 100px;
+		background-color: #00000020;
+	}
+
+	/* .barragesBox{border: 1px solid red;} */
+	.barragesBox .barrageitemline {
+		margin-bottom: 5px;
+		animation: barragelineanimation 5s;
+		height: 26px;
+	}
+
+	.barragesBox .barrageitem {
+		border-radius: 13px;
+		background-color: #000000dd;
+		padding-right: 12px;
+		height: 26px;
+		display: inline-block;
+		vertical-align: -webkit-baseline-middle;
+		position: relative;
+		animation: barrageanimation 5s;
+	}
+
+	.barragesBox .barrageitem .info {
+		display: inline-block;
+		margin-left: 28px;
+		color: #fff;
+		font-size: 12px;
+		line-height: 26px;
+		height: 26px;
+	}
+
+	.barragesBox .barrageitem .head {
+		display: inline-block;
+		vertical-align: bottom;
+		border-radius: 50%;
+		background: url(http://thirdwx.qlogo.cn/mmopen/CLl4mibwkPX4vc4JoBbicJib0xicG95gD408FVLcL4BOzZruRyrGgk8ujHgEXUhw4aJrwoerOJCgMbWEy4YkCR2vloBsvZev1IhP/132) no-repeat center;
+		background-size: contain;
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		left: 3px;
+		top: 3px;
+	}
+
+	@keyframes barragelineanimation {
+		0% {
+			opacity: 0;
+			margin-top: -31px;
+			margin-left: 0px;
+		}
+
+		5%,
+		50% {
+			opacity: 1;
+			margin-top: 0px;
+			margin-left: 0px;
+		}
+
+		60%,
+		65% {
+			opacity: 0;
+		}
+
+		75%,
+		100% {
+			opacity: 0;
+			margin-top: -31px;
+		}
+	}
+
+	@keyframes barrageanimation {
+
+		0%,
+		50% {
+			opacity: 1;
+			margin-top: 0px;
+			margin-left: 0px;
+		}
+
+		60%,
+		100% {
+			opacity: 0;
+			margin-top: 0px;
+			margin-left: -50px;
+		}
+	}
 </style>

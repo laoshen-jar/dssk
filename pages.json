@@ -3,7 +3,7 @@
 	"pages": [{
 			"path": "pages/webview/index",
 			"style": {
-				"navigationBarTitleText": "寻找餐厅"
+				"navigationBarTitleText": "加载中"
 			}
 		},
 		{

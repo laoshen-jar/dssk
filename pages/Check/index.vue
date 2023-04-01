@@ -21,10 +21,10 @@
 				<div class="pay-msg-item coupon clearfix"
 					v-if="Member&&Member.IntegralBalance>0&&BusinessConfig&&BusinessConfig.IntegralPaySwitch==1">
 					<div>
-						<span class="title">积分 共
-							{{Member.IntegralBalance}}{{BusinessConfig?BusinessConfig.IntegralPaySwitch:0}}</span>
+						<span class="title">积分 共{{Member.IntegralBalance}}</span>
 					</div>
-					<span class="num">可使用 {{IntegralAmount*BusinessConfig?BusinessConfig.IntegralExchange:0}} 积分，抵现
+					<span class="num" v-if="BusinessConfig">可使用
+						{{parseInt(IntegralAmount*BusinessConfig.IntegralExchange*100)/100}} 积分，抵现
 						{{IntegralAmount}} 元</span>
 				</div>
 				<div class="pay-msg-item coupon clearfix">
@@ -71,8 +71,7 @@
 							</div>
 						</div>
 					</li>
-					<li v-for="(item,index) in StoredRecords" :key="index"
-						:class="[UsedRecord!=null&&UsedRecord.RowNumber == item.RowNumber ? 'active' : '', 
+					<li v-for="(item,index) in StoredRecords" :key="index" :class="[UsedRecord!=null&&UsedRecord.RowNumber == item.RowNumber ? 'active' : '', 
 						Vshow(item.Amount>NeedRuleAmount-AccoutInfo.Balance+LockStoredAmount)]">
 						<div class="item" @click="selectStoredRecord(item)">
 							<h6 class="title">{{item.Amount}}</h6>
@@ -83,92 +82,92 @@
 						</div>
 					</li>
 				</ul>
-			<p class="data">当前储值余额{{Member.StoredBalance}}元</p>
-			<p class="score" v-if="UsedRecord!=null">
-				充值{{UsedRecord.Amount}}元送{{UsedRecord.GiveAmount}}元，充值后储值结余{{parseInt((Member.StoredBalance*100+UsedRecord.Amount*100+UsedRecord.GiveAmount*100))/100}}元
-			</p>
-			<p class="score" v-if="UsedRecord!=null">
-				本次使用储值{{StoredAmount}}元，结账后储值结余{{parseInt((Member.StoredBalance*100+UsedRecord.Amount*100+UsedRecord.GiveAmount*100-StoredAmount*100))/100}}元
-			</p>
-			<p class="score" v-if="UsedRecord!=null&&UsedRecord.GiveIntegral!=0">赠送积分：{{UsedRecord.GiveIntegral}}
-			</p>
-			<div class="give-coupon" v-if="UsedRecord!=null&&UsedRecord.GiveCards.length>0&&false">
-				<p class="title">赠送优惠券：</p>
-				<ul class="coupon-list">
-					<li v-for="(item,index) in UsedRecord.GiveCards" :key="index">
-						<div class="item">
-							<div class="msg">
-								<div class="img">
-									<!-- <img :src="item.Picture" alt="优惠券" /> -->
-									<img :src="staticUrl + 'images/coupon.jpg'" alt="优惠券" />
+				<p class="data">当前储值余额{{Member.StoredBalance}}元</p>
+				<p class="score" v-if="UsedRecord!=null">
+					充值{{UsedRecord.Amount}}元送{{UsedRecord.GiveAmount}}元，充值后储值结余{{parseInt((Member.StoredBalance*100+UsedRecord.Amount*100+UsedRecord.GiveAmount*100))/100}}元
+				</p>
+				<p class="score" v-if="UsedRecord!=null">
+					本次使用储值{{StoredAmount}}元，结账后储值结余{{parseInt((Member.StoredBalance*100+UsedRecord.Amount*100+UsedRecord.GiveAmount*100-StoredAmount*100))/100}}元
+				</p>
+				<p class="score" v-if="UsedRecord!=null&&UsedRecord.GiveIntegral!=0">赠送积分：{{UsedRecord.GiveIntegral}}
+				</p>
+				<div class="give-coupon" v-if="UsedRecord!=null&&UsedRecord.GiveCards.length>0&&false">
+					<p class="title">赠送优惠券：</p>
+					<ul class="coupon-list">
+						<li v-for="(item,index) in UsedRecord.GiveCards" :key="index">
+							<div class="item">
+								<div class="msg">
+									<div class="img">
+										<!-- <img :src="item.Picture" alt="优惠券" /> -->
+										<img :src="staticUrl + 'images/coupon.jpg'" alt="优惠券" />
+									</div>
+									<div class="text-box">
+										<h6 class="title">{{item.CardName}}</h6>
+										<p class="condition">使用条件：满{{item.SatisfyAmount}}元可用</p>
+										<p class="date">有效期：{{item.EndDate}}</p>
+									</div>
 								</div>
-								<div class="text-box">
-									<h6 class="title">{{item.CardName}}</h6>
-									<p class="condition">使用条件：满{{item.SatisfyAmount}}元可用</p>
-									<p class="date">有效期：{{item.EndDate}}</p>
+								<div class="int">
+									<p class="text">{{item.GiveNumber}} 张</p>
 								</div>
 							</div>
-							<div class="int">
-								<p class="text">{{item.GiveNumber}} 张</p>
-							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- save end -->
+			<!-- pay-btn-box -->
+			<div class="pay-btn-box">
+				<div class="pay-btn">
+					<div class="text-box">
+						<p class="text">微信支付：</p>
+						<p class="num">￥{{NeedPayAmount}}</p>
+					</div>
+					<div class="btn" v-if="PayStepNumber==0" @click="GoCheck">确认支付</div>
+					<div class="btn" v-else>准备中……</div>
+				</div>
+			</div>
+			<!-- pay-btn-box end -->
+
+			<div class="member-cards" :class="{'active':cardvisibale}">
+				<div class="title-box">
+					<h5 class="title">选择优惠券</h5>
+					<div class="clear" @click="cardvisibale=false">关闭</div>
+				</div>
+				<ul class="list" v-if="CardUseLimitState">
+					<li v-for="(card,index) in MemberCards" :key="index" @click="ChangeCard(card)"
+						:style="!card.Switch?'opacity:0.5':''">
+						<i class="icon"
+							:class="UsedCard!=null&&UsedCard.MemberCardCode==card.MemberCardCode?'active':''"></i>
+						<div class="content" :class="card.DiscountAmount>0?'youxiao':''">
+							<p class="cardname">{{card.CardName}}<span class="tuijian"
+									:class="[Vshow(card.TuiJian)]">推荐</span>
+							</p>
+							<p class="info">{{card.Content}}</p>
+							<p class="info">过期时间：{{card.EndDate|DateFilter}}</p>
 						</div>
+						<div class="discount" :class="[Vshow(card.DiscountAmount!=0)]">抵现{{card.DiscountAmount}}</div>
+						<div class="discount" :class="[Vshow(card.DiscountAmount==0)]">不可用</div>
+					</li>
+				</ul>
+				<ul class="list" v-else>
+					<li style="text-align: center;line-height: 50px;font-size: 14px;" class="errorfont">
+						每<strong>{{CardLimitSpan}}</strong>可使用<strong> {{BusinessConfig.OrderConfig.CardLimitUseNumber}}
+						</strong>张卡券哦！</li>
+					<li v-for="(card,index) in MemberCards" :key="index" style="opacity:0.5">
+						<i class="icon" :class="''"></i>
+						<div class="content">
+							<p class="cardname">{{card.CardName}}</p>
+							<p class="info">{{card.Content}}</p>
+							<p class="info">过期时间：{{card.EndDate|DateFilter}}</p>
+						</div>
+						<div class="discount">不可用</div>
 					</li>
 				</ul>
 			</div>
+			<div class="bg" :class="[Vshow(cardvisibale)]" @click="cardvisibale=false"></div>
+			<!-- <GetPhone :ShowGetPhone="ShowGetPhone" @CallBack="GetPhoneCallBack"></GetPhone> -->
 		</div>
-		<!-- save end -->
-		<!-- pay-btn-box -->
-		<div class="pay-btn-box">
-			<div class="pay-btn">
-				<div class="text-box">
-					<p class="text">微信支付：</p>
-					<p class="num">￥{{NeedPayAmount}}</p>
-				</div>
-				<div class="btn" v-if="PayStepNumber==0" @click="GoCheck">确认支付</div>
-				<div class="btn" v-else>准备中……</div>
-			</div>
-		</div>
-		<!-- pay-btn-box end -->
-
-		<div class="member-cards" :class="{'active':cardvisibale}">
-			<div class="title-box">
-				<h5 class="title">选择优惠券</h5>
-				<div class="clear" @click="cardvisibale=false">关闭</div>
-			</div>
-			<ul class="list" v-if="CardUseLimitState">
-				<li v-for="(card,index) in MemberCards" :key="index" @click="ChangeCard(card)"
-					:style="!card.Switch?'opacity:0.5':''">
-					<i class="icon"
-						:class="UsedCard!=null&&UsedCard.MemberCardCode==card.MemberCardCode?'active':''"></i>
-					<div class="content" :class="card.DiscountAmount>0?'youxiao':''">
-						<p class="cardname">{{card.CardName}}<span class="tuijian"
-								:class="[Vshow(card.TuiJian)]">推荐</span>
-						</p>
-						<p class="info">{{card.Content}}</p>
-						<p class="info">过期时间：{{card.EndDate|DateFilter}}</p>
-					</div>
-					<div class="discount" :class="[Vshow(card.DiscountAmount!=0)]">抵现{{card.DiscountAmount}}</div>
-					<div class="discount" :class="[Vshow(card.DiscountAmount==0)]">不可用</div>
-				</li>
-			</ul>
-			<ul class="list" v-else>
-				<li style="text-align: center;line-height: 50px;font-size: 14px;" class="errorfont">
-					每<strong>{{CardLimitSpan}}</strong>可使用<strong> {{BusinessConfig.OrderConfig.CardLimitUseNumber}}
-					</strong>张卡券哦！</li>
-				<li v-for="(card,index) in MemberCards" :key="index" style="opacity:0.5">
-					<i class="icon" :class="''"></i>
-					<div class="content">
-						<p class="cardname">{{card.CardName}}</p>
-						<p class="info">{{card.Content}}</p>
-						<p class="info">过期时间：{{card.EndDate|DateFilter}}</p>
-					</div>
-					<div class="discount">不可用</div>
-				</li>
-			</ul>
-		</div>
-		<div class="bg" :class="[Vshow(cardvisibale)]" @click="cardvisibale=false"></div>
-		<!-- <GetPhone :ShowGetPhone="ShowGetPhone" @CallBack="GetPhoneCallBack"></GetPhone> -->
-	</div>
 	</div>
 </template>
 <script>
@@ -190,7 +189,8 @@
 		CreateRecharge
 	} from '@/api/stored'
 	import {
-		CreatePayOrder
+		CreatePayOrder,
+		TakePayOrder
 	} from '@/api/pay'
 	import {
 		GetMember,
@@ -403,6 +403,7 @@
 					})
 
 					this.LoadingNumber++;
+					console.log('this.BusinessConfig', this.BusinessConfig)
 					GetStoredInfo({
 						StoredCodeOrMemberCode: this.MemberCode,
 						LockHours: this.BusinessConfig.OrderConfig.StoredGiftDelayHours
@@ -622,6 +623,7 @@
 											} else {
 												var CheckOrderCode = res.data; // 结帐单号
 												console.log('CheckOrderCode', CheckOrderCode);
+												console.log('NeedPayAmount', this.NeedPayAmount);
 												// 无需支付
 												if (this.NeedPayAmount == 0) {
 													// 跳转到评价
@@ -737,29 +739,27 @@
 					BusinessCode: this.Member.BusinessCode,
 					StoreCode: this.editingBill.StoreCode,
 					MemberCode: this.MemberCode,
+					OpenID: this.Member.OpenID,
+					MiniOpenID: this.Member.MiniOpenID,
 					SceneType: SceneType,
 					Amount: this.NeedPayAmount,
 					BillID: this.editingBill.BillID,
 					CheckOrderCode: CheckOrderCode,
 					StoredRecordCode: StoredRecordCode,
 					// PayCallBackOpenIDUrl: window.location.origin + '/check-pay'
-					PayMode: 'mini'
+					PayMode: 'Mini'
 				}
 				console.log('PayOrder', PayOrder);
 				this.PayStepNumber++;
-				CreatePayOrder(PayOrder).then(res => {
+				TakePayOrder(PayOrder).then(res => {
 						if (res.state != 200) {
 							console.warn('CreatePayOrder.error', res);
 							this.$showToast('创建订单失败，请重试')
 						} else {
 							PayOrder.PayOrderCode = res.data.PayOrderCode; // 结帐单号
-							uni.navigateTo({
-								url: '/pages/CheckPay/index',
-								success: function(res) {
-								    // 通过eventChannel向被打开页面传送数据
-								    res.eventChannel.emit('payOrder', { data: res.data.PayOrderCode })
-								}
-							})
+							res.data.package=res.data.packages;
+							this.$setStorage('PayOrder',res.data);
+							uni.navigateTo({url: '/pages/CheckPay/index'})
 						}
 					}).catch(res => {
 						console.warn('CreatePayOrder.catch', res);
@@ -1267,7 +1267,7 @@
 			border-radius: 5px;
 
 			li {
-				width: 33.33%;
+				width: 29.33%;
 				float: left;
 				padding: 5px;
 			}

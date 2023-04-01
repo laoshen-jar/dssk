@@ -21,13 +21,17 @@
 			const app = getApp();
 			app.globalData.getInfo = (res) => {
 				console.log('获取信息');
-				console.log(res);
-				const redirectUrl = option.url ? option.url : '/pages/index/index';
+				console.log('res', res);
+				console.log('option', option);
+				const redirectUrl = option.Url ? option.Url : '/pages/index/index';
 				if (res.state === 200 && res.data.JumpUrl) {
-					this.webviewUrl = res.data.JumpUrl + "&JumpUrl=" + redirectUrl;
+					console.log('webviewUrl', res.data.JumpUrl + "&JumpUrl=" + redirectUrl);
+					this.webviewUrl = res.data.JumpUrl + "&JumpUrl=" + redirectUrl || '';
 				}
 				if (res.state === 200 && res.data.MemberCode) {
-					if (option.url) {
+					uni.hideLoading();
+					console.log('redirectUrl', redirectUrl);
+					if (redirectUrl) {
 						this.$setStorage('MemberCode', res.data.MemberCode);
 						initInfo(this);
 						uni.redirectTo({
@@ -45,12 +49,13 @@
 			}
 		},
 		onShow() {
-			
+
 		},
 		methods: {
 			...mapActions(['InitMember', 'NeedMember', 'NeedBusinessConfig', 'NeedBusiness', 'NeedStore', 'NeedDesk']),
 			getMessage(e) {
 				console.log(e.detail);
+				uni.hideLoading();
 				this.$setStorage('MemberCode', e.detail.data[0].MemberCode);
 				initInfo(this);
 			}

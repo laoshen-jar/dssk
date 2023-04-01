@@ -73,10 +73,10 @@ const active = {
 			commit
 		}, me) {
 			return new Promise((resolve, reject) => {
-				if (!store.getters.Member || store.getters.Member.MemberCode != store.getters.MemberCode) {
-				// if (true) {
-					if (!store.getters.MemberCode) {
-					// if (!true) {
+				// if (!store.getters.Member || store.getters.Member.MemberCode != store.getters.MemberCode) {
+				if (true) {
+					// if (!store.getters.MemberCode) {
+					if (!true) {
 						reject({
 							state: 505,
 							msg: "页面访问超时，请退出重新进入"

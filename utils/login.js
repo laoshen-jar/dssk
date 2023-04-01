@@ -60,7 +60,6 @@ export const getMemberCode = async (app) => {
 			if (app.globalData.getInfo) {
 				app.globalData.getInfo(res);
 			}
-			uni.hideLoading()
 		}).catch(err => {
 			console.log('登录接口出现错误');
 			uni.hideLoading();

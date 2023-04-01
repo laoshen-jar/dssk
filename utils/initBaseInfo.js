@@ -1,4 +1,5 @@
 export const initInfo = (vue) => {
+	console.log('initInfo',vue.$getUrlQuery().options);
 	var StoreCode = vue.$getUrlQuery().options?.StoreCode;
 	// var StoreCode = 'e3f4d329e18f4e28bf59516cd3be14d0';
 	if (StoreCode) {
@@ -33,7 +34,7 @@ export const initInfo = (vue) => {
 					}
 					app.globalData.isInit = true;
 					console.log('--------------')
-					console.log(DeskID);
+					console.log('DeskID',DeskID);
 					if (DeskID || (vue.StoreCode && DeskCode)) {
 						vue.NeedDesk({
 							DeskID: DeskID || '',

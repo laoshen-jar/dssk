@@ -7,6 +7,7 @@
 			isInit: false,
 		},
 		onLaunch: async function() {
+			console.log('onLaunch');
 			getMemberCode(this);
 		},
 		onShow: function() {

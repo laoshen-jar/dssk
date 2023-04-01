@@ -864,7 +864,7 @@
 				right: 20px;
 
 				li {
-					width: 33.33%;
+					width: 29.33%;
 					float: left;
 					text-align: center;
 					line-height: 20px;

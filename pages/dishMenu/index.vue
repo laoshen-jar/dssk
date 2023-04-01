@@ -52,7 +52,7 @@
 							<view class="number" :class="[Vshow(dish.Number > 0)]">
 								{{dish.Number == null ? 0 : dish.Number}}
 							</view>
-							<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true, index)">
+							<view class="jia" :class="'searchdish' + index + indext" @click.stop.prevent="TakeCart($event, 6, dish, true, 'searchdish' + index + indext)">
 								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 							</view>
 						</view>
@@ -94,14 +94,17 @@
 				</scroll-view>
 			</view>
 		</view>
+		
 		<view class="storedeskinfo">
 			<iconfont customIcon="i-iconfont" icon="jiudiancanting-13" size="20px"
 				style="color: #ea454c; font-weight: 700;" />
 			{{Store.StoreName}}<br>{{Desk?Desk.DeskName:''}}
 		</view>
+		
 		<view class="typename typenamefixed" v-if="DishMenu.length>0">
 			{{ DishMenu[currentNum].DishTypeName }}
 		</view>
+		
 		<view class="dish-tab" ref="dishs">
 			<view>
 				<scroll-view :scroll-into-view="clickId" @scroll="scroll" :scroll-with-animation="true" :scroll-y="true"
@@ -161,7 +164,7 @@
 										<view class="number" :class="[Vshow(dish.Number > 0)]">
 											{{dish.Number == null ? 0 : dish.Number}}
 										</view>
-										<view class="jia" @click.stop.prevent="TakeCart($event,6,dish, true, index_t)">
+										<view class="jia" :class="'dishjia'+index_t+index_d" @click.stop.prevent="TakeCart($event,6,dish, true, 'dishjia'+index_t+index_d)">
 											<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 										</view>
 									</view>
@@ -190,6 +193,7 @@
 				<view style="height:100px;"></view>
 			</view>
 		</view>
+		
 		<view class="shop-cart" :class="{ active: OpenCart,disabled:OrderDishCount==0 }">
 			<uni-transition :show="OpenCart" custom-class="uni-transition">
 				<view class="shop-cart-list" :class="[Vshow(OpenCart)]">
@@ -245,6 +249,7 @@
 				</uni-transition>
 			</view>
 		</view>
+		
 		<!-- 弹窗广告 -->
 		<!-- <transition name="fade">
 			<view class="diner-num" v-show="aleatPictureShow" @click="aleatPictureShow=false">
@@ -255,6 +260,7 @@
 				</swiper>
 			</view>
 		</transition> -->
+		
 		<!-- 选择人数 -->
 		<uni-transition mode-class="fade" :show="ShowPerson&&!aleatPictureShow">
 			<view class="diner-num" ref="diner" :class="[Vshow(ShowPerson&&!aleatPictureShow)]">
@@ -262,26 +268,15 @@
 					<view class="title">请选择就餐人数</view>
 					<view class="clearfix">
 
-						<view v-for="(item, index) in PersonOptionCount" class="diner-select-people"
+						<view v-for="(item, index) in dinerNumList" class="diner-select-people"
 							:class="{ active: Person === item }" :key="index" @click="SelectPeopleNumber(item)">
 							<view class="cot">{{ item }}</view>
 						</view>
-						<!-- <li v-if="PersonOptionCount==19" @click="SelectPeopleNumber(20)" :class="{ active: Person === 20 }"><div class="cot">20</div></li> -->
 						<view class="diner-select-people">
-							<div class="cot" @click="PersonOptionCount=20">更多</div>
+							<input type="number" v-model="Person" placeholder="更多" style="width: 96px" class="cot"/>
+							<!-- <div class="cot" @click="PersonOptionCount=20">更多</div> -->
 						</view>
 						</ul>
-						<!-- <ul class="clearfix">
-            <li
-              v-for="(item, index) in dinerNumList"
-              :class="{ active: Person === item }"
-              :key="index"
-              @click="SelectPeopleNumber(item)"
-            >
-              <div class="cot">{{ item }}</div>
-            </li>
-            <li><div class="cot">更多</div></li>
-          </ul> -->
 					</view>
 					<button type="button" class="confirm" @click="SavePeopleNumber">
 						确认
@@ -299,7 +294,7 @@
 							- 多选</text></view>
 					<view class="flavor-list">
 						<view class="clearfix">
-							<view v-for="(item, index) in flavorlist" :key="index"
+							<view class="li" v-for="(item, index) in flavorlist" :key="index"
 								:class="item.selected ? 'active' : ''" @click="selectFlavor(index)">
 								<view class="item">{{ item.text }}</view>
 							</view>
@@ -328,12 +323,8 @@
 							<view class="text">确认要清空购物车吗？</view>
 							<view class="btn-group">
 								<view class="list clearfix">
-									<view>
-										<view class="btn cancle" @click="clearpopup = false">取消</view>
-									</view>
-									<view>
-										<view class="btn confirm" @click="DoClear">确认</view>
-									</view>
+									<view class="btn cancle" @click="clearpopup = false">取消</view>
+									<view class="btn confirm" @click="DoClear">确认</view>
 								</view>
 							</view>
 						</view>
@@ -510,107 +501,6 @@
 		</view> -->
 	</view>
 </template>
-<style scoped>
-	.bannerimgitem {
-		width: 100%;
-		height: 100%;
-		background-repeat: no-repeat;
-		background-size: contain;
-		background-position: center
-	}
-
-	.barragesBox {
-		position: fixed;
-		left: 60px;
-		bottom: 70px;
-		max-height: 160px;
-		min-height: 100px;
-		background-color: #00000020;
-	}
-
-	/* .barragesBox{border: 1px solid red;} */
-	.barragesBox .barrageitemline {
-		margin-bottom: 5px;
-		animation: barragelineanimation 5s;
-		height: 26px;
-	}
-
-	.barragesBox .barrageitem {
-		border-radius: 13px;
-		background-color: #000000dd;
-		padding-right: 12px;
-		height: 26px;
-		display: inline-block;
-		vertical-align: -webkit-baseline-middle;
-		position: relative;
-		animation: barrageanimation 5s;
-	}
-
-	.barragesBox .barrageitem .info {
-		display: inline-block;
-		margin-left: 28px;
-		color: #fff;
-		font-size: 12px;
-		line-height: 26px;
-		height: 26px;
-	}
-
-	.barragesBox .barrageitem .head {
-		display: inline-block;
-		vertical-align: bottom;
-		border-radius: 50%;
-		background: url(http://thirdwx.qlogo.cn/mmopen/CLl4mibwkPX4vc4JoBbicJib0xicG95gD408FVLcL4BOzZruRyrGgk8ujHgEXUhw4aJrwoerOJCgMbWEy4YkCR2vloBsvZev1IhP/132) no-repeat center;
-		background-size: contain;
-		width: 20px;
-		height: 20px;
-		position: absolute;
-		left: 3px;
-		top: 3px;
-	}
-
-	@keyframes barragelineanimation {
-		0% {
-			opacity: 0;
-			margin-top: -31px;
-			margin-left: 0px;
-		}
-
-		5%,
-		50% {
-			opacity: 1;
-			margin-top: 0px;
-			margin-left: 0px;
-		}
-
-		60%,
-		65% {
-			opacity: 0;
-		}
-
-		75%,
-		100% {
-			opacity: 0;
-			margin-top: -31px;
-		}
-	}
-
-	@keyframes barrageanimation {
-
-		0%,
-		50% {
-			opacity: 1;
-			margin-top: 0px;
-			margin-left: 0px;
-		}
-
-		60%,
-		100% {
-			opacity: 0;
-			margin-top: 0px;
-			margin-left: -50px;
-		}
-	}
-</style>
 
 <script>
 	import Vue from "vue";
@@ -671,8 +561,8 @@
 				clearpopup: false, // 清空购物车弹窗
 				ShowPerson: false, // 是否显示选择用餐人数
 				PersonOptionCount: 11,
-				dinerNumList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // 就餐人数数组
-				Person: 0, // 就餐人数结果
+				dinerNumList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // 就餐人数数组
+				Person: '', // 就餐人数结果
 				flavorpopup: false, // 是否显示口味弹窗
 				flavorlist: [], // 口味列表
 				scrollY: 0, // 当期滚动的高度
@@ -878,11 +768,6 @@
 												if (this.EditingBill != null) {
 													uni.navigateTo({
 														url: `/pages/orderInfo/index?ver=${moment().format("MMDDHHmmSS")}`,
-														success(res) {
-															res.eventChannel.emit('EditingBill', {
-																data: this.EditingBill
-															})
-														}
 													})
 												} else {
 													console.info("初次点餐，创建订单");
@@ -937,10 +822,10 @@
 				if (this.ballTimer) return;
 				const query = uni.createSelectorQuery().in(this);
 				query.select('.cart').boundingClientRect()
-				query.selectAll('.jia').boundingClientRect()
+				query.selectAll(index).boundingClientRect()
 				query.exec(res => {
 					console.log(index);
-					const addBtnposition = res[1][index];
+					const addBtnposition = res[0];
 					const shopCarPosition = res[0];
 					const ballR = 13;
 					const addBtnCenterX = (addBtnposition.left + addBtnposition.right) / 2;
@@ -1510,11 +1395,11 @@
 				console.log('this.EditingOrder', this.EditingOrder, this.shopcart)
 				uni.navigateTo({
 					url: `/pages/ShoppingCart/index?AddDish=${this.AddDish}`,
-					success(res) {
-						res.eventChannel.emit('EditingOrder', {
-							data: this.EditingOrder
-						})
-					}
+					// success(res) {
+					// 	res.eventChannel.emit('EditingOrder', {
+					// 		data: this.EditingOrder
+					// 	})
+					// }
 				})
 			},
 			// 选择口味
@@ -1729,6 +1614,107 @@
 		},
 	};
 </script>
+<style scoped>
+	.bannerimgitem {
+		width: 100%;
+		height: 100%;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center
+	}
+
+	.barragesBox {
+		position: fixed;
+		left: 60px;
+		bottom: 70px;
+		max-height: 160px;
+		min-height: 100px;
+		background-color: #00000020;
+	}
+
+	/* .barragesBox{border: 1px solid red;} */
+	.barragesBox .barrageitemline {
+		margin-bottom: 5px;
+		animation: barragelineanimation 5s;
+		height: 26px;
+	}
+
+	.barragesBox .barrageitem {
+		border-radius: 13px;
+		background-color: #000000dd;
+		padding-right: 12px;
+		height: 26px;
+		display: inline-block;
+		vertical-align: -webkit-baseline-middle;
+		position: relative;
+		animation: barrageanimation 5s;
+	}
+
+	.barragesBox .barrageitem .info {
+		display: inline-block;
+		margin-left: 28px;
+		color: #fff;
+		font-size: 12px;
+		line-height: 26px;
+		height: 26px;
+	}
+
+	.barragesBox .barrageitem .head {
+		display: inline-block;
+		vertical-align: bottom;
+		border-radius: 50%;
+		background: url(http://thirdwx.qlogo.cn/mmopen/CLl4mibwkPX4vc4JoBbicJib0xicG95gD408FVLcL4BOzZruRyrGgk8ujHgEXUhw4aJrwoerOJCgMbWEy4YkCR2vloBsvZev1IhP/132) no-repeat center;
+		background-size: contain;
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		left: 3px;
+		top: 3px;
+	}
+
+	@keyframes barragelineanimation {
+		0% {
+			opacity: 0;
+			margin-top: -31px;
+			margin-left: 0px;
+		}
+
+		5%,
+		50% {
+			opacity: 1;
+			margin-top: 0px;
+			margin-left: 0px;
+		}
+
+		60%,
+		65% {
+			opacity: 0;
+		}
+
+		75%,
+		100% {
+			opacity: 0;
+			margin-top: -31px;
+		}
+	}
+
+	@keyframes barrageanimation {
+
+		0%,
+		50% {
+			opacity: 1;
+			margin-top: 0px;
+			margin-left: 0px;
+		}
+
+		60%,
+		100% {
+			opacity: 0;
+			margin-top: 0px;
+			margin-left: -50px;
+		}
+	}
+</style>
 
 <style scoped>
 	.doflavorpopup .title {
@@ -1757,6 +1743,10 @@
 		border: 1px solid #ebeef5;
 		border-radius: 5px;
 		margin: 5px 10px 5px 0;
+	}
+	
+	.doflavorpopup .contentbox .infobox .infoitem:nth-of-type(3n) {
+		margin-right: 0;
 	}
 
 	.doflavorpopup .contentbox .infobox .infoitem.selected {
@@ -2907,14 +2897,14 @@
 		transition: all 0.3s;
 
 		.popup-cot {
-			width: 300px;
+			width: 326px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			background: #fff;
 			@include border-radius(10px);
 			padding: 20px 15px;
-			transform: translate(-50%, -80%);
+			transform: translate(-50%, -60%);
 
 			.title {
 				font-size: 14px;
@@ -2934,12 +2924,13 @@
 			.btn-group {
 				width: 100%;
 
-				li {
-					width: 50%;
-					float: left;
+				.list {
+					display: flex; 
+					text-align: center; 
+					justify-content: center;
 				}
-
 				.btn {
+					display: inline-block;
 					width: 120px;
 					height: 40px;
 					line-height: 40px;
@@ -2947,7 +2938,7 @@
 					font-size: 12px;
 					@include border-radius(20px);
 					font-size: 14px;
-					margin: 0 auto;
+					margin: 0 8px;
 				}
 
 				.cancle {
@@ -2964,7 +2955,7 @@
 		.flavor-list {
 			padding: 15px 0;
 
-			li {
+			.li {
 				height: 30px;
 				line-height: 29px;
 				padding: 0 20px;
@@ -3025,8 +3016,8 @@
 			}
 
 			.diner-select-people {
-				width: 25%;
-				margin: 15px 0;
+				// width: 50px;
+				margin: 8px 12px;
 				float: left;
 			}
 
@@ -3038,7 +3029,7 @@
 				border: 1px solid #d8d8d8;
 				font-size: 12px;
 				margin: 0 auto;
-				@include border-radius(50%);
+				@include border-radius(18px);
 			}
 
 			.active {
@@ -3184,6 +3175,12 @@
 	}
 </style>
 <style>
+	::-webkit-scrollbar {
+	  display: none;
+	  width: 0;
+	  height: 0;
+	  color: transparent;
+	}
 	.uni-searchbar {
 		padding: 5px 10px !important;
 		font-size: 14px;

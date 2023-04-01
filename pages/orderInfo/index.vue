@@ -9,8 +9,8 @@
 		</div>
 		<!-- order-msg end -->
 		<!-- add -->
-		<div class="add">
-			<image class="img" :src="staticUrl + 'images/add.png'" @click="ToDishMenu">
+		<div class="add" @click="ToDishMenu">
+			<image class="img" :src="staticUrl + 'images/add.png'" >
 			</image>
 			<text class="add-text">加菜</text>
 		</div>

@@ -68,21 +68,25 @@
 		},
 
 		onLoad() {
-			const eventChannel = this.getOpenerEventChannel();
-			eventChannel.on('payOrder', data => {
-				console.log(data)
-				uni.requestPayment({
-					"provider": "wxpay",
-					"orderInfo": data,
-					success(res) {
-						this.$showLoading('支付中...');
-						this.GetPayState(); // 开始侦听支付结果
-					},
-					fail(e) {
-						console.log(e);
-						uni.navigateBack();
-					}
-				})
+			this.PayOrder=this.$getStorage('PayOrder');
+			const that = this;
+			console.log('PayOrder',this.PayOrder)
+			// if(this.PayOrder){uni.navigateBack();return;}
+			uni.requestPayment({
+				"provider": "wxpay",
+				"orderInfo": that.PayOrder,
+				...that.PayOrder,
+				success(e) {
+					console.log('success',e);
+					that.$showLoading('支付中...');
+					that.GetPayState(); // 开始侦听支付结果
+				},
+				fail(e) {
+					console.log('fail',e);
+					// 提示1：已取消支付，
+					// 提示2：接口异常详情
+					// uni.navigateBack();
+				}
 			})
 		},
 
@@ -113,6 +117,8 @@
 			},
 			// 感知支付状态
 			GetPayState() {
+				console.log('222')
+				return;
 				GetPayOrder({
 						PayOrderCode: this.PayOrderCode
 					})
