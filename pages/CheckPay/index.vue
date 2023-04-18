@@ -164,39 +164,48 @@
 			PayOkContinue() {
 				this.$store.commit("RefreshMember");
 				this.$showToast('支付成功');
-				uni.redirectTo({
-					url: '/pages/index/index'
-				})
-				// if (this.PayType == "TSRechargeAndCheck") {
-				// 	this.MsgStr = "跳转到评价页";
-				// 	this.$router.push({
-				// 		name: "comment",
-				// 		query: {
-				// 			BillID: this.BillID
-				// 		}
-				// 	});
-				// } else if (this.PayType == "TSCheck") { //TSCheck
-				// 	this.MsgStr = "跳转到评价页";
-				// 	this.$router.push({
-				// 		name: "comment",
-				// 		query: {
-				// 			BillID: this.BillID
-				// 		}
-				// 	});
-				// } else if (this.PayType == "StoredRecharge") {
-				// 	this.MsgStr = "跳转到储值记录";
-				// 	this.$router.push({
-				// 		name: "StoredDetail"
-				// 	});
-				// } else if (this.PayType == "GoodsOrder") { //TSCheck
-				// 	this.MsgStr = "跳转到卡券列表";
-				// 	this.$router.push({
-				// 		name: "CardList",
-				// 		query: {
-				// 			CanotBack: true
-				// 		}
-				// 	})
-				// }
+				if (this.PayType == "TSRechargeAndCheck") {
+					this.MsgStr = "跳转到评价页";
+					// this.$router.push({
+					// 	name: "comment",
+					// 	query: {
+					// 		BillID: this.BillID
+					// 	}
+					// });
+					uni.navigateTo({
+						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					})
+				} else if (this.PayType == "TSCheck") { //TSCheck
+					this.MsgStr = "跳转到评价页";
+					// this.$router.push({
+					// 	name: "comment",
+					// 	query: {
+					// 		BillID: this.BillID
+					// 	}
+					// });
+					uni.navigateTo({
+						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					})
+				} else if (this.PayType == "StoredRecharge") {
+					this.MsgStr = "跳转到储值记录";
+					// this.$router.push({
+					// 	name: "StoredDetail"
+					// });
+					uni.navigateTo({
+						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					})
+				} else if (this.PayType == "GoodsOrder") { //TSCheck
+					this.MsgStr = "跳转到卡券列表";
+					// this.$router.push({
+					// 	name: "CardList",
+					// 	query: {
+					// 		CanotBack: true
+					// 	}
+					// })
+					uni.navigateTo({
+						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					})
+				}
 			},
 		},
 	};
