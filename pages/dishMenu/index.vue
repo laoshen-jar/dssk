@@ -1178,7 +1178,7 @@
 			TakeCart(dom, tag, dish, IsAdd, number = 0, commit = true) {
 				console.log('TakeCart', dom, tag, dish, IsAdd, number, commit);
 				if (dom) {
-					this.additem(dom.target, number);
+					// this.additem(dom.target, number);
 				}
 				// 已有选择菜品项
 				var DItem = null;

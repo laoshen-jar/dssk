@@ -24,25 +24,19 @@
     PayStr3:{{PayStr3}}
     <br/> 
     PayStr4:{{PayStr4}} -->
+		<!-- Stopwatch:{{Stopwatch}} -->
 	</div>
 </template>
 
 <script>
 	import moment from 'moment'
 	import {
-		GetPayOrder,
-		UpdatePayOrderState,
-		PayPut
+		GetPayState
 	} from "@/api/pay";
 	export default {
 		data() {
 			return {
 				PayOrder: null,
-				PayType: '',
-				BillID: null,
-				PayOrderCode: null,
-				GoodsOrderCode: null,
-				OpenIDOnServer: null,
 
 				Loading: true,
 				PaySuccess: false, // 支付成功
@@ -63,29 +57,40 @@
 				time: 0,
 				ispay: 0,
 				MsgStr: "",
-				getBrandWCPayRequest: null
+				getBrandWCPayRequest: null,
+
+				StartTime: null
 			};
+		},
+		computed: {
+			Stopwatch() {
+				if (!this.StartTime) {
+					this.StartTime = new Date()
+				}
+				var Now = new Date();
+				return (Now.getTime() - this.StartTime.getTime()) / 1000;
+			}
 		},
 
 		onLoad() {
-			this.PayOrder=this.$getStorage('PayOrder');
+			this.PayOrder = this.$getStorage('PayOrder');
 			const that = this;
-			console.log('PayOrder',this.PayOrder)
+			console.log('PayOrder', this.PayOrder)
 			// if(this.PayOrder){uni.navigateBack();return;}
 			uni.requestPayment({
 				"provider": "wxpay",
 				"orderInfo": that.PayOrder,
 				...that.PayOrder,
 				success(e) {
-					console.log('success',e);
+					console.log('success', e);
 					that.$showLoading('支付中...');
-					that.GetPayState(); // 开始侦听支付结果
+					that.OnCheckPayState(that); // 开始侦听支付结果
 				},
 				fail(e) {
-					console.log('fail',e);
+					console.log('fail', e);
 					// 提示1：已取消支付，
 					// 提示2：接口异常详情
-					// uni.navigateBack();
+					uni.navigateBack();
 				}
 			})
 		},
@@ -96,34 +101,23 @@
 			this.StopGetState = true;
 		},
 		methods: {
-			PayCallBack(state, errorMsg) {
-				// 调用接口确认支付状态
-				var params = {
-					PayOrderCode: this.PayOrderCode,
-					PayState: state,
-					ErrorMsg: errorMsg
-				};
-				UpdatePayOrderState(params)
-					.then(res => {
-						if (res.state == 200) {
-							console.log("支付状态修改成功", res);
-						} else {
-							console.error("支付状态修改异常", res);
-						}
-					})
-					.catch(res => {
-						console.warn("UpdatePayOrderState.catch", res);
-					});
-			},
 			// 感知支付状态
-			GetPayState() {
-				console.log('222')
-				return;
-				GetPayOrder({
-						PayOrderCode: this.PayOrderCode
+			OnCheckPayState(that) {
+				console.log('OnCheckPayState')
+				// return;
+				if (that.Stopwatch > 120 || that.StopGetState) {
+					that.$showToast('支付状态侦听超时，请不要重复支付！');
+					that.$hideloading();
+					uni.redirectTo({
+						url: 'pages/orderInfo/index'
+					})
+					return;
+				}
+				GetPayState({
+						PayOrderCode: that.PayOrder.PayOrderCode
 					})
 					.then(res => {
-						this.$hideLoaidng();
+						uni.hideLoading();
 						if (res.state == 200) {
 							const {
 								PayState,
@@ -147,7 +141,8 @@
 								return;
 							} else {
 								this.PayStr = "支付结果未变化" + new Date();
-								this.GetPayState();
+								console.log('this.PayStr', this.PayStr)
+								this.OnCheckPayState();
 							}
 						} else {
 							uni.navigateBack();
@@ -155,46 +150,45 @@
 						}
 					})
 					.catch(res => {
-						this.$hideLoaidng();
-						uni.navigateBack();
 						console.warn("GetPayOrder.catch", res);
-					});
+						uni.hideLoading();
+						uni.navigateBack();
+					})
 			},
 			// 支付成功后继续执行
 			PayOkContinue() {
-				this.$store.commit("RefreshMember");
-				this.$showToast('支付成功');
-				if (this.PayType == "TSRechargeAndCheck") {
+				this.$store.dispatch("RefreshMember");
+				if (this.PayOrder.PayType == "TSRechargeAndCheck") {
 					this.MsgStr = "跳转到评价页";
 					// this.$router.push({
 					// 	name: "comment",
 					// 	query: {
-					// 		BillID: this.BillID
+					// 		BillID: this.PayOrder.BillID
 					// 	}
 					// });
-					uni.navigateTo({
-						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					uni.reLaunch({
+						url: `/pages/comment/index?BillID=${this.PayOrder.BillID}`
 					})
-				} else if (this.PayType == "TSCheck") { //TSCheck
+				} else if (this.PayOrder.PayType == "TSCheck") { //TSCheck
 					this.MsgStr = "跳转到评价页";
 					// this.$router.push({
 					// 	name: "comment",
 					// 	query: {
-					// 		BillID: this.BillID
+					// 		BillID: this.PayOrder.BillID
 					// 	}
 					// });
-					uni.navigateTo({
-						url: `/pages/billDetail/index?BillID=${this.BillID}`
+					uni.reLaunch({
+						url: `/pages/comment/index?BillID=${this.PayOrder.BillID}`
 					})
-				} else if (this.PayType == "StoredRecharge") {
+				} else if (this.PayOrder.PayType == "StoredRecharge") {
 					this.MsgStr = "跳转到储值记录";
 					// this.$router.push({
 					// 	name: "StoredDetail"
 					// });
 					uni.navigateTo({
-						url: `/pages/billDetail/index?BillID=${this.BillID}`
+						url: `/pages/billDetail/index?BillID=${this.PayOrder.BillID}`
 					})
-				} else if (this.PayType == "GoodsOrder") { //TSCheck
+				} else if (this.PayOrder.PayType == "GoodsOrder") { //TSCheck
 					this.MsgStr = "跳转到卡券列表";
 					// this.$router.push({
 					// 	name: "CardList",
@@ -203,7 +197,7 @@
 					// 	}
 					// })
 					uni.navigateTo({
-						url: `/pages/billDetail/index?BillID=${this.BillID}`
+						url: `/pages/billDetail/index?BillID=${this.PayOrder.BillID}`
 					})
 				}
 			},

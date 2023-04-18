@@ -633,6 +633,7 @@
 													// 		BillID: this.editingBill.BillID
 													// 	}
 													// });
+													// uni.navigateTo({url: '/pages/CheckPay/index'})
 												} else {
 													//判断是否需要充值
 													if (this.UseStored && this.UsedRecord !=
@@ -758,7 +759,7 @@
 						} else {
 							PayOrder.PayOrderCode = res.data.PayOrderCode; // 结帐单号
 							res.data.package=res.data.packages;
-							this.$setStorage('PayOrder',res.data);
+							this.$setStorage('PayOrder', {...res.data, PayType:"TSCheck", BillID: this.editingBill.BillID});
 							uni.navigateTo({url: '/pages/CheckPay/index'})
 						}
 					}).catch(res => {

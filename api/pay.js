@@ -11,7 +11,7 @@ export function UpdatePayOrderStateAPI(parameter) { return apiResquest({ url: '/
 export function PayPutAPI(parameter) { return apiResquest({ url: '/Pay/PayPut', method: 'post', data: parameter }); }
 
 
-export function TakePayOrder(parameter) { return apiResquest({ url: '/PayServe/PayOrder/Create', method: 'post', data: parameter }); }
-export function GetPayState(parameter) { return apiResquest({ url: '/PayServe/PayOrder/GetPayState', method: 'post', data: parameter }); }
+export function TakePayOrder(parameter) { return apiResquest({ url: '/Pay/PayOrder/Create', method: 'post', data: parameter }); }
+export function GetPayState(parameter) { return apiResquest({ url: '/Pay/PayOrder/GetPayState', method: 'post', data: parameter }); }
 
 

@@ -169,7 +169,6 @@
 		computed: {
 			...mapGetters(['Member', 'StoreCode', 'DeskID', "BusinessConfig", 'MediaService', 'Desk']),
 			bannerList() {
-				console.log('-------------');
 				console.log(this.staticUrl);
 				const src = this.staticUrl + 'images/hp-banner.jpg';
 				return [{
@@ -226,6 +225,18 @@
 					console.log(n)
 				},
 				deep: true
+			}
+		},
+		
+		onLoad() {
+			const MemberCode = this.$getStorage('MemberCode');
+			if(!MemberCode) {
+				uni.redirectTo({
+					url: "/pages/webview/index"
+				})
+			}else{
+				this.$hideLoading();
+				initInfo(this);
 			}
 		},
 		

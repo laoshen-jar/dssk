@@ -1,15 +1,15 @@
 {
 	//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	"pages": [{
-			"path": "pages/webview/index",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "加载中"
+				"navigationBarTitleText": "门店列表"
 			}
 		},
 		{
 			"path": "pages/error/index",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "出錯了"
 			}
 		},
 		{
@@ -20,14 +20,14 @@
 		}, {
 			"path": "pages/orderInfo/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "消费详情",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/ShoppingCart/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "购物车确认",
 				"enablePullDownRefresh": false
 			}
 
@@ -35,13 +35,13 @@
 		{
 			"path": "pages/PutOk/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "提交成功",
 				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/TimeOut/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "欢迎光临",
 				"enablePullDownRefresh": false
 			}
 
@@ -49,21 +49,21 @@
 		{
 			"path": "pages/Check/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "在线买单",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
-			"path": "pages/index/index",
+			"path": "pages/webview/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "加载中",
 				"enablePullDownRefresh": false
 			}
 
 		}, {
 			"path": "pages/CheckPay/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "买单支付",
 				"enablePullDownRefresh": false
 			}
 
@@ -72,7 +72,7 @@
             "path" : "pages/comment/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消费评价",
                 "enablePullDownRefresh": false
             }
             
@@ -81,11 +81,20 @@
             "path" : "pages/billDetail/index",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消费详情",
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+		    "path" : "pages/member/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

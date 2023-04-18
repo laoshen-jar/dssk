@@ -64,7 +64,7 @@ export function GetByMiniOpenID(params) {
 		service: 'WeiXin',
 		url: '/Mini/GetByMiniOpenID?MiniAppID' + params.MiniAppID + '&Code=' + params.Code + '&NickName=' +
 			params.NickName + '&HeadImgUrl=' + params.HeadImgUrl + '&Redirect_Url=' + params.Redirect_Url,// + '&Debug=1',
-		method: 'post',
+		method: 'get',
 		data: params
 	});
 }

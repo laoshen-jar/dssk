@@ -45,7 +45,7 @@
         <h5 class="title">菜品信息</h5>
         <div class="fold-btn" :class="{'active':fold == 1}" @click="changefold">
           <p class="text">{{fold == 0?"展开":"收起"}}</p>
-          <i class="iconfont iconjiantou3-copy-copy"></i>
+          <iconfont class="iconfont" icon="iconjiantou3-copy-copy" />
         </div>
       </div>
       <div class="foodlist-cot">
@@ -116,11 +116,11 @@
           <p class="text">{{item.DishName}}</p>
           <div class="help-list">
             <div class="good" :class="{'active':item.Value == 'Good'}">
-              <i class="iconfont icongood_active"></i>
+			  <iconfont class="iconfont" icon="icongood_active" />
               <p class="text">赞</p>
             </div>
             <div class="bad" :class="{'active':item.Value == 'Bad'}">
-              <i class="iconfont icongood_active-copy"></i>
+			  <iconfont class="iconfont" icon="icongood_active-copy" />
               <p class="text">踩</p>
             </div>
           </div>
@@ -163,18 +163,12 @@ export default {
 
       fold: 0, // 折叠按钮状态
       listheight: "60px", // 列表高度
-
-
-      CanotBack:false,// 
     };
   },
   computed: {
     ...mapGetters(["MemberCode", "StoreCode", "DeskID", "Member"])
   },
   onLoad(option) {
-    if(option.CanotBack){
-      this.CanotBack=true;
-    }
     // 请求数据
     var parameter = {};
     parameter.BillID = option.BillID;
@@ -209,27 +203,7 @@ export default {
       }
     })
   },
-  mounted(){
-      if (window.history && window.history.pushState&&this.CanotBack) {
-          history.pushState(null, null, document.URL);
-          window.addEventListener('popstate', this.goBack, false);
-      }
-  },
-  destroyed(){
-      console.log('destroyed');
-      if(this.CanotBack){
-        window.removeEventListener('popstate', this.goBack, false);
-      }
-  },
   methods: {
-    goBack(){
-        console.log('goBack');
-        // this.$router.replace({name: 'BillDetail',query: {BillID: w.BillID}});
-		uni.redirectTo({
-			url: `/pages/billDetail/index?BillID=${this.BillID}`
-		})
-        //replace替换原路由，作用是避免回退死循环
-    },
 	  //时间转化函数
     dateFormart(time, formart) {
       return moment(time).format(formart);
@@ -332,7 +306,7 @@ $glod: #b6986a;
         line-height: 1;
       }
 
-      i {
+      .iconfont {
         font-size: 10px;
         float: left;
         color: #777;
@@ -344,7 +318,7 @@ $glod: #b6986a;
     }
 
     .fold-btn.active {
-      i {
+      .iconfont {
         -webkit-transform: rotate(180deg);
         -moz-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
@@ -518,7 +492,7 @@ $glod: #b6986a;
         float: left;
         margin-left: 40px;
 
-        i {
+        .iconfont {
           display: inline-block;
           font-size: 16px;
           color: #e6e6ea;
@@ -532,7 +506,7 @@ $glod: #b6986a;
       }
 
       .good.active {
-        i {
+        .iconfont {
           color: $main;
         }
 
@@ -542,7 +516,7 @@ $glod: #b6986a;
       }
 
       .bad.active {
-        i {
+        .iconfont {
           color: #8b9fb8;
         }
 
