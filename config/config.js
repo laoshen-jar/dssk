@@ -4,9 +4,9 @@ const BaseUrl1 = 'http://fengchen180.imwork.net:33215';
 const WeiXinUrl = 'http://fengchen180.imwork.net';
 
 // 生产
-// const BaseUrl = 'https://fengchen180.imwork.net:33215';
-// const BaseUrl1 = 'https://fengchen180.imwork.net:33215';
-// const WeiXinUrl = 'https://fengchen180.imwork.net';
+// const BaseUrl = 'http://open.dsskvip.com/API/';
+// const BaseUrl1 = 'http://open.dsskvip.com/API/';
+// const WeiXinUrl = 'http://open.dsskvip.com/API/';
 const config = {
  BaseUrl,
  WeiXinUrl,

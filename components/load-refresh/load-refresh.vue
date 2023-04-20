@@ -31,7 +31,7 @@
 				<!-- 数据集插槽 -->
 				<slot name="content-list"></slot>
 				<!-- 上拉加载 -->
-				<view class="load-more">{{loadText}}</view>
+				<view class="load-more" v-if="showLoadText">{{loadText}}</view>
 			</scroll-view>
 		</view>
 	</view>
@@ -72,6 +72,10 @@
 			totalPages: {
 				type: Number,
 				default: 0
+			},
+			showLoadText: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -148,6 +152,14 @@
 				this.moving = moveDistance >= 50
 			},
 			coverTouchend() {
+				const {
+					currentPage,
+					totalPages
+				} = this
+				if (currentPage >= totalPages) {
+					this.completed();
+					return;
+				}
 				if (!this.isRefresh || this.updating) {
 					return
 				}

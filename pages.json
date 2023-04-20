@@ -1,7 +1,7 @@
 {
 	//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	"pages": [{
-			"path": "pages/index/index",
+			"path": "pages/webview/index",
 			"style": {
 				"navigationBarTitleText": "门店列表"
 			}
@@ -54,7 +54,7 @@
 			}
 
 		}, {
-			"path": "pages/webview/index",
+			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "加载中",
 				"enablePullDownRefresh": false
@@ -87,10 +87,91 @@
             
         },
 		{
+		    "path" : "pages/billList/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "历史消费",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
 		    "path" : "pages/member/index",
 		    "style" :                                                                                    
 		    {
-		        "navigationBarTitleText": "",
+		        "navigationBarTitleText": "会员中心",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/IntegralDetail/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "积分记录",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/cardList/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的卡券",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/storedDetail/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "储值记录",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/GoodsShop/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "积分商城",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
+        ,{
+            "path" : "pages/cardDetail/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "卡券详情",
+                "enablePullDownRefresh": false
+            }
+            
+        },
+		{
+		    "path" : "pages/goodsInfo/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品详情",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/goodsPay/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "商品支付",
+		        "enablePullDownRefresh": false
+		    }
+		    
+		},
+		{
+		    "path" : "pages/exchangeRecord/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "兑换记录",
 		        "enablePullDownRefresh": false
 		    }
 		    

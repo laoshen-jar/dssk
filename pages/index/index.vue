@@ -1,6 +1,6 @@
 <template>
 	<view class="container" ref="wrapper">
-		<load-refresh :isRefresh="true" @refresh="loadBottom" ref="loadRefresh">
+		<load-refresh @refresh="loadData" ref="loadRefresh">
 			<view slot="content-list">
 				<!-- location -->
 				<!-- <view class="location">

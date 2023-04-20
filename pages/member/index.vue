@@ -11,29 +11,29 @@
 				<div class="data-box" hidden>
 					<ul class="data-list clearfix">
 						<li>
-							<router-link to="/member/Integral/IntegralDetail">
+							<navigator url="/pages/IntegralDetail/index">
 								<p class="num" v-cloak
 									:style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">
 									{{ Member.IntegralBalance }}</p>
 								<p class="text" :style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">积分</p>
-							</router-link>
+							</navigator>
 						</li>
 						<li>
-							<router-link to="/member/stored-detail">
+							<navigator url="/pages/storedDetail/index">
 								<p class="num" v-cloak
 									:style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">
 									￥{{ Member.StoredBalance }}</p>
 								<p class="text" :style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">储值</p>
-							</router-link>
+							</navigator>
 						</li>
 						<li>
-							<router-link to="/member/card-list">
+							<navigator url="/pages/cardList/index">
 								<p class="num" v-cloak
 									:style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">
 									{{ Member.MemberCardCount }}张</p>
 								<p class="text" :style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">优惠券
 								</p>
-							</router-link>
+							</navigator>
 						</li>
 					</ul>
 				</div>
@@ -41,7 +41,7 @@
 			<div class="member-card" v-else>
 				<p class="member-id" v-cloak>{{ Member.NickName }}</br>NO. {{ Member.MemberNumber }}</p>
 				<div class="code-box">
-					<i class="iconfont iconerweima1" @click="showCodePopup"></i>
+					<iconfont class="iconfont" icon="iconerweima1" @click="showCodePopup" />
 					<div class="img">
 						<img :src="staticUrl + '/images/myself-2.png'" alt="bg" />
 					</div>
@@ -57,22 +57,22 @@
 				<div class="data-box" hidden>
 					<ul class="data-list clearfix">
 						<li>
-							<router-link to="/member/Integral/IntegralDetail">
+							<navigator url="/pages/IntegralDetail/index">
 								<p class="num" v-cloak>{{ Member.IntegralBalance }}</p>
 								<p class="text">积分</p>
-							</router-link>
+							</navigator>
 						</li>
 						<li>
-							<router-link to="/member/stored-detail">
+							<navigator url="/pages/storedDetail/index">
 								<p class="num" v-cloak>￥{{ Member.StoredBalance }}</p>
 								<p class="text">储值</p>
-							</router-link>
+							</navigator>
 						</li>
 						<li>
-							<router-link to="/member/card-list">
+							<navigator url="/pages/cardList/index">
 								<p class="num" v-cloak>{{ Member.MemberCardCount }}张</p>
 								<p class="text">优惠券</p>
-							</router-link>
+							</navigator>
 						</li>
 					</ul>
 				</div>
@@ -287,40 +287,40 @@
 				<div class="head" :style="'background: url('+Member.HeadImgUrl+') no-repeat;background-size: 80%;' ">
 				</div>
 				<div class="info">{{Member.MemberName?Member.MemberName:Member.NickName}}</div>
-				<div class="iconfont iconjiantou3-copy"></div>
+				<iconfont class="iconfont" icon="iconjiantou3-copy" />
 			</div>
 			<div class="cellline">
-				<router-link to="/member/stored-detail">
+				<navigator url="/pages/storedDetail/index">
 					<div class="title">储值记录</div>
 					<div class="info">￥{{ Member.StoredBalance }}</div>
-					<div class="iconfont iconjiantou3-copy"></div>
-				</router-link>
+					<iconfont class="iconfont" icon="iconjiantou3-copy" />
+				</navigator>
 			</div>
 			<div class="cellline">
-				<router-link to="/member/Integral/IntegralDetail">
+				<navigator url="/pages/IntegralDetail/index">
 					<div class="title">我的积分</div>
 					<div class="info">{{ Member.IntegralBalance }}</div>
-					<div class="iconfont iconjiantou3-copy"></div>
-				</router-link>
+					<iconfont class="iconfont" icon="iconjiantou3-copy" />
+				</navigator>
 			</div>
 			<div class="cellline" v-if="BusinessConfig&&BusinessConfig.EntryConfig.GoodsShopEntrySwitch">
-				<router-link :to="{path:'/member/Integral/GoodsShop'}">
+				<navigator url="/pages/GoodsShop/index">
 					<div class="title">积分商城</div>
 					<div class="info"></div>
-					<div class="iconfont iconjiantou3-copy"></div>
-				</router-link>
+					<iconfont class="iconfont" icon="iconjiantou3-copy" />
+				</navigator>
 			</div>
 			<div class="cellline">
-				<router-link to="/member/card-list">
+				<navigator url="/pages/cardList/index">
 					<div class="title">优惠券</div>
 					<div class="info">{{ Member.MemberCardCount }}张</div>
-					<div class="iconfont iconjiantou3-copy"></div>
-				</router-link>
+					<iconfont class="iconfont" icon="iconjiantou3-copy" />
+				</navigator>
 			</div>
 		</div>
 		<!-- dining-record -->
 		<div class="dining-record" v-if="false">
-			<router-link to="/member/bill-list">用餐记录</router-link>
+			<navigator url="/pages/billList/index">用餐记录</navigator>
 		</div>
 		<!-- activicity -->
 		<div class="activicity">
@@ -338,15 +338,15 @@
       </div> -->
 			<!-- banner -->
 			<div class="banner" v-if="bannerList.length>1" style="width: 100%;min-height: 100px;">
-				<mt-swipe :auto="4000">
-					<mt-swipe-item v-for="item in bannerList" :key="item">
-						<div :style="'background-image:url('+item+');'" class=" bannerimgitem"></div>
-					</mt-swipe-item>
-				</mt-swipe>
+				<swiper :interval="4000" :autoplay="true">
+					<swiper-item v-for="item in bannerList" :key="item">
+						<image class="bannerimgitem" :src="item" />
+					</swiper-item>
+				</swiper>
 			</div>
 			<div class="img banner" v-else-if="bannerList.length==1" style="width: 100%;min-height: 100px;">
 				<!-- <img :src="bannerList[0]" alt /> -->
-				<div :style="'background-image:url('+bannerList[0]+');'" class=" bannerimgitem"></div>
+				<image class="bannerimgitem" :src="bannerList[0]" />
 			</div>
 			<div class="img" v-else hidden>
 				<img :src="staticUrl + '/images/activicity.jpg'" alt />
@@ -362,17 +362,17 @@
 		<div class="hot-exchange" v-if="!OnActivity">
 			<div class="title-box">
 				<h5 class="title">
-					<i class="iconfont iconhuo"></i>
+					<iconfont class="iconfont" icon="iconhuo" />
 					用餐记录
 				</h5>
-				<router-link to="/member/bill-list">
+				<navigator url="/pages/billList/index">
 					更多
-					<i class="iconfont iconjiantou3-copy"></i>
-				</router-link>
+					<iconfont class="iconfont" icon="iconjiantou3-copy" />
+				</navigator>
 			</div>
 			<div class="diningrecord">
 				<ul class="list" v-if="billList&&billList.length>0">
-					<li v-for="(item, index) in billList" :key="index" @click="handleDetail(item)">
+					<li v-for="(item, index) in billList" class="diningrecord-item" :key="index" @click="handleDetail(item)">
 						<div class="item">
 							<div class="text-box">
 								<p class="title">
@@ -384,7 +384,7 @@
 								<p class="price">消费金额：{{ item.Amount }}元</p>
 							</div>
 							<div class="arrow">
-								<i class="iconfont iconjiantou-b-copy-l"></i>
+								<iconfont class="iconfont" icon="iconjiantou-b-copy-l" />
 							</div>
 							<div class="state commented" v-if="moment(item.BillCashierTime).add(2,'days')<moment()">完成
 							</div>
@@ -482,7 +482,7 @@
 				return moment() < moment("2022-05-21 12:00") && this.Branch == 'DSSK';
 			},
 		},
-		created() {
+		onLoad() {
 			this.Ver = moment().format('MMDDHHmmss');
 			this.NeedMember().then(res => {
 				if (!this.OnActivity) {
@@ -496,7 +496,7 @@
 				}
 			})
 		},
-		mounted() {
+		onShow() {
 			this.NeedBusinessConfig().then(res => {
 				res.data.AdsenseConfig.MemberCenterBanners.forEach(pic => {
 					this.bannerList.push(pic)
@@ -516,23 +516,29 @@
 			handleDetail(item) {
 				if (item.BillState == 2 && item.CommentState == 0 && moment(item.BillCashierTime).add(2, 'days') >
 				moment()) {
-					this.$router.push({
-						name: "comment",
-						query: {
-							BillID: item.BillID,
-							BillCode: item.BillCode,
-							StoreCode: item.StoreCode
-						}
-					});
+					// this.$router.push({
+					// 	name: "comment",
+					// 	query: {
+					// 		BillID: item.BillID,
+					// 		BillCode: item.BillCode,
+					// 		StoreCode: item.StoreCode
+					// 	}
+					// });
+					uni.redirectTo({
+						url: `/pages/comment/index?BillID=${item.BillID}`
+					})
 				} else if (item.BillState == 1 || item.CommentState == 1) {
-					this.$router.push({
-						name: "BillDetail",
-						query: {
-							BillID: item.BillID,
-							BillCode: item.BillCode,
-							StoreCode: item.StoreCode
-						}
-					});
+					// this.$router.push({
+					// 	name: "BillDetail",
+					// 	query: {
+					// 		BillID: item.BillID,
+					// 		BillCode: item.BillCode,
+					// 		StoreCode: item.StoreCode
+					// 	}
+					// });
+					uni.redirectTo({
+						url: `/pages/BillDetail/index?BillID=${item.BillID}`
+					})
 				}
 			},
 			//时间转化函数
@@ -670,11 +676,12 @@
 
 	/* diningrecord */
 	.diningrecord {
-		padding: 10px 10px 0;
+		// padding: 10px 10px 0;
 		overflow: scroll;
 		width: 100%;
+		margin-top: 10px;
 
-		li {
+		.diningrecord-item {
 			height: 85px;
 			background: #fff;
 			@include border-radius(5px);
@@ -758,7 +765,7 @@
 		height: 120px;
 		margin-top: 15px;
 
-		.mint-swipe {
+		swiper {
 			width: 100%;
 			height: 100%;
 		}
@@ -801,6 +808,7 @@
 			overflow: hidden;
 			background-size: 100%;
 			@include border-radius(10px);
+			box-sizing: border-box;
 
 			.member-id {
 				font-size: 18px;
@@ -1168,19 +1176,19 @@
 				font-size: 14px;
 				float: left;
 
-				i {
+				.iconfont {
 					color: #d81e06;
 					font-size: 14px;
 				}
 			}
 
-			a {
+			navigator {
 				display: block;
 				float: right;
 				font-size: 14px;
 				color: $main;
 
-				i {
+				.iconfont {
 					display: inline-block;
 					font-size: 12px;
 					color: $main;
@@ -1335,16 +1343,16 @@
 		@include transition;
 
 		.bar-code-cot {
-			width: 300px;
+			width: 100%;
 			padding: 15px 30px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			background: #fff;
 			@include border-radius(10px);
-			margin-left: -150px;
-			margin-top: -80px;
+			transform: translate(-50%, -50%);
 			z-index: 1;
+			box-sizing: border-box;
 
 			.title {
 				font-size: 14px;
@@ -1356,6 +1364,9 @@
 				width: 100%;
 				margin: 15px 0;
 
+				image {
+					display: block;
+				}
 				img {
 					display: block;
 				}
