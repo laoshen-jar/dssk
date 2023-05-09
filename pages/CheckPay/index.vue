@@ -33,6 +33,9 @@
 	import {
 		GetPayState
 	} from "@/api/pay";
+	import {
+		clearStorage
+	} from '../../utils/utils.js'
 	export default {
 		data() {
 			return {
@@ -160,42 +163,21 @@
 				this.$store.dispatch("RefreshMember");
 				if (this.PayOrder.PayType == "TSRechargeAndCheck") {
 					this.MsgStr = "跳转到评价页";
-					// this.$router.push({
-					// 	name: "comment",
-					// 	query: {
-					// 		BillID: this.PayOrder.BillID
-					// 	}
-					// });
 					uni.reLaunch({
 						url: `/pages/comment/index?BillID=${this.PayOrder.BillID}`
 					})
 				} else if (this.PayOrder.PayType == "TSCheck") { //TSCheck
 					this.MsgStr = "跳转到评价页";
-					// this.$router.push({
-					// 	name: "comment",
-					// 	query: {
-					// 		BillID: this.PayOrder.BillID
-					// 	}
-					// });
 					uni.reLaunch({
 						url: `/pages/comment/index?BillID=${this.PayOrder.BillID}`
 					})
 				} else if (this.PayOrder.PayType == "StoredRecharge") {
 					this.MsgStr = "跳转到储值记录";
-					// this.$router.push({
-					// 	name: "StoredDetail"
-					// });
 					uni.navigateTo({
 						url: `/pages/billDetail/index?BillID=${this.PayOrder.BillID}`
 					})
 				} else if (this.PayOrder.PayType == "GoodsOrder") { //TSCheck
 					this.MsgStr = "跳转到卡券列表";
-					// this.$router.push({
-					// 	name: "CardList",
-					// 	query: {
-					// 		CanotBack: true
-					// 	}
-					// })
 					uni.navigateTo({
 						url: `/pages/billDetail/index?BillID=${this.PayOrder.BillID}`
 					})

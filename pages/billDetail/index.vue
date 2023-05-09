@@ -144,6 +144,7 @@
 import { GetBillDetail,GetBillComment } from "@/api/bill";
 import { mapActions, mapGetters } from "vuex";
 import moment from "moment";
+import {clearStorage} from '../../utils/utils.js'
 export default {
   name: "comment",
   data() {
@@ -172,6 +173,8 @@ export default {
     // 请求数据
     var parameter = {};
     parameter.BillID = option.BillID;
+	this.$showLoading();
+	clearStorage();
     GetBillDetail(parameter).then(res => {
       console.log("res1111", res);
       res.data.paymentAmount=res.data.Amount-res.data.DiscountAmount
@@ -179,20 +182,14 @@ export default {
       this.BillInfo = res.data;
       this.BillCashiersItem=res.data.Cashiers
       this.BillMemberItems = res.data.Members;
-      // res.data.RetreatItems.forEach(Retreat => {
-      //   res.data.Items.forEach(dish=>{
-      //     if(dish.DishCode.trim()==Retreat.DishCode.trim()){
-      //       dish.BackNumber=Retreat.BackNumber;
-      //     }else{
-      //       dish.BackNumber=0
-      //     }
-      //   })
-      // });
       this.BillDishItem=res.data.Items
-
       console.log("BillDishItem", this.BillDishItem);
       console.log("BillCashiersItem", this.BillCashiersItem);
-    });
+    }).catch(err => {
+		console.log(err);
+	}).finally(() => {
+		uni.hideLoading();
+	});
     GetBillComment(parameter).then(res=>{
       if(res.state==200){
         if(res.data&&res.data.length>0){

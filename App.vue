@@ -2,12 +2,16 @@
 	import {
 		getMemberCode
 	} from './utils/login.js'
+	import {
+		clearStorage
+	} from './utils/utils.js'
 	export default {
 		globalData: {
 			isInit: false,
 		},
 		onLaunch: async function() {
 			console.log('onLaunch');
+			clearStorage();
 			getMemberCode(this);
 		},
 		onShow: function() {

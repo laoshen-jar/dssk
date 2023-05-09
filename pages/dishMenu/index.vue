@@ -52,7 +52,8 @@
 							<view class="number" :class="[Vshow(dish.Number > 0)]">
 								{{dish.Number == null ? 0 : dish.Number}}
 							</view>
-							<view class="jia" :class="'searchdish' + index + indext" @click.stop.prevent="TakeCart($event, 6, dish, true, 'searchdish' + index + indext)">
+							<view class="jia" :class="'searchdish' + index + indext"
+								@click.stop.prevent="TakeCart($event, 6, dish, true, 'searchdish' + index + indext)">
 								<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 							</view>
 						</view>
@@ -94,17 +95,17 @@
 				</scroll-view>
 			</view>
 		</view>
-		
+
 		<view class="storedeskinfo">
 			<iconfont customIcon="i-iconfont" icon="jiudiancanting-13" size="20px"
 				style="color: #ea454c; font-weight: 700;" />
 			{{Store.StoreName}}<br>{{Desk?Desk.DeskName:''}}
 		</view>
-		
+
 		<view class="typename typenamefixed" v-if="DishMenu.length>0">
 			{{ DishMenu[currentNum].DishTypeName }}
 		</view>
-		
+
 		<view class="dish-tab" ref="dishs">
 			<view>
 				<scroll-view :scroll-into-view="clickId" @scroll="scroll" :scroll-with-animation="true" :scroll-y="true"
@@ -164,7 +165,8 @@
 										<view class="number" :class="[Vshow(dish.Number > 0)]">
 											{{dish.Number == null ? 0 : dish.Number}}
 										</view>
-										<view class="jia" :class="'dishjia'+index_t+index_d" @click.stop.prevent="TakeCart($event,6,dish, true, 'dishjia'+index_t+index_d)">
+										<view class="jia" :class="'dishjia'+index_t+index_d"
+											@click.stop.prevent="TakeCart($event,6,dish, true, 'dishjia'+index_t+index_d)">
 											<iconfont class="iconfont" icon="iconjiajianzujianjiahao" size="12px" />
 										</view>
 									</view>
@@ -193,7 +195,7 @@
 				<view style="height:100px;"></view>
 			</view>
 		</view>
-		
+
 		<view class="shop-cart" :class="{ active: OpenCart,disabled:OrderDishCount==0 }">
 			<uni-transition :show="OpenCart" custom-class="uni-transition">
 				<view class="shop-cart-list" :class="[Vshow(OpenCart)]">
@@ -249,7 +251,7 @@
 				</uni-transition>
 			</view>
 		</view>
-		
+
 		<!-- 弹窗广告 -->
 		<!-- <transition name="fade">
 			<view class="diner-num" v-show="aleatPictureShow" @click="aleatPictureShow=false">
@@ -260,7 +262,7 @@
 				</swiper>
 			</view>
 		</transition> -->
-		
+
 		<!-- 选择人数 -->
 		<uni-transition mode-class="fade" :show="ShowPerson&&!aleatPictureShow">
 			<view class="diner-num" ref="diner" :class="[Vshow(ShowPerson&&!aleatPictureShow)]">
@@ -273,7 +275,8 @@
 							<view class="cot">{{ item }}</view>
 						</view>
 						<view class="diner-select-people">
-							<input type="number" v-model="Person" placeholder="更多" style="width: 96px" class="cot"/>
+							<input type="number" v-model="MorePerson" placeholder="更多" style="width: 96px"
+								class="cot" />
 							<!-- <div class="cot" @click="PersonOptionCount=20">更多</div> -->
 						</view>
 						</ul>
@@ -536,7 +539,7 @@
 		data() {
 			return {
 				DeskID: '',
-
+				MorePerson: '',
 				Banner: {
 					// DishMenuAleatPicture: [
 					// 	"http://localhost:8000/api//FileRoot/AdsensePic/2021/4/11c76689-833d-4858-937d-b18f01c644f2.jpg",
@@ -612,7 +615,7 @@
 			};
 		},
 		computed: {
-			...mapGetters(["Member", "MemberCode", "Store", "BusinessConfig", "Desk"]),
+			...mapGetters(["Member", "MemberCode", "Store", "BusinessConfig", "Desk", ]),
 
 			HiddenOrderAmount() {
 				if (this.BusinessConfig && this.BusinessConfig.OrderConfig && this.BusinessConfig.OrderConfig
@@ -669,6 +672,15 @@
 		},
 
 		onLoad() {
+			const MemberCode = this.$getStorage('MemberCode');
+			if (!MemberCode) {
+				uni.redirectTo({
+					url: "/pages/webview/index"
+				})
+			} else {
+				this.$hideLoading();
+				initInfo(this);
+			}
 			let _that = this;
 			uni.getSystemInfo({
 				success: function(res) {
@@ -817,7 +829,7 @@
 		//   console.info('Member',this.Member);
 		// },
 		methods: {
-			...mapActions(["NeedStore", "NeedMember", "NeedDesk"]),
+			...mapActions(["NeedStore", "NeedMember", "NeedDesk", ]),
 			moveDot(index) {
 				if (this.ballTimer) return;
 				const query = uni.createSelectorQuery().in(this);
@@ -1329,6 +1341,7 @@
 			// 选择用餐人数
 			SelectPeopleNumber(value) {
 				this.Person = value;
+				this.MorePerson = '';
 			},
 			// 确认用餐人数
 			SavePeopleNumber() {
@@ -1609,6 +1622,12 @@
 
 			Desk(value) {
 				console.log(value);
+			},
+
+			MorePerson(value) {
+				if (value) {
+					this.Person = value;
+				}
 			}
 
 		},
@@ -1744,7 +1763,7 @@
 		border-radius: 5px;
 		margin: 5px 10px 5px 0;
 	}
-	
+
 	.doflavorpopup .contentbox .infobox .infoitem:nth-of-type(3n) {
 		margin-right: 0;
 	}
@@ -2925,10 +2944,11 @@
 				width: 100%;
 
 				.list {
-					display: flex; 
-					text-align: center; 
+					display: flex;
+					text-align: center;
 					justify-content: center;
 				}
+
 				.btn {
 					display: inline-block;
 					width: 120px;
@@ -2963,7 +2983,7 @@
 				margin: 10px 5px 5px 0;
 				font-size: 14px;
 				border: 1px solid $border;
-				min-width: 85px;
+				min-width: 120rpx;
 				text-align: center;
 				@include border-radius(15px);
 			}
@@ -2984,7 +3004,7 @@
 
 	.flavorpopup {
 		.popup-cot {
-			margin-top: -60%;
+			// margin-top: -60%;
 		}
 	}
 
@@ -3176,11 +3196,12 @@
 </style>
 <style>
 	::-webkit-scrollbar {
-	  display: none;
-	  width: 0;
-	  height: 0;
-	  color: transparent;
+		display: none;
+		width: 0;
+		height: 0;
+		color: transparent;
 	}
+
 	.uni-searchbar {
 		padding: 5px 10px !important;
 		font-size: 14px;

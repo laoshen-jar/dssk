@@ -1,5 +1,10 @@
-import { nodeShow } from '../utils/utils.js'
+import {
+	nodeShow
+} from '../utils/utils.js'
 import config from '../config/config.js'
+import {
+	mapActions
+} from 'vuex'
 export const commonMixin = {
 	computed: {
 
@@ -10,6 +15,7 @@ export const commonMixin = {
 		}
 	},
 	methods: {
+		...mapActions(["NeedStore", "NeedMember", "NeedDesk", "NeedBusiness", "NeedBusinessConfig"]),
 		Vshow(condition) {
 			return nodeShow(condition);
 		},

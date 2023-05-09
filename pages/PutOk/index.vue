@@ -5,7 +5,7 @@
 			<div class="describe">~ 美味即将上桌，请稍等片刻 ~</div>
 			<image class="pic" :src="staticUrl + 'images/wmwbtc.png'"></image>
 			<!-- <navigator class="closebtn" url="" target="miniProgram" open-type="exit">关闭</navigator> -->
-			<navigator class="closebtn" url="/pages/orderInfo/index">更多消费信息 >></navigator>
+			<navigator class="closebtn" open-type="redirect" url="/pages/orderInfo/index">更多消费信息 >></navigator>
 			<div class="order-list-box" v-if="EditingOrder">
 				<div class="title-box">本次点菜清单【待上菜】</div>
 				<ul class="product-list">

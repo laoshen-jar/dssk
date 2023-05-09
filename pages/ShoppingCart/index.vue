@@ -1,10 +1,10 @@
 <template>
 	<div class="container">
 		<!-- order-msg -->
-		<div class="order-msg Box" v-if="!AddDish">
+		<div class="order-msg Box" v-if="!AddDishFlag">
 			<div class="table order-msg-item">
 				<div class="text-box">
-					<p class="text" v-if="EditingOrder && EditingOrder.DeskID">
+					<p class="text" v-if="EditingOrder && EditingOrder.DeskID !== null">
 						台位：{{ EditingOrder.DeskName || '请扫码下单' }}
 					</p>
 					<p class="text" v-else @click="takeScanAndPutOrder">台位：请扫码下单</p>
@@ -22,7 +22,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="order-msg Box" v-if="AddDish">
+		<div class="order-msg Box" v-else>
 			<div class="table order-msg-item">
 				<div class="text-box">
 					<p class="text">
@@ -242,7 +242,7 @@
 		data() {
 			return {
 				EditingOrder: {},
-				AddDish: false, // 加菜模式标记 
+				AddDishFlag: false, // 加菜模式标记 
 				RemarkTextarea: "",
 
 
@@ -290,11 +290,11 @@
 		onShow() {
 			console.log('getEditingOrder',this.$getUrlQuery().options);
 			console.log(this.EditingOrder);
-			this.AddDish = this.$getUrlQuery().options.AddDish;
+			this.AddDishFlag = this.$getUrlQuery().options.AddDish === 'true';
 			if (this.EditingOrder == null) {
 				console.log("缺少参数", "this.EditingOrder==null");
 				uni.navigateTo({
-					url: `/pages/dishMenu/index?AddDish=${this.AddDish}`
+					url: `/pages/dishMenu/index?AddDish=${this.AddDishFlag}`
 				})
 				return;
 			}
@@ -590,7 +590,7 @@
 			// 继续加菜
 			continueMenu() {
 				uni.navigateTo({
-					url: `/pages/dishMenu/index?AddDish=${this.AddDish}&EditingOrder=${this.EditingOrder}`
+					url: `/pages/dishMenu/index?AddDish=${this.AddDishFlag}&EditingOrder=${this.EditingOrder}`
 				})
 			},
 			// 更新并解锁订单
@@ -1268,7 +1268,7 @@
 				margin: 10px 5px 5px 0;
 				font-size: 14px;
 				border: 1px solid $border;
-				min-width: 85px;
+				min-width: 106rpx;
 				text-align: center;
 				@include border-radius(15px);
 			}

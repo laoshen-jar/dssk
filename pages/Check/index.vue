@@ -627,13 +627,7 @@
 												// 无需支付
 												if (this.NeedPayAmount == 0) {
 													// 跳转到评价
-													// this.$router.push({
-													// 	name: 'comment',
-													// 	query: {
-													// 		BillID: this.editingBill.BillID
-													// 	}
-													// });
-													// uni.navigateTo({url: '/pages/CheckPay/index'})
+													uni.navigateTo({url: '/pages/comment/index?BillID=' + this.editingBill.BillID})
 												} else {
 													//判断是否需要充值
 													if (this.UseStored && this.UsedRecord !=

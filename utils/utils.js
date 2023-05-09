@@ -1,3 +1,5 @@
+import {getStorage, setStorage} from '../store/mp-storage.js'
+
 // 获取当前页面参数
 export const getUrlQuery = () => {
 	const pages = getCurrentPages();
@@ -30,4 +32,17 @@ export const showToast = (title = '', icon = 'none', duration = 2000) => {
 // 小程序不支持v-show
 export const nodeShow = (condition) => {
 	return !condition ? 'v-show-hidden' : ''
+}
+
+export const clearStorage = () => {
+	const MemberCode = getStorage('MemberCode') || '';
+	const StoreCode = getStorage('StoreCode') || '';
+	try {
+		uni.clearStorageSync();
+	} catch (e) {
+		// error
+		console.log(e);
+	}
+	setStorage('MemberCode', MemberCode);
+	setStorage('StoreCode', StoreCode);
 }

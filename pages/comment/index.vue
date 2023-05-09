@@ -118,6 +118,9 @@
 		mapActions,
 		mapGetters
 	} from "vuex";
+	import {
+		clearStorage
+	} from '../../utils/utils.js'
 	import moment from "moment";
 	export default {
 		name: "comment",
@@ -512,6 +515,7 @@
 		onLoad(option) {
 			this.$showLoading()
 			this.BillID = option.BillID;
+			clearStorage();
 			GetCommentRules({
 				BillID: this.BillID,
 				MemberCode: this.MemberCode

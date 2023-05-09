@@ -1,7 +1,7 @@
 {
 	//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 	"pages": [{
-			"path": "pages/webview/index",
+			"path": "pages/storeList/index",
 			"style": {
 				"navigationBarTitleText": "门店列表"
 			}
@@ -9,13 +9,15 @@
 		{
 			"path": "pages/error/index",
 			"style": {
-				"navigationBarTitleText": "出錯了"
+				"navigationBarTitleText": "出錯了",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
 			"path": "pages/dishMenu/index",
 			"style": {
-				"navigationBarTitleText": "在线餐厅"
+				"navigationBarTitleText": "在线餐厅",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/orderInfo/index",
@@ -54,7 +56,7 @@
 			}
 
 		}, {
-			"path": "pages/index/index",
+			"path": "pages/webview/index",
 			"style": {
 				"navigationBarTitleText": "加载中",
 				"enablePullDownRefresh": false

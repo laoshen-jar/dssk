@@ -483,6 +483,15 @@
 			},
 		},
 		onLoad() {
+			const MemberCode = this.$getStorage('MemberCode');
+			if(!MemberCode) {
+				uni.redirectTo({
+					url: "/pages/webview/index"
+				})
+			}else{
+				this.$hideLoading();
+				initInfo(this);
+			}
 			this.Ver = moment().format('MMDDHHmmss');
 			this.NeedMember().then(res => {
 				if (!this.OnActivity) {
