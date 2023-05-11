@@ -33,7 +33,6 @@ export const initInfo = (vue) => {
 						})
 					}
 					app.globalData.isInit = true;
-					console.log('--------------')
 					console.log('DeskID',DeskID);
 					if (DeskID || (vue.StoreCode && DeskCode)) {
 						vue.NeedDesk({

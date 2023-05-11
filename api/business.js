@@ -10,7 +10,6 @@ export function GetBusiness(parameter) {
 }
 //获得商家配置
 export function GetBusinessConfig(parameter) {
-	console.log('asdfasdfsadf', parameter)
     return apiResquest({
         url: '/Org/Business/Config/Get',
         method: 'post',
