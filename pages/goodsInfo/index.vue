@@ -125,7 +125,7 @@
 				loadding: 0
 			};
 		},
-		created() {
+		onLoad() {
 			// 请求数据
 			this.$showLoading();
 			this.loadding = this.loadding + 1;
@@ -135,7 +135,7 @@
 					this.IntegralExchange = this.$store.getters.BusinessConfig.IntegralExchange;
 					this.loadding = this.loadding - 1;
 				});
-				this.GoodsCode = this.$route.query.GoodsCode;
+				this.GoodsCode = this.$getUrlQuery().options.GoodsCode;
 				var params = {};
 				params.GoodsCode = this.GoodsCode;
 				params.MemberCode = this.Member.MemberCode;
@@ -159,6 +159,10 @@
 					.finally(res => {
 						this.loadding = this.loadding - 1;
 					});
+			}).catch(err => {
+				console.log(err);
+			}).finally(() => {
+				uni.hideLoading()
 			});
 		},
 		methods: {

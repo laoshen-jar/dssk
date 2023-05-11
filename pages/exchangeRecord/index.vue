@@ -31,7 +31,7 @@
 				</div>
 			</load-refresh>
 		</div>
-		<uni-transition mode-class="fade">
+		<uni-transition mode-class="fade" :show="true">
 			<!-- activicity -->
 			<div class="activicity">
 				<div class="title-box">

@@ -203,7 +203,7 @@
 		</div>
 		<!-- member-card end -->
 		<!-- bar-code -->
-		<transition name="fade">
+		<uni-transition mode-class="fade" :show="true">
 			<div class="bar-code" v-if="barcodeshow">
 				<div class="bar-code-cot">
 					<h6 class="title">会员号</h6>
@@ -217,7 +217,7 @@
 				</div>
 				<div class="bg" @click="hideCodePopup"></div>
 			</div>
-		</transition>
+		</uni-transition>
 		<!-- bar-code end -->
 		<div class="division" v-if="false"></div>
 		<!-- member-level -->
@@ -261,7 +261,7 @@
 							</div>
 							<p class="text" v-cloak>{{ item.Name }}</p>
 						</div>
-						<transition name="fade">
+						<uni-transition mode-class="fade" :show="item.popupshow">
 							<div class="equity-popup" v-show="item.popupshow">
 								<div class="equity-popup-cot">
 									<div class="cot">
@@ -276,7 +276,7 @@
 									</div>
 								</div>
 							</div>
-						</transition>
+						</uni-transition>
 					</li>
 				</ul>
 			</div>

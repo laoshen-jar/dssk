@@ -25,8 +25,8 @@
 									<view class="price del" v-if="dish.MemberPrice != dish.Price">￥{{ dish.Price }} /
 										{{ dish.Unit }}
 									</view>
-									<text class="price" v-if="dish.MemberPrice == dish.Price">￥{{ dish.Price }} /
-										{{ dish.Unit }}</text>
+									<view class="price" v-if="dish.MemberPrice == dish.Price">￥{{ dish.Price }} /
+										{{ dish.Unit }}</view>
 								</view>
 								<image class="dishtag" v-for="(tag,indext) in dish.DishTags" :key="indext"
 									:src="tag.TagImg" />
@@ -38,7 +38,7 @@
 							<text class="weighdish" v-if="dish.IsWeigh==1">[ 称重菜品 ]</text>
 							<text v-if="dish.BaseNumber!=1">[{{ dish.BaseNumber}}{{ dish.Unit}}起点]</text>
 							<text v-if="dish.ShowSalesVolume==1">[销量：{{dish.BaseSalesVolume}}]</text>
-							<view>{{ dish.Describe }}</view>
+							<view v-if="dish.Describe">{{ dish.Describe }}</view>
 						</view>
 						<!-- Start 加减 -->
 						<view class="oreration"
@@ -197,7 +197,7 @@
 		</view>
 
 		<view class="shop-cart" :class="{ active: OpenCart,disabled:OrderDishCount==0 }">
-			<uni-transition :show="OpenCart" custom-class="uni-transition">
+			<uni-transition :show="OpenCart" custom-class="uni-transition" mode-class="fade">
 				<view class="shop-cart-list" :class="[Vshow(OpenCart)]">
 					<view class="title-box">
 						<view class="title">购物车</view>
@@ -205,7 +205,6 @@
 							<view class="text" @click="clearpopup = true">清除全部</p>
 							</view>
 						</view>
-
 					</view>
 					<view class="list" v-if="EditingOrder">
 						<view class="list-item" v-for="(dish, index) in EditingOrder.Items" :key="index">
@@ -235,7 +234,7 @@
 				</view>
 			</uni-transition>
 			<view class="opera">
-				<view class="cart" @click="OpenCart=!OpenCart">
+				<view class="cart" @click="handleOpenCart">
 					<text class="iconfont"></text>
 					<text class="number" size="small"
 						:class="[Vshow(OrderDishCount > 0 && !HiddenOrderAmount)]">{{OrderDishCount}}</text>
@@ -246,7 +245,7 @@
 				</view>
 				<view class="total" v-else>{{ OrderDishCount }} 份，￥{{ OrderAmount }}</view>
 				<view class="goput" @click="OpenFlavorPopup">去下单</view>
-				<uni-transition :show="OpenCart" custom-class="uni-transition">
+				<uni-transition :show="OpenCart" custom-class="uni-transition" mode-class="fade">
 					<view class="shop-cart-bg" :class="[Vshow(OpenCart)]" @click="OpenCart=false"></view>
 				</uni-transition>
 			</view>
@@ -275,11 +274,10 @@
 							<view class="cot">{{ item }}</view>
 						</view>
 						<view class="diner-select-people">
-							<input type="number" v-model="MorePerson" placeholder="更多" style="width: 96px"
+							<input type="number" v-model="MorePerson" placeholder="更多" style="width: 192rpx"
 								class="cot" />
 							<!-- <div class="cot" @click="PersonOptionCount=20">更多</div> -->
 						</view>
-						</ul>
 					</view>
 					<button type="button" class="confirm" @click="SavePeopleNumber">
 						确认
@@ -289,7 +287,7 @@
 		</uni-transition>
 
 		<!-- 选择口味 -->
-		<uni-transition :show="flavorpopup" custom-class="uni-transition">
+		<uni-transition :show="flavorpopup" mode-class="fade" custom-class="uni-transition">
 			<view class="flavorpopup" :class="[Vshow(flavorpopup)]">
 				<view class="popup-cot">
 					<view class="title">请选择口味<text
@@ -319,8 +317,8 @@
 		</uni-transition>
 
 		<!-- 清空购物车 -->
-		<uni-transition :show="clearpopup" custom-class="uni-transition">
-			<view class="clearpopup" :class="[Vshow(clearpopup)]">
+		<uni-transition :show="clearpopup" mode-class="fade" custom-class="uni-transition">
+			<view class="clearpopup" style="background: rgba(0, 0, 0, 0.6);" :class="[Vshow(clearpopup)]">
 				<view class="popup-cot">
 					<view class="title">提示<view>
 							<view class="text">确认要清空购物车吗？</view>
@@ -338,7 +336,7 @@
 		</uni-transition>
 
 		<!-- 锁定提醒 -->
-		<uni-transition :show="lockVisible" custom-class="uni-transition">
+		<uni-transition :show="lockVisible" mode-class="fade" custom-class="uni-transition">
 			<view class="lockpopup" :class="[Vshow(lockVisible)]">
 				<view class="popup-cot">
 					<view class="title">提示</view>
@@ -366,7 +364,7 @@
 		</uni-transition>
 
 		<!-- 规格做法 -->
-		<uni-transition :show="editingDish.DishFlavors||editingDish.DishMakeMethods" custom-class="uni-transition">
+		<uni-transition :show="editingDish.DishFlavors||editingDish.DishMakeMethods" mode-class="fade" custom-class="uni-transition">
 			<view class="doflavorpopup doflavorbox"
 				:class="[Vshow(editingDish.DishFlavors||editingDish.DishMakeMethods)]" v-if="editingDish">
 				<view class="popup-cot">
@@ -429,7 +427,7 @@
 		</uni-transition>
 
 		<!-- 菜品大图 -->
-		<uni-transition custom-class="uni-transition" :show="ShowDish">
+		<uni-transition custom-class="uni-transition" mode-class="fade" :show="ShowDish">
 			<view class="showdialogbox" v-if="ShowDish">
 				<view class="box">
 					<view class="picture" v-lazy:background-image="ShowDish.Picture" v-if="ShowDish.Picture">
@@ -881,7 +879,7 @@
 						ChangeDesk({
 							OrderCode: this.EditingOrder.OrderCode,
 							DeskID: this.DeskID,
-							DeskName: this.Desk.DeskName
+							DeskName: this.Desk ? this.Desk.DeskName : ''
 						}).then(res => {
 							this.EditingOrder.DeskID = this.DeskID;
 							this.EditingOrder.DeskName = this.Desk.DeskName;
@@ -1545,6 +1543,11 @@
 					this.SearchState = true;
 				}
 			},
+			
+			handleOpenCart() {
+				if(this.OrderDishCount === 0) return;
+				this.OpenCart = !this.OpenCart;
+			},
 
 			additem(target, number) {
 				this.drop(target);
@@ -2126,6 +2129,7 @@
 		color: #fff;
 		text-align: center;
 		display: inline-block;
+		box-sizing: border-box;
 	}
 
 	.dishtype-tab .dishtype-tab-item.active {
@@ -2495,9 +2499,8 @@
 		-moz-box-shadow: 1px 2px 5px #afafaf;
 		box-shadow: 1px 2px 5px #afafaf;
 		padding: 5px;
-		;
 		border-radius: 5px;
-
+		box-sizing: border-box;
 	}
 
 	.dishli:last-child {
@@ -2546,14 +2549,6 @@
 	//   background: #ea454c;
 	//   border-radius: 2px;
 	// }
-	.dishli image {
-		width: 80px;
-		height: 60px;
-		border-radius: 5px;
-		overflow: hidden;
-		float: left;
-	}
-
 	.dishli .showpic .dish {
 		min-height: 110px;
 	}
@@ -2563,8 +2558,8 @@
 	}
 
 	.dishli .dishpic {
-		width: 150px;
-		height: 110px;
+		width: 300rpx;
+		height: 220rpx;
 		border-radius: 5px;
 		overflow: hidden;
 		float: left;
@@ -2585,13 +2580,13 @@
 	}
 
 	.dishli .dishtag {
-		width: 36px;
+		width: 72rpx;
 		height: 36px;
 		display: inline-block;
 		background: no-repeat top left;
 		background-size: contain;
 		vertical-align: middle;
-		margin: 2px 3px 0 2px
+		margin: 2px 6rpx 0 2px
 	}
 
 	.dishli .dishinfo {
@@ -2603,8 +2598,8 @@
 	}
 
 	.dishli.showpic .dishinfo {
-		margin-left: 150px;
-		padding: 5px 10px;
+		margin-left: 300rpx;
+		padding: 5px 20rpx;
 	}
 
 	.dishul.searchul .dishli.showpic .dishinfo {
@@ -2639,7 +2634,7 @@
 		clear: both;
 		margin-bottom: -6px;
 		font-size: 14px;
-		margin-right: 100px;
+		margin-right: 200rpx;
 		padding: 9px 0;
 	}
 
@@ -2649,7 +2644,7 @@
 	}
 
 	.dishli .remark span {
-		margin-right: 5px;
+		margin-right: 5rpx;
 	}
 
 	.dishli .oreration {
@@ -2916,7 +2911,7 @@
 		transition: all 0.3s;
 
 		.popup-cot {
-			width: 326px;
+			width: 526rpx;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -2974,16 +2969,20 @@
 
 		.flavor-list {
 			padding: 15px 0;
+			
+			>view {
+				width: 100%;
+			}
 
 			.li {
 				height: 30px;
 				line-height: 29px;
-				padding: 0 20px;
+				padding: 0 20rpx;
 				float: left;
-				margin: 10px 5px 5px 0;
+				margin: 10px 18rpx 5px;
 				font-size: 14px;
 				border: 1px solid $border;
-				min-width: 120rpx;
+				min-width: 94rpx;
 				text-align: center;
 				@include border-radius(15px);
 			}
@@ -3019,8 +3018,8 @@
 		transition: all 0.3s linear;
 
 		.diner-num-cot {
-			width: 70%;
-			padding: 25px 20px;
+			width: 490rpx;
+			padding: 25px 20rpx;
 			background: #fff;
 			position: absolute;
 			top: 50%;
@@ -3037,12 +3036,12 @@
 
 			.diner-select-people {
 				// width: 50px;
-				margin: 8px 12px;
+				margin: 8px 24rpx;
 				float: left;
 			}
 
 			.cot {
-				width: 35px;
+				width: 70rpx;
 				height: 35px;
 				line-height: 34px;
 				text-align: center;

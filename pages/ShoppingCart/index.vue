@@ -102,7 +102,7 @@
               font-size: 12px;
               bottom: 10px;
               right: 10px;
-              color: #bbbbbb;"><span id="textarea_length">0</span> / <span class="num_count">20</span></div>
+              color: #bbbbbb;"><span id="textarea_length">{{RemarkTextarea.length}}</span> / <span class="num_count">20</span></div>
 				</div>
 			</div>
 
@@ -127,7 +127,7 @@
 			</div>
 		</div>
 		<!-- orderpopup -->
-		<transition name="fade">
+		<uni-transition mode-class="fade" :show="orderpopup">
 			<div class="orderpopup" :class="[Vshow(orderpopup)]">
 				<div class="popup-cot">
 					<h6 class="title">提示</h6>
@@ -151,33 +151,53 @@
 				</div>
 				<div class="bg" @click="orderpopup=false"></div>
 			</div>
-		</transition>
+		</uni-transition>
 		<!-- orderpopup end -->
-		<transition name="fade">
+		<!-- <transition name="fade">
 			<div class="diner-num" :class="[Vshow(dinershow)]">
 				<div class="diner-num-cot">
 					<h6 class="title">请选择就餐人数</h6>
 					<ul class="clearfix">
-						<li v-for="(item, index) in PersonOptionCount" :class="{ active: PersonNumber === item }"
+						<li v-for="(item, index) in PersonOptionCount" :class="{ active: PersonNumber === item }" class="diner-select-people"
 							:key="index" @click="selectDinerNum(item)">
 							<div class="cot">{{ item }}</div>
 						</li>
-						<li v-if="PersonOptionCount==19" @click="selectDinerNum(0)"
-							:class="{ active: PersonNumber === 0 }">
-							<div class="cot">20+</div>
-						</li>
-						<li v-else>
-							<div class="cot" @click="PersonOptionCount=20">更多</div>
-						</li>
+						<view class="diner-select-people">
+							<input type="number" v-model="MorePerson" placeholder="更多" style="width: 192rpx"
+								class="cot" />
+						</view>
 					</ul>
 					<button type="button" class="confirm" @click="confirmDinerNum">
 						确认
 					</button>
 				</div>
 			</div>
-		</transition>
+		</transition> -->
+		
+		<uni-transition mode-class="fade" :show="dinershow">
+			<view class="diner-num" ref="diner" :class="[Vshow(dinershow)]">
+				<view class="diner-num-cot">
+					<view class="title">请选择就餐人数</view>
+					<view class="clearfix">
+		
+						<view v-for="(item, index) in dinerNumList" class="diner-select-people"
+							:class="{ active: PersonNumber === item }" :key="index" @click="selectDinerNum(item)">
+							<view class="cot">{{ item }}</view>
+						</view>
+						<view class="diner-select-people">
+							<input type="number" v-model="MorePerson" placeholder="更多" style="width: 192rpx"
+								class="cot" />
+							<!-- <div class="cot" @click="PersonOptionCount=20">更多</div> -->
+						</view>
+					</view>
+					<button type="button" class="confirm" @click="confirmDinerNum">
+						确认
+					</button>
+				</view>
+			</view>
+		</uni-transition>
 
-		<transition name="fade">
+		<uni-transition mode-class="fade" :show="flavorpopup">
 			<div class="flavorpopup" :class="[Vshow(flavorpopup)]">
 				<div class="popup-cot" v-if="flavorpopup">
 					<h6 class="title">请选择口味<span v-if="BusinessConfig.OrderConfig.RemarkCanMultiple==1"> - 多选</span>
@@ -202,7 +222,7 @@
 				</div>
 				<div class="bg"></div>
 			</div>
-		</transition>
+		</uni-transition>
 
 		<div class="barragesBox">
 			<div class="barrageitemline" v-for="(bitem) in marqueeMsgs" :key="bitem.id" :class="[Vshow(bitem.show)]">
@@ -244,14 +264,14 @@
 				EditingOrder: {},
 				AddDishFlag: false, // 加菜模式标记 
 				RemarkTextarea: "",
-
+				MorePerson: '',
 
 				Tidings: [], // 订单消息
 
 				// order: {}, // 订单对象
 				orderpopup: false,
 				PersonOptionCount: 11,
-				dinerNumList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], // 就餐人数数组
+				dinerNumList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // 就餐人数数组
 				PersonNumber: 0, // 就餐人数结果
 				dinershow: false, // 是否显示选择用餐人数
 				flavorlist: [], // 口味列表
@@ -262,6 +282,15 @@
 				marqueeMsgs: []
 			};
 		},
+		
+		watch: {
+			MorePerson(value) {
+				if (value) {
+					this.PersonNumber = value;
+				}
+			}
+		},
+		
 		computed: {
 			...mapGetters(["MemberCode", "StoreCode", "DeskID", "Member", "BusinessConfig"]),
 			HiddenOrderAmount() {
@@ -288,8 +317,6 @@
 			this.EditingOrder=this.$getStorage("EditingOrder")
 		},
 		onShow() {
-			console.log('getEditingOrder',this.$getUrlQuery().options);
-			console.log(this.EditingOrder);
 			this.AddDishFlag = this.$getUrlQuery().options.AddDish === 'true';
 			if (this.EditingOrder == null) {
 				console.log("缺少参数", "this.EditingOrder==null");
@@ -441,7 +468,9 @@
 			},
 			// 选择用餐人数
 			selectDinerNum(value) {
+				console.log(value);
 				this.PersonNumber = value;
+				this.MorePerson = ''
 			},
 			// 确认用餐人数
 			confirmDinerNum() {
@@ -1048,7 +1077,7 @@
 		transition: all 0.3s;
 
 		.popup-cot {
-			width: 300px;
+			width: 526rpx;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -1075,6 +1104,8 @@
 
 			.btn-group {
 				width: 100%;
+				padding: 0 20rpx;
+				box-sizing: border-box;
 
 				li.allline {
 					width: 50%;
@@ -1086,7 +1117,7 @@
 				}
 
 				.btn {
-					width: 120px;
+					width: 200rpx;
 					height: 40px;
 					line-height: 40px;
 					text-align: center;
@@ -1125,64 +1156,63 @@
 		background: rgba(0, 0, 0, 0.5);
 		z-index: 99;
 		transition: all 0.3s linear;
-
+	
 		.diner-num-cot {
-			width: 300px;
-			padding: 25px 20px;
+			width: 490rpx;
+			padding: 25px 20rpx;
 			background: #fff;
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			margin-left: -150px;
-			margin-top: -60%;
+			transform: translate(-50%, -50%);
 			@include border-radius(10px);
-
+	
 			.title {
 				font-size: 14px;
 				line-height: 1;
 				text-align: center;
 				margin-bottom: 10px;
 			}
-
-			li {
-				width: 25%;
-				margin: 15px 0;
+	
+			.diner-select-people {
+				// width: 50px;
+				margin: 8px 24rpx;
 				float: left;
 			}
-
+	
 			.cot {
-				width: 35px;
+				width: 70rpx;
 				height: 35px;
 				line-height: 34px;
 				text-align: center;
 				border: 1px solid #d8d8d8;
-				font-size: 14px;
+				font-size: 12px;
 				margin: 0 auto;
-				@include border-radius(50%);
+				@include border-radius(18px);
 			}
-
+	
 			.active {
 				.cot {
 					border-color: $main;
 					background: $main;
 					color: white;
+	
 				}
 			}
-
+	
 			.confirm {
-				width: 160px;
+				width: 320rpx;
 				height: 40px;
 				line-height: 40px;
 				text-align: center;
 				background: $main;
-				// color: #fff;
 				margin: 10px auto 0;
 				display: block;
 				border: none;
 				padding: 0;
 				font-size: 14px;
-				@include border-radius(20px);
 				color: white;
+				@include border-radius(20px);
 			}
 		}
 	}
@@ -1203,7 +1233,7 @@
 		transition: all 0.3s;
 
 		.popup-cot {
-			width: 300px;
+			width: 526rpx;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -1260,15 +1290,19 @@
 		.flavor-list {
 			padding: 15px 0;
 
+			>view {
+				width: 100%;
+			}
+			
 			li {
 				height: 30px;
 				line-height: 29px;
-				padding: 0 20px;
+				padding: 0 20rpx;
 				float: left;
-				margin: 10px 5px 5px 0;
+				margin: 10px 18rpx 5px;
 				font-size: 14px;
 				border: 1px solid $border;
-				min-width: 106rpx;
+				min-width: 94rpx;
 				text-align: center;
 				@include border-radius(15px);
 			}
