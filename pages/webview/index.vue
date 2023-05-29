@@ -22,7 +22,7 @@
 			console.log('option', option);
 			app.globalData.getInfo = (res) => {
 				console.log('获取用户信息.res',res);
-				const redirectUrl = option.Url ? option.Url : '/pages/storeList/index';
+				const redirectUrl = option.Url ? option.Url : '/pages/member/index';
 				if (res.state === 200 && res.data.JumpUrl) {
 					console.log('执行公众号和小程序用户关联')
 					console.log('webviewUrl', res.data.JumpUrl + "&JumpUrl=" + redirectUrl);

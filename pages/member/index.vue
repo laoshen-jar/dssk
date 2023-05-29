@@ -2,7 +2,7 @@
 	<div class="container">
 		<!-- member-card -->
 		<div class="member-card-box" v-if="Member">
-			<div class="member-card" v-if="BusinessConfig.MemberConfig&&BusinessConfig.MemberConfig.MemberCardPicture"
+			<div class="member-card" v-if="BusinessConfig && BusinessConfig.MemberConfig&&BusinessConfig.MemberConfig.MemberCardPicture"
 				:style="'background: url('+BusinessConfig.MemberConfig.MemberCardPicture+') no-repeat;background-size: 100%;'">
 				<p class="member-id" v-cloak :style="'color:'+BusinessConfig.MemberConfig.MemberCardFontColor">
 					{{ Member.NickName }}</br>
@@ -485,6 +485,21 @@
 				return moment() < moment("2022-05-21 12:00") && this.Branch == 'DSSK';
 			},
 		},
+		
+		watch: {
+			BusinessConfig: {
+				handler(val) {
+					if (val) {
+						this.bannerList = [];
+						val.AdsenseConfig.MemberCenterBanners.forEach(pic => {
+							this.bannerList.push(pic)
+						})
+					}
+				},
+				deep: true
+			}
+		},
+		
 		onLoad() {
 			const MemberCode = this.$getStorage('MemberCode');
 			if(!MemberCode) {
@@ -496,26 +511,15 @@
 				initInfo(this);
 			}
 			this.Ver = moment().format('MMDDHHmmss');
-			this.NeedMember().then(res => {
-				if (!this.OnActivity) {
-					GetBillList({
-						MemberCode: this.MemberCode,
-						pageNo: this.pageNo,
-						pageSize: 3
-					}).then(res => {
-						this.billList = res.data //.slice(0, 3);
-					}).catch(err => console.log(err));
-				}
-			})
-		},
-		onShow() {
-			this.NeedBusinessConfig().then(res => {
-				res.data.AdsenseConfig.MemberCenterBanners.forEach(pic => {
-					this.bannerList.push(pic)
-				})
-				// console.log('this.Business',JSON.stringify(this.Business));
-				// console.log('this.BusinessConfig',JSON.stringify(this.BusinessConfig));
-			})
+			if (!this.OnActivity) {
+				GetBillList({
+					MemberCode: this.MemberCode,
+					pageNo: this.pageNo,
+					pageSize: 3
+				}).then(res => {
+					this.billList = res.data //.slice(0, 3);
+				}).catch(err => console.log(err));
+			}
 		},
 		methods: {
 			...mapActions(["NeedMember", "NeedBusinessConfig"]),
@@ -549,7 +553,7 @@
 					// 	}
 					// });
 					uni.redirectTo({
-						url: `/pages/BillDetail/index?BillID=${item.BillID}`
+						url: `/pages/billDetail/index?BillID=${item.BillID}`
 					})
 				}
 			},

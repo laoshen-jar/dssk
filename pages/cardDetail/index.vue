@@ -152,6 +152,9 @@
 			hideCodePopup() {
 				this.barcodeshow = false;
 			},
+			DateFilter(value) {
+				return moment(value).format('YYYY-MM-DD HH:mm:ss');
+			}
 		}
 	}
 </script>
