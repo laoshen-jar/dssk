@@ -19,7 +19,7 @@
 		<div class="division"></div>
 		<!-- coupon-list -->
 		<div class="conpon-list-box" ref="wrapper">
-			<load-refresh :currentPage="usableCards.Cards.length" :totalPages="count" @refresh="loadBottom"
+			<load-refresh :currentPage="usableCards.Cards.length" :totalPages="count" @refresh="loadBottom" custom-style="background: #f2f2f6"
 				ref="loadRefresh">
 				<div slot="content-list">
 					<div class="notuse" v-if="usableCards.active">
@@ -64,7 +64,6 @@
 							<ul class="list">
 								<li v-for="(card,index) in usedCards.Cards" :key="index">
 									<navigator :url="'/pages/cardDetail/index?MemberCardCode=' + card.MemberCardCode + '&CardCode=' + card.CardCode" class="item">
-										class="item">
 										<div class="msg">
 											<div class="text-box">
 												<h6 class="title">{{card.CardName}}（{{card.CardType}}）</h6>
@@ -403,7 +402,7 @@
 	/* notuse */
 
 	.notuse {
-		padding: 15px 10px;
+		padding: 15px 20rpx;
 
 		li {
 			margin-top: 10px;
@@ -415,7 +414,7 @@
 
 		.item {
 			// height: 110px;
-			padding-right: 60px;
+			padding-right: 106rpx;
 			position: relative;
 			display: block;
 
@@ -423,11 +422,12 @@
 				width: 100%;
 				// height: 110px;
 				background: #fff;
-				padding: 10px;
+				padding: 10px 20rpx;
 				@include border-radius(10px);
 				-webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 				-moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 				box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
+				box-sizing: border-box;
 
 				.img {
 					width: 80px;
@@ -481,7 +481,7 @@
 			}
 
 			.select-box {
-				width: 60px;
+				width: 106rpx;
 				height: 100%;
 				text-align: center;
 				background: #fff;
@@ -526,7 +526,7 @@
 	/* used */
 	.used,
 	.overtime {
-		padding: 15px 10px;
+		padding: 15px 20rpx;
 
 		li {
 			margin-top: 10px;
@@ -538,7 +538,7 @@
 
 		.item {
 			height: 65px;
-			padding-right: 60px;
+			padding-right: 106rpx;
 			position: relative;
 			display: block;
 
@@ -546,11 +546,12 @@
 				width: 100%;
 				height: 65px;
 				background: #fff;
-				padding: 10px;
+				padding: 10px 20rpx;
 				@include border-radius(10px);
 				-webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 				-moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 				box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
+				box-sizing: border-box;
 
 				.text-box {
 					padding-top: 5px;
@@ -570,7 +571,7 @@
 			}
 
 			.select-box {
-				width: 60px;
+				width: 106rpx;
 				height: 100%;
 				text-align: center;
 				background: #fff;
@@ -583,7 +584,7 @@
 				box-shadow: 0 0 3px 0 rgba(0, 0, 0, .1);
 
 				.text {
-					width: 60px;
+					width: 100%;
 					height: 100%;
 					line-height: 60px;
 					text-align: center;

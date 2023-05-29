@@ -27,7 +27,7 @@
 				transform: coverTransform,
 				transition: coverTransition
 			}]" @touchstart="coverTouchstart" @touchmove="coverTouchmove" @touchend="coverTouchend">
-			<scroll-view scroll-y class="list" :scroll-top="scrollTop" @scrolltolower="loadMore" :style="getHeight">
+			<scroll-view scroll-y class="list" :scroll-top="scrollTop" @scrolltolower="loadMore" :style="customStyleCollection">
 				<!-- 数据集插槽 -->
 				<slot name="content-list"></slot>
 				<!-- 上拉加载 -->
@@ -76,6 +76,10 @@
 			showLoadText: {
 				type: Boolean,
 				default: true
+			},
+			customStyle: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -101,6 +105,9 @@
 					let height = uni.getSystemInfoSync().windowHeight - uni.upx2px(0 + this.heightReduce)
 					return `height: ${height}px;`
 				}
+			},
+			customStyleCollection() {
+				return this.getHeight + this.customStyle
 			},
 			// 判断loadText，可以根据需求自定义
 			loadText() {

@@ -2,7 +2,7 @@
 	<div class="container">
 		<!-- diningrecord -->
 		<div class="diningrecord" ref="wrapper">
-			<load-refresh :showLoadText="false" :currentPage="billList.length" :totalPages="count" @refresh="loadBottom" ref="loadRefresh">
+			<load-refresh :showLoadText="false" :currentPage="billList.length" :totalPages="count" @refresh="loadBottom" custom-style="background: #f2f2f6" ref="loadRefresh">
 				<!-- 上拉加载事件:bottom-method="loadBottom" -->
 				<div slot="content-list">
 					<ul class="list">

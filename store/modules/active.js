@@ -195,7 +195,7 @@ const active = {
 						})
 						.then(res => {
 							// console.log('GetBusinessConfig',JSON.stringify(res.data));
-							if (res.state == 200) {
+							if (res && res.state == 200) {
 								res.data.MpMenuConfig = JSON.parse(res.data.MpMenuConfigJson);
 								res.data.TemplateMsgConfig = JSON.parse(res.data.TemplateMsgConfigJson);
 								res.data.AdsenseConfig = JSON.parse(res.data.AdsenseConfigJson);
