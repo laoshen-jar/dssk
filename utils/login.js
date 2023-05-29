@@ -51,9 +51,9 @@ export const loginToGetMember = () => {
 }
 
 export const getMemberCode = async (app) => {
-	uni.showLoading({
-		title: '加载中…',
-	})
+	// uni.showLoading({
+	// 	title: '加载中…',
+	// })
 	const params = await loginToGetMember();
 	if (params) {
 		GetByMiniOpenID(params).then(res => {

@@ -22,3 +22,6 @@ export function ClearDish(parameter) { return apiResquest({ url: '/TsOrder/Clear
 export function CreateCheckOrder(parameter) { return apiResquest({ url: '/TsOrder/CheckOrder/Create', method: 'post', data: parameter }); }
 export function CheckEffective(parameter) { return apiResquest({ url: '/TsOrder/CheckEffective', method: 'post', data: parameter }); }
 export function BillCheckEffective(parameter) { return apiResquest({ url: '/TsOrder/BillCheckEffective', method: 'post', data: parameter }); }
+
+export function BillVerify(parameter) { return apiResquest({ url: '/TsOrder/BillVerify', method: 'post', data: parameter }); }
+export function GetBillVerify(parameter) { return apiResquest({ url: '/TsOrder/GetBillVerify', method: 'post', data: parameter }); }

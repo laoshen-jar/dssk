@@ -34,7 +34,7 @@
 					点击加载更多</p>
 			</mt-loadmore>
 			<!-- activicity -->
-			<uni-transition mode-class="fade" :show="true">
+			<transition name="fade">
 				<div class="activicity">
 					<div class="title-box">
 						<div class="title-cot">
@@ -47,12 +47,12 @@
 					<div class="division"></div>
 					<!-- <div class="support">本服务由武汉邦越提供技术支持</div> -->
 				</div>
-			</uni-transition>
+			</transition>
 			<!-- activicity end -->
 		</div>
 		<!-- diningrecord end -->
 		<!-- diningrecord-popup -->
-		<uni-transition mode-class="fade" :show="showpopup">
+		<transition name="fade">
 			<div class="diningrecord-popup" v-show="showpopup">
 				<div class="diningrecord-popup-cot">
 					<form action method class="comment-form" id="comment-form" @submit.prevent="submit">
@@ -79,7 +79,7 @@
 				</div>
 				<div class="bg"></div>
 			</div>
-		</uni-transition>
+		</transition>
 		<!-- diningrecord-popup end -->
 	</div>
 </template>

@@ -10,7 +10,7 @@
 		<!-- order-msg end -->
 		<!-- add -->
 		<div class="add" @click="ToDishMenu">
-			<image class="img" :src="staticUrl + 'images/add.png'" >
+			<image class="img" :src="staticUrl + 'images/add.png'">
 			</image>
 			<text class="add-text">加菜</text>
 		</div>
@@ -150,7 +150,9 @@
 		GetBill,
 		GetWaitingOrder,
 		GetOrderState,
-		BillCheckEffective
+		BillCheckEffective,
+		BillVerify,
+		GetBillVerify
 	} from '@/api/tsorder'
 	export default {
 		name: 'order',
@@ -240,7 +242,7 @@
 					GetBill(paramer).then(res => {
 						if (res.state == 200) {
 							this.editingBill = res.data;
-
+							this.$setStorage("EditingBill", this.editingBill);
 						} else {
 							console.error('GetBill.error', res);
 						}
@@ -345,9 +347,10 @@
 							this.$showToast("您刚提交的订单还未处理，请稍后再试！");
 							this.initData();
 						} else {
-							uni.navigateTo({
-								url: '/pages/Check/index?editingBill=' + JSON.stringify(this.editingBill)
-							})
+							this.OnBillVerify();
+							// uni.navigateTo({
+							// 	url: '/pages/Check/index?editingBill=' + JSON.stringify(this.editingBill)
+							// })
 						}
 					} else {
 						this.$showToast("网络开小差啦，请稍后重试！");
@@ -357,6 +360,74 @@
 					this.$hideLoading();
 					this.$showToast("网络开小差啦，请稍后重试！");
 				})
+			},
+			OnBillVerify() {
+				BillVerify({
+					StoreCode: this.editingBill.StoreCode,
+					DeskCode: this.editingBill.DeskCode,
+					DeskName: this.editingBill.DeskName,
+					BillCode: this.editingBill.BillCode,
+					// DishCount=this.editingBill.DishCount,
+					Amount: this.editingBill.Amount,
+					BillState: 1,
+					IsPushMust: 0
+				}).then(bvres => {
+					if (bvres.state != 200) {
+						this.$showToast("网络开小差啦，请稍后重试！");
+						return;
+					}
+					setTimeout(()=>{this.OnGetBillVerify(bvres.data)}, 500);
+				}).catch(err => {
+					this.$showToast("网络开小差啦，请稍后重试！");
+					return;
+				})
+			},
+			OnGetBillVerify(Key, StartTime) {
+				if (StartTime == null) {
+					StartTime = new Date();
+				}
+				GetBillVerify({
+					Key: Key
+				}).then(res => {
+					if (res.state != 200) {
+						console.error(res);
+						return
+					} else {
+						var BVerify = res.data;
+						if (BVerify.CallBackState == -1) {
+							console.error("消费单无法确认状态，请联系服务员买单或重试！",BVerify.CallBackState)
+							this.$showToast("网络开小差啦，请稍后重试！"+BVerify.CallBackState);
+						} else if (BVerify.CallBackState == 1) {
+							if (BVerify.DeskCode != this.editingBill.DeskCode || BVerify.DeskName != this
+								.editingBill.DeskName || BVerify.BillCode != this.editingBill.BillCode || BVerify
+								.Amount != this.editingBill.Amount) {
+								this.$showToast("消费有变动，正在刷新页面，请重试。");
+								this.initData();
+								return;
+							}
+							else{
+								uni.navigateTo({
+									url: '/pages/Check/index?editingBill=' + JSON.stringify(this.editingBill)
+								})
+								return;
+							}					
+							
+						}
+					}
+					if((new Date()-StartTime)/1000>30){
+						console.error("消费单无法确认状态，请联系服务员买单或重试！")
+						this.$showToast("消费单无法确认状态，请联系服务员买单或重试！");
+						return;
+					}
+					else{
+						setTimeout(()=>{this.OnGetBillVerify(Key,StartTime)}, 3000);
+					}
+				}).catch(err => {
+					console.error(err)
+					this.$showToast("网络开小差啦，请稍后重试！");
+					return;
+				})
+
 			},
 			ToDishMenu() {
 				this.leaving = true;
@@ -404,7 +475,7 @@
 		height: 45px;
 		position: relative;
 		margin-bottom: -43px;
-		
+
 		.add-text {
 			position: absolute;
 			bottom: 35px;

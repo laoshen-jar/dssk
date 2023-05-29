@@ -203,7 +203,7 @@
 		</div>
 		<!-- member-card end -->
 		<!-- bar-code -->
-		<uni-transition mode-class="fade" :show="true">
+		<transition name="fade">
 			<div class="bar-code" v-if="barcodeshow">
 				<div class="bar-code-cot">
 					<h6 class="title">会员号</h6>
@@ -217,7 +217,7 @@
 				</div>
 				<div class="bg" @click="hideCodePopup"></div>
 			</div>
-		</uni-transition>
+		</transition>
 		<!-- bar-code end -->
 		<div class="division" v-if="false"></div>
 		<!-- member-level -->
@@ -261,7 +261,7 @@
 							</div>
 							<p class="text" v-cloak>{{ item.Name }}</p>
 						</div>
-						<uni-transition mode-class="fade" :show="true">
+						<transition name="fade">
 							<div class="equity-popup" v-show="item.popupshow">
 								<div class="equity-popup-cot">
 									<div class="cot">
@@ -276,7 +276,7 @@
 									</div>
 								</div>
 							</div>
-						</uni-transition>
+						</transition>
 					</li>
 				</ul>
 			</div>
@@ -303,7 +303,7 @@
 					<iconfont class="iconfont" icon="iconjiantou3-copy" />
 				</navigator>
 			</div>
-			<div class="cellline" v-if="BusinessConfig && BusinessConfig.EntryConfig.GoodsShopEntrySwitch">
+			<div class="cellline" v-if="BusinessConfig&&BusinessConfig.EntryConfig.GoodsShopEntrySwitch">
 				<navigator url="/pages/GoodsShop/index">
 					<div class="title">积分商城</div>
 					<div class="info"></div>
@@ -453,9 +453,6 @@
 	import {
 		commonMixin
 	} from '../../mixins/index.js';
-	import {
-		initInfo
-	} from '../../utils/initBaseInfo.js'
 	export default {
 		name: "myself",
 		data() {
@@ -837,11 +834,9 @@
 
 				.img {
 					width: 120px;
-					height: 40px;
 
 					img {
 						width: 100%;
-						height: 100%;
 						display: block;
 					}
 				}

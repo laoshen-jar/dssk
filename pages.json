@@ -178,6 +178,15 @@
 		    }
 		    
 		}
+        ,{
+            "path" : "pages/2023/DefaultPage/DefaultPage",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "登录中...",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

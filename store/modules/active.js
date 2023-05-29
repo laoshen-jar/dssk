@@ -155,7 +155,7 @@ const active = {
 					});
 				} else if (!store.getters.Business) {
 					GetBusiness({
-						BusinessCode: store.getters.BusinessCode || store.getters.Member.BusinessCode
+						BusinessCode: store.getters.BusinessCode
 					}).then(res => {
 						// console.log('GetBusiness',JSON.stringify(res.data));
 						if (res.state == 200) {
@@ -191,7 +191,7 @@ const active = {
 				} else if (!store.getters.BusinessConfig || store.getters.BusinessConfig.BusinessCode != !
 					store.getters.BusinessCode) {
 					GetBusinessConfig({
-							BusinessCode: store.getters.BusinessCode || store.getters.Member.BusinessCode
+							BusinessCode: store.getters.BusinessCode
 						})
 						.then(res => {
 							// console.log('GetBusinessConfig',JSON.stringify(res.data));

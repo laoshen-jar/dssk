@@ -4,7 +4,7 @@
     <div class="paymsg">
       <h5 class="title">消费信息</h5>
       <div class="paymsg-list">
-        <ul class="msg-list" v-if="BillInfo">
+        <ul class="msg-list">
           <li class="msg-item">
             <p class="text">账单编号</p>
             <p class="cot">{{BillInfo.BillCode}}</p>
@@ -43,7 +43,7 @@
     <div class="foodlist">
       <div class="title-box">
         <h5 class="title">菜品信息</h5>
-        <div class="fold-btn" v-if="BillDishItem.length > 2" :class="{'active':fold == 1}" @click="changefold">
+        <div class="fold-btn" :class="{'active':fold == 1}" @click="changefold">
           <p class="text">{{fold == 0?"展开":"收起"}}</p>
           <iconfont class="iconfont" icon="iconjiantou3-copy-copy" />
         </div>
@@ -430,7 +430,6 @@ $glod: #b6986a;
 
       img {
         width: 100%;
-		height: 100%;
         display: block;
       }
     }
@@ -500,7 +499,6 @@ $glod: #b6986a;
           display: inline-block;
         //   color: #888;
           font-size: 12px;
-		  margin-left: 20rpx;
         }
       }
 

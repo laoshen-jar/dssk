@@ -9,7 +9,6 @@ export function GetDesk(parameter) {
 		data: parameter
 	})
 }
-
 export function GetQrCodeImg(parameter) {
 	return apiResquest({
 		url: '/WeiXin/MakeQrCode',
